@@ -1,15 +1,17 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Navbar } from "@/components/Navbar"
-import {Footer} from "@/components/Footer"
-
-
+import Link from "next/link"
+import { properties } from "@/lib/properties"
+import { Footer} from "@/components/Footer"
+import { Navbar} from "@/components/Navbar"
 
 export default function Home() {
+  // Get first 3 verified properties for featured section
+  const featuredProperties = properties.filter(p => p.verified && p.available).slice(0, 3)
+
   return (
-    <>
-      <Navbar />
+ 
     <main className="min-h-screen">
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-slate-50 to-white py-20 px-4">
@@ -27,7 +29,9 @@ export default function Home() {
               placeholder="Search by university or location..." 
               className="text-lg"
             />
-            <Button size="lg">Search</Button>
+            <Link href="/properties">
+              <Button size="lg">Search</Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -35,21 +39,37 @@ export default function Home() {
       {/* Featured Properties */}
       <section className="py-16 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8">Featured Properties</h2>
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-3xl font-bold">Featured Properties</h2>
+            <Link href="/properties">
+              <Button variant="outline">View All →</Button>
+            </Link>
+          </div>
           
           <div className="grid md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="overflow-hidden hover:shadow-lg transition">
-                <div className="h-48 bg-slate-200 flex items-center justify-center">
-                  <span className="text-slate-400">Property Image</span>
+            {featuredProperties.map((property) => (
+              <Card key={property.id} className="overflow-hidden hover:shadow-lg transition">
+                <div className="relative h-48 bg-slate-200">
+                  <img 
+                    src={property.images[0]}
+                    alt={property.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                    ✓ Verified
+                  </span>
                 </div>
                 <CardHeader>
-                  <CardTitle>2 Bedroom Apartment</CardTitle>
-                  <CardDescription>Near University of Lagos</CardDescription>
+                  <CardTitle className="text-lg">{property.title}</CardTitle>
+                  <CardDescription>{property.location}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-2xl font-bold text-green-600">₦150,000/year</p>
-                  <Button className="w-full mt-4">View Details</Button>
+                  <p className="text-2xl font-bold text-green-600 mb-4">
+                    ₦{property.price.toLocaleString()}/year
+                  </p>
+                  <Link href={`/properties/${property.id}`}>
+                    <Button className="w-full">View Details</Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
@@ -87,12 +107,15 @@ export default function Home() {
               <p className="text-slate-600">Book safely with deposit protection</p>
             </div>
           </div>
+          
+          <Link href="/how-it-works">
+            <Button size="lg" className="mt-8">
+              Learn More
+            </Button>
+          </Link>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer />
     </main>
-    </>
+ 
   )
 }

@@ -3,6 +3,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { properties } from "@/lib/properties"
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import { ContactLandlordModal } from "@/components/ContactLandlordModal"
+import { ScheduleViewingModal } from "@/components/ScheduleViewingModal"
 
 export default function PropertyDetailPage({ params }: { params: { id: string } }) {
   const property = properties.find(p => p.id === parseInt(params.id))
@@ -118,19 +120,20 @@ export default function PropertyDetailPage({ params }: { params: { id: string } 
                   ₦{property.price.toLocaleString()}/year
                 </div>
 
+                
                 {property.available ? (
-                  <>
-                    <Button className="w-full mb-3" size="lg">
-                      Contact Landlord
-                    </Button>
-                    <Button variant="outline" className="w-full">
-                      Schedule Viewing
-                    </Button>
-                  </>
+                <>
+                    <ContactLandlordModal 
+                    propertyTitle={property.title}
+                    landlordName={property.landlord.name}
+                    landlordPhone={property.landlord.phone}
+                    />
+                    <ScheduleViewingModal propertyTitle={property.title} />
+                </>
                 ) : (
-                  <Button className="w-full" disabled>
+                <Button className="w-full" disabled>
                     Not Available
-                  </Button>
+                </Button>
                 )}
 
                 <div className="mt-6 pt-6 border-t">

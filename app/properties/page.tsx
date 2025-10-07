@@ -43,7 +43,7 @@ export default function PropertiesPage() {
               onChange={(e) => setMaxPrice(e.target.value)}
             />
             
-            <select title="Property Type"
+            <select title="choose a property type"
               className="border rounded-md px-3 py-2"
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
@@ -74,7 +74,7 @@ export default function PropertiesPage() {
           <p className="text-slate-600">
             {filteredProperties.length} {filteredProperties.length === 1 ? 'property' : 'properties'} found
           </p>
-          <select className="border rounded-md px-3 py-2 text-sm" title="Sort by">
+          <select className="border rounded-md px-3 py-2 text-sm" title="sort-by">
             <option>Sort: Recommended</option>
             <option>Price: Low to High</option>
             <option>Price: High to Low</option>
