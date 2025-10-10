@@ -9,6 +9,7 @@ type AuthContextType = {
   profile: any | null
   loading: boolean
   signOut: () => Promise<void>
+  refreshProfile: () => Promise<void>  // NEW: Add this
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -16,6 +17,7 @@ const AuthContext = createContext<AuthContextType>({
   profile: null,
   loading: true,
   signOut: async () => {},
+  refreshProfile: async () => {},  // NEW: Add this
 })
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -23,16 +25,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
 
+  // NEW: Function to refresh profile data
+  const refreshProfile = async () => {
+    const { data: { session } } = await supabase.auth.getSession()
+    if (session?.user) {
+      const { data } = await supabase
+        .from('user_profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single()
+      
+      setProfile(data)
+    }
+  }
+
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setUser(session?.user ?? null)
       
       if (session?.user) {
-        // Get profile
         const { data } = await supabase
           .from('user_profiles')
-          .select('full_name, status')
+          .select('*')
           .eq('id', session.user.id)
           .single()
         
@@ -42,14 +56,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setLoading(false)
     })
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setUser(session?.user ?? null)
       
       if (session?.user) {
         const { data } = await supabase
           .from('user_profiles')
-          .select('full_name, status')
+          .select('*')
           .eq('id', session.user.id)
           .single()
         
@@ -69,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signOut }}>
+    <AuthContext.Provider value={{ user, profile, loading, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   )

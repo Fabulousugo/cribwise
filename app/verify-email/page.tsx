@@ -70,27 +70,30 @@ function VerifyEmailContent() {
   }
 
   async function updateStatus(newStatus: string) {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+  try {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
 
-      const { error } = await supabase
-        .from('user_profiles')
-        .update({ status: newStatus })
-        .eq('id', user.id)
+    const { error } = await supabase
+      .from('user_profiles')
+      .update({ status: newStatus })
+      .eq('id', user.id)
 
-      if (error) throw error
+    if (error) throw error
 
-      setShowStatusPrompt(false)
-      setMessage(`Status updated to ${newStatus}!`)
-      
-      // Redirect after 2 seconds
-      setTimeout(() => router.push('/dashboard'), 2000)
+    setShowStatusPrompt(false)
+    setMessage(`Status updated to ${newStatus}!`)
+    
+    // Redirect and force refresh
+    setTimeout(() => {
+      router.push('/dashboard?refresh=true')  // Add refresh param
+      router.refresh()  // Force Next.js refresh
+    }, 2000)
 
-    } catch (error) {
-      console.error('Status update error:', error)
-    }
+  } catch (error) {
+    console.error('Status update error:', error)
   }
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center px-4">
@@ -154,10 +157,16 @@ function VerifyEmailContent() {
           )}
 
           {status === 'success' && !showStatusPrompt && (
-            <Link href="/dashboard">
-              <Button className="w-full">Go to Dashboard</Button>
-            </Link>
-          )}
+          <Button 
+            className="w-full"
+            onClick={() => {
+              router.push('/dashboard?refresh=true')
+              router.refresh()
+            }}
+          >
+            Go to Dashboard
+          </Button>
+        )}
 
           {status === 'error' && (
             <div className="space-y-2">

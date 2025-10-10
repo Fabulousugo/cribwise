@@ -2,36 +2,32 @@
 
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabaseClient"
+import { useAuth } from "@/lib/auth-context"
 
 export default function DashboardPage() {
   const router = useRouter()
+  const { user, profile, loading } = useAuth()
 
   useEffect(() => {
-    async function checkUserAndRedirect() {
-      const { data: { user } } = await supabase.auth.getUser()
-      
-      if (!user) {
-        router.push('/signin')
-        return
-      }
+    // Don't redirect while loading
+    if (loading) return
 
-      // Get user profile to determine which dashboard
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('status')
-        .eq('id', user.id)
-        .single()
-
-      if (profile?.status === 'agent') {
-        router.push('/dashboard/agent')
-      } else {
-        router.push('/dashboard/student')
-      }
+    // No user - go to signin
+    if (!user) {
+      router.replace('/signin')
+      return
     }
 
-    checkUserAndRedirect()
-  }, [router])
+    // No profile yet - wait for it
+    if (!profile) return
+
+    // Redirect based on status
+    if (profile.status === 'agent') {
+      router.replace('/dashboard/agent')
+    } else {
+      router.replace('/dashboard/student')
+    }
+  }, [user, profile, loading, router])
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center">

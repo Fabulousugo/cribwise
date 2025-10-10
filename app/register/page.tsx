@@ -5,6 +5,7 @@ import { supabase } from "@/lib/supabaseClient"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 
@@ -19,7 +20,8 @@ export default function RegisterPage() {
     fullName: '',
     email: '',
     password: '',
-    university: ''
+    university: '',
+    gender: ''
   })
 
   const statuses = [
@@ -61,56 +63,54 @@ export default function RegisterPage() {
   }
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
+  e.preventDefault()
+  setLoading(true)
+  setError('')
 
-    try {
-      // 1. Create auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          data: {
-            full_name: formData.fullName,
-          }
+  try {
+    // 1. Create auth user
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        data: {
+          full_name: formData.fullName,
         }
-      })
-
-      if (authError) throw authError
-
-      if (!authData.user) {
-        throw new Error('User creation failed')
       }
+    })
 
-      // 2. Create user profile
-      const { error: profileError } = await supabase
-        .from('user_profiles')
-        .insert([
-          {
-            id: authData.user.id,
-            status: selectedStatus,
-            full_name: formData.fullName,
-            university: formData.university || null,
-          }
-        ])
+    if (authError) throw authError
+    if (!authData.user) throw new Error('User creation failed')
 
-      if (profileError) throw profileError
+    // 2. Create user profile WITH GENDER
+    const { error: profileError } = await supabase
+      .from('user_profiles')
+      .insert([
+        {
+          id: authData.user.id,
+          status: selectedStatus,
+          full_name: formData.fullName,
+          university: formData.university || null,
+          gender: selectedStatus !== 'agent' ? formData.gender : null,  // ADD THIS
+        }
+      ])
 
-      // 3. Redirect based on status
-      if (selectedStatus === 'agent') {
-        router.push('/dashboard/agent')
-      } else {
-        router.push('/dashboard/student')
-      }
+    if (profileError) throw profileError
 
-    } catch (err: any) {
-      console.error('Registration error:', err)
-      setError(err.message || 'Registration failed. Please try again.')
-    } finally {
-      setLoading(false)
+    // 3. Redirect
+    if (selectedStatus === 'agent') {
+      router.push('/dashboard/agent')
+    } else {
+      router.push('/dashboard/student')
     }
+
+  } catch (err: any) {
+    console.error('Registration error:', err)
+    setError(err.message || 'Registration failed. Please try again.')
+  } finally {
+    setLoading(false)
   }
+}
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white py-12 px-4">
@@ -217,6 +217,7 @@ export default function RegisterPage() {
                 </div>
 
                 {selectedStatus !== 'agent' && (
+                  <>
                   <div>
                     <label className="text-sm font-medium mb-2 block">
                       University {selectedStatus === 'prospective' ? '(Target)' : ''}
@@ -228,6 +229,27 @@ export default function RegisterPage() {
                       onChange={(e) => setFormData({...formData, university: e.target.value})}
                     />
                   </div>
+                  <div>
+                    <label className="text-sm font-medium mb-2 block">Gender *</label>
+                    <Select
+                      required
+                      value={formData.gender}
+                      onValueChange={(value) => setFormData({...formData, gender: value})}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your gender" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Required for roommate matching and housing safety
+                    </p>
+                  </div>
+
+                  </>
                 )}
 
                 {error && (

@@ -12,7 +12,7 @@ import { ExternalLink } from "lucide-react"
 
 export default function StudentDashboard() {
   const router = useRouter()
-  const { user, profile, loading } = useAuth()
+  const { user, profile, loading, refreshProfile } = useAuth()  // Add refreshProfile
   const fileInputRef = useRef<HTMLInputElement | null>(null)
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
@@ -23,11 +23,19 @@ export default function StudentDashboard() {
     }
   }, [user, loading, router])
 
+  // NEW: Refresh profile when dashboard loads
+  useEffect(() => {
+    if (user) {
+      refreshProfile()
+    }
+  }, [])
+
   useEffect(() => {
     if (profile?.avatar_url) {
       setAvatarUrl(profile.avatar_url)
     }
   }, [profile])
+
 
   function initials(name?: string | null) {
     if (!name) return "ST"

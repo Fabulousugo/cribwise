@@ -2,20 +2,20 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/auth-context"
 import { supabase } from "@/lib/supabaseClient"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"  
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { ArrowLeft, Save, Mail, CheckCircle, AlertCircle } from "lucide-react"
 
 export default function ProfilePage() {
   const router = useRouter()
-  const [loading, setLoading] = useState(true)
+  const { user, profile, loading, refreshProfile } = useAuth()  // Use AuthContext
   const [saving, setSaving] = useState(false)
-  const [user, setUser] = useState<any>(null)
-  const [profile, setProfile] = useState<any>(null)
   const [success, setSuccess] = useState('')
   const [error, setError] = useState('')
   
@@ -24,51 +24,30 @@ export default function ProfilePage() {
     university: '',
     phone: '',
     school_email: '',
-    nin: ''
+    nin: '',
+    gender: ''
   })
 
+  // Redirect if not logged in
   useEffect(() => {
-    loadProfile()
-  }, [])
-
-  async function loadProfile() {
-    try {
-      const { data: { user } } = await supabase.auth.getUser()
-      
-      if (!user) {
-        router.push('/signin')
-        return
-      }
-
-      setUser(user)
-
-      // Get profile
-      const { data: profileData, error } = await supabase
-        .from('user_profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single()
-
-      if (error) throw error
-
-      setProfile(profileData)
-      
-      // Populate form
-      setFormData({
-        full_name: profileData.full_name || '',
-        university: profileData.university || '',
-        phone: profileData.phone || '',
-        school_email: profileData.school_email || '',
-        nin: profileData.nin || ''
-      })
-
-    } catch (error) {
-      console.error('Error loading profile:', error)
-      setError('Failed to load profile')
-    } finally {
-      setLoading(false)
+    if (!loading && !user) {
+      router.push('/signin')
     }
-  }
+  }, [user, loading, router])
+
+  // Populate form when profile loads
+  useEffect(() => {
+    if (profile) {
+      setFormData({
+        full_name: profile.full_name || '',
+        university: profile.university || '',
+        phone: profile.phone || '',
+        school_email: profile.school_email || '',
+        nin: profile.nin || '',
+        gender: profile.gender || ''
+      })
+    }
+  }, [profile])
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault()
@@ -85,18 +64,15 @@ export default function ProfilePage() {
           phone: formData.phone,
           school_email: formData.school_email,
           nin: formData.nin,
+          gender: formData.gender,
           updated_at: new Date().toISOString()
         })
-        .eq('id', user.id)
+        .eq('id', user!.id)
 
       if (error) throw error
 
       setSuccess('Profile updated successfully!')
-      
-      // Refresh profile data
-      await loadProfile()
-
-      // Clear success message after 3 seconds
+      await refreshProfile()  // Refresh the context
       setTimeout(() => setSuccess(''), 3000)
 
     } catch (error: any) {
@@ -107,20 +83,82 @@ export default function ProfilePage() {
     }
   }
 
+  async function handleSendVerification() {
+    if (!formData.school_email.endsWith('.edu.ng')) {
+      setError('Must be a valid .edu.ng email address')
+      return
+    }
+
+    setSaving(true)
+    setError('')
+    setSuccess('')
+
+    try {
+      // First save the email
+      const { error: saveError } = await supabase
+        .from('user_profiles')
+        .update({ school_email: formData.school_email })
+        .eq('id', user!.id)
+
+      if (saveError) throw saveError
+
+      // Send verification email
+      const response = await fetch('/api/send-verification-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user!.id,
+          schoolEmail: formData.school_email
+        })
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send verification email')
+      }
+
+      setSuccess('Verification email sent! Check your inbox.')
+      
+      // In development, show the link
+      if (data.verificationUrl) {
+        console.log('📧 VERIFICATION LINK:', data.verificationUrl)
+        const shouldOpen = window.confirm(
+          'Development Mode: Verification link logged to console.\n\nClick OK to open verification page now, or Cancel to check your email.'
+        )
+        if (shouldOpen) {
+          window.open(data.verificationUrl, '_blank')
+        }
+      }
+
+    } catch (error: any) {
+      console.error('Verification send error:', error)
+      setError(error.message || 'Failed to send verification email')
+    } finally {
+      setSaving(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="text-2xl mb-2">Loading profile...</div>
+          <div className="text-2xl mb-2">Loading...</div>
         </div>
       </div>
     )
   }
 
+  if (!user) {
+    return null
+  }
+
+  const isEmailValid = formData.school_email && formData.school_email.endsWith('.edu.ng')
+  const canVerify = isEmailValid && !profile?.school_email_verified
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">
       <div className="max-w-3xl mx-auto">
-        {/* Back Button */}
         <Link href="/dashboard">
           <Button variant="ghost" className="mb-6">
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -128,20 +166,17 @@ export default function ProfilePage() {
           </Button>
         </Link>
 
-        {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">My Profile</h1>
           <p className="text-slate-600">Manage your account information</p>
         </div>
 
-        {/* Status Badge */}
         <div className="mb-6">
           <span className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full font-medium capitalize">
             {profile?.status}
           </span>
         </div>
 
-        {/* Success/Error Messages */}
         {success && (
           <div className="mb-6 bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg flex items-center gap-2">
             <CheckCircle className="h-5 w-5" />
@@ -200,17 +235,48 @@ export default function ProfilePage() {
                 />
               </div>
 
-              {profile?.status !== 'agent' && (
-                <div>
-                  <Label htmlFor="university">University</Label>
-                  <Input
-                    id="university"
-                    value={formData.university}
-                    onChange={(e) => setFormData({...formData, university: e.target.value})}
-                    placeholder="e.g., University of Lagos"
-                  />
-                </div>
-              )}
+          {profile?.status !== 'agent' && (
+            <>
+              <div>
+                <Label htmlFor="university">University</Label>
+                <Input
+                  id="university"
+                  value={formData.university}
+                  onChange={(e) => setFormData({...formData, university: e.target.value})}
+                  placeholder="e.g., University of Lagos"
+                />
+              </div>
+
+              {/* ADD GENDER FIELD */}
+              <div>
+                <Label htmlFor="gender">Gender *</Label>
+                <Select
+                  required
+                  value={formData.gender}
+                  onValueChange={(value) => setFormData({...formData, gender: value})}
+                  disabled={profile?.gender_verified}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+                {profile?.gender_verified ? (
+                  <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                    <CheckCircle className="h-3 w-3" />
+                    Gender verified
+                  </p>
+                ) : (
+                  <p className="text-xs text-slate-500 mt-1">
+                    Will be verified when you upload admission letter or student ID
+                  </p>
+                )}
+              </div>
+            </>
+          )}
             </CardContent>
           </Card>
 
@@ -236,24 +302,43 @@ export default function ProfilePage() {
                       disabled={profile?.school_email_verified}
                     />
                     {profile?.school_email_verified ? (
-                      <Button type="button" disabled className="bg-green-600">
+                      <Button type="button" disabled className="bg-green-600 hover:bg-green-600 shrink-0">
                         <CheckCircle className="h-4 w-4 mr-2" />
                         Verified
                       </Button>
+                    ) : canVerify ? (
+                      <Button 
+                        type="button" 
+                        onClick={handleSendVerification}
+                        disabled={saving}
+                        className="shrink-0"
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Send Link
+                      </Button>
                     ) : (
-                      <Button type="button" variant="outline" disabled>
+                      <Button type="button" variant="outline" disabled className="shrink-0">
                         <Mail className="h-4 w-4 mr-2" />
                         Verify
                       </Button>
                     )}
                   </div>
                   {profile?.school_email_verified ? (
-                    <p className="text-xs text-green-600 mt-1">
-                      ✓ Your school email has been verified
+                    <p className="text-xs text-green-600 mt-1 flex items-center gap-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Your school email has been verified
+                    </p>
+                  ) : formData.school_email && !formData.school_email.endsWith('.edu.ng') ? (
+                    <p className="text-xs text-red-600 mt-1">
+                      Must be a valid .edu.ng email address
+                    </p>
+                  ) : formData.school_email ? (
+                    <p className="text-xs text-blue-600 mt-1">
+                      Click "Send Link" to verify this email
                     </p>
                   ) : (
                     <p className="text-xs text-slate-500 mt-1">
-                      Save your profile first, then we'll send a verification email
+                      Enter your school email to verify
                     </p>
                   )}
                 </div>
