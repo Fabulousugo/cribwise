@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+import { supabase } from "@/lib/supabaseClient"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -90,7 +90,7 @@ export default function AgentDashboard() {
             </CardContent>
           </Card>
         </div>
-
+        
         {!profile?.nin && (
           <Card className="mt-6 border-yellow-300 bg-yellow-50">
             <CardHeader>
