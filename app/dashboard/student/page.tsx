@@ -1,56 +1,33 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/auth-context"
 import { supabase } from "@/lib/supabaseClient"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
-
-type Profile = {
-  id: string
-  full_name?: string | null
-  status?: string | null
-  avatar_url?: string | null
-  school_email_verified?: boolean | null
-}
+import { ExternalLink } from "lucide-react"
 
 export default function StudentDashboard() {
   const router = useRouter()
-  const [loading, setLoading] = useState(true)
-  const [profile, setProfile] = useState<Profile | null>(null)
+  const { user, profile, loading } = useAuth()
   const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
-    checkUser()
-  }, [])
-
-  async function checkUser() {
-    try {
-      const { data: { user }, error } = await supabase.auth.getUser()
-      if (error) throw error
-
-      if (!user) {
-        router.push("/signin")
-        return
-      }
-
-      const { data: profileData, error: profileErr } = await supabase
-        .from("user_profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single()
-
-      if (profileErr) throw profileErr
-      setProfile(profileData as Profile)
-    } catch (error) {
-      console.error("Error:", error)
+    if (!loading && !user) {
       router.push("/signin")
-    } finally {
-      setLoading(false)
     }
-  }
+  }, [user, loading, router])
+
+  useEffect(() => {
+    if (profile?.avatar_url) {
+      setAvatarUrl(profile.avatar_url)
+    }
+  }, [profile])
 
   function initials(name?: string | null) {
     if (!name) return "ST"
@@ -63,42 +40,46 @@ export default function StudentDashboard() {
   }
 
   async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
-  const file = e.target.files?.[0]
-  if (!file || !profile?.id) return
+    const file = e.target.files?.[0]
+    if (!file || !user?.id) return
 
-  try {
-    const { data: { user } } = await supabase.auth.getUser()
-    console.log('auth user:', user?.id) // must NOT be null
+    setUploading(true)
+    try {
+      const ext = file.name.split(".").pop()
+      const path = `${user.id}/${Date.now()}.${ext}`
 
-    const ext = file.name.split(".").pop()
-    const path = `${profile.id}/${Date.now()}.${ext}`
+      const { error: uploadError } = await supabase.storage
+        .from("avatars")
+        .upload(path, file, {
+          cacheControl: "3600",
+          upsert: false,
+        })
 
-    const uploadRes = await supabase.storage.from("avatars").upload(path, file, {
-      cacheControl: "3600",
-      upsert: false,
-    })
-    console.log('uploadRes:', uploadRes)
-    if (uploadRes.error) throw uploadRes.error
+      if (uploadError) throw uploadError
 
-    const { data: publicURLData } = supabase.storage.from("avatars").getPublicUrl(path)
-    const url = publicURLData.publicUrl
+      const { data: publicURLData } = supabase.storage
+        .from("avatars")
+        .getPublicUrl(path)
+      
+      const url = publicURLData.publicUrl
 
-    const updRes = await supabase
-      .from("user_profiles")
-      .update({ avatar_url: url })
-      .eq("id", profile.id)
-      .select("*")
-      .single()
-    console.log('profile update:', updRes)
-    if (updRes.error) throw updRes.error
+      const { error: updateError } = await supabase
+        .from("user_profiles")
+        .update({ avatar_url: url })
+        .eq("id", user.id)
 
-    setProfile(updRes.data as Profile)
-  } catch (err) {
-    console.error("Avatar upload failed:", err)
-  } finally {
-    if (fileInputRef.current) fileInputRef.current.value = ""
+      if (updateError) throw updateError
+
+      setAvatarUrl(url)
+      
+    } catch (err) {
+      console.error("Avatar upload failed:", err)
+      alert("Failed to upload avatar. Please try again.")
+    } finally {
+      setUploading(false)
+      if (fileInputRef.current) fileInputRef.current.value = ""
+    }
   }
-}
 
   if (loading) {
     return (
@@ -111,14 +92,23 @@ export default function StudentDashboard() {
     )
   }
 
+  if (!user) {
+    return null
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8 flex items-center gap-4">
           <div className="relative">
             <Avatar className="h-16 w-16">
-              <AvatarImage src={profile?.avatar_url || undefined} alt={profile?.full_name || "Student"} />
-              <AvatarFallback className="text-lg">{initials(profile?.full_name)}</AvatarFallback>
+              <AvatarImage 
+                src={avatarUrl || undefined} 
+                alt={profile?.full_name || "Student"} 
+              />
+              <AvatarFallback className="text-lg">
+                {initials(profile?.full_name)}
+              </AvatarFallback>
             </Avatar>
           </div>
           <div className="flex-1">
@@ -127,10 +117,13 @@ export default function StudentDashboard() {
             </h1>
             <p className="text-slate-600">
               Status:{" "}
-              <span className="font-semibold capitalize">{profile?.status || "unknown"}</span>
+              <span className="font-semibold capitalize">
+                {profile?.status || "unknown"}
+              </span>
             </p>
             <div className="mt-3 flex items-center gap-2">
-              <input title="Upload avatar"
+              <input
+                title="Upload avatar"
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
@@ -140,18 +133,20 @@ export default function StudentDashboard() {
               <Button
                 variant="outline"
                 onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
               >
-                Upload new photo
+                {uploading ? "Uploading..." : "Upload new photo"}
               </Button>
-              {profile?.avatar_url && (
-                <a
-                  href={profile.avatar_url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm text-slate-600 underline"
+              {avatarUrl && (
+                <Button
+                  variant="link"
+                  size="sm"
+                  onClick={() => window.open(avatarUrl, '_blank')}
+                  className="text-slate-600 hover:text-slate-800 p-0 h-auto"
                 >
+                  <ExternalLink className="h-3 w-3 mr-1" />
                   View current
-                </a>
+                </Button>
               )}
             </div>
           </div>
@@ -196,13 +191,17 @@ export default function StudentDashboard() {
         {!profile?.school_email_verified && profile?.status !== "prospective" && (
           <Card className="mt-6 border-yellow-300 bg-yellow-50">
             <CardHeader>
-              <CardTitle className="text-yellow-800">⚠️ Verify Your School Email</CardTitle>
+              <CardTitle className="text-yellow-800">
+                ⚠️ Verify Your School Email
+              </CardTitle>
               <CardDescription className="text-yellow-700">
                 Add your official .edu.ng email to unlock full features
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="default">Verify Now</Button>
+              <Link href="/profile">
+                <Button variant="default">Verify Now</Button>
+              </Link>
             </CardContent>
           </Card>
         )}
