@@ -49,6 +49,7 @@ export default function CreateRoommateProfile() {
     religion: '',
     state_of_origin: '',
     languages: '',
+    looking_for_gender: '',
     
     // About
     bio: '',
@@ -62,7 +63,6 @@ export default function CreateRoommateProfile() {
     move_in_date: '',
     
     // Roommate Preferences
-    looking_for_gender: 'Any',
     preferred_age_min: '',
     preferred_age_max: '',
     preferred_religion: 'Any',
@@ -114,84 +114,97 @@ export default function CreateRoommateProfile() {
   }
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!profile?.gender) {
+  e.preventDefault()
+  
+  // Validate gender exists
+  if (!profile?.gender) {
     setError('Please add your gender in your profile before creating a roommate profile.')
     return
-     }
+  }
   
   setSaving(true)
   setError('')
-    setSaving(true)
-    setError('')
 
-    try {
-      const interestsArray = formData.interests
-        .split(',')
-        .map(i => i.trim())
-        .filter(Boolean)
+  try {
+    // Convert and validate data
+    const interestsArray = formData.interests
+      .split(',')
+      .map(i => i.trim())
+      .filter(Boolean)
 
-      const languagesArray = formData.languages
-        .split(',')
-        .map(l => l.trim())
-        .filter(Boolean)
+    const languagesArray = formData.languages
+      .split(',')
+      .map(l => l.trim())
+      .filter(Boolean)
 
-      const { error: insertError } = await supabase
-        .from('roommate_profiles')
-        .insert([{
-          user_id: user!.id,
-          full_name: formData.full_name,
-          gender: profile.gender,
-          age: parseInt(formData.age) || null,
-          university: formData.university,
-          faculty: formData.faculty,
-          department: formData.department,
-          course_of_study: formData.course_of_study,
-          year_of_study: parseInt(formData.year_of_study) || null,
-          religion: formData.religion,
-          state_of_origin: formData.state_of_origin,
-          languages: languagesArray,
-          bio: formData.bio,
-          interests: interestsArray,
-          budget_min: parseInt(formData.budget_min),
-          budget_max: parseInt(formData.budget_max),
-          preferred_location: formData.preferred_location,
-          preferred_property_type: formData.preferred_property_type,
-          move_in_date: formData.move_in_date || null,
-          looking_for_gender: formData.looking_for_gender,
-          preferred_age_min: parseInt(formData.preferred_age_min) || null,
-          preferred_age_max: parseInt(formData.preferred_age_max) || null,
-          preferred_religion: formData.preferred_religion,
-          lifestyle_preferences: {
-            cleanliness: formData.cleanliness,
-            noise_level: formData.noise_level,
-            study_habits: formData.study_habits,
-            sleep_schedule: formData.sleep_schedule,
-            cooking: formData.cooking,
-            smoking: formData.smoking,
-            drinking: formData.drinking,
-            pets: formData.pets,
-            visitors: formData.visitors,
-            party_lifestyle: formData.party_lifestyle,
-            fitness_habits: formData.fitness_habits,
-            music_preference: formData.music_preference,
-            food_preferences: formData.food_preferences
-          },
-          verified: profile?.school_email_verified || false,
-          active: true
-        }])
-
-      if (insertError) throw insertError
-
-      router.push('/roommate/browse')
-
-    } catch (error: any) {
-      console.error('Error creating profile:', error)
-      setError(error.message || 'Failed to create profile')
-    } finally {
-      setSaving(false)
+    // Prepare the insert data
+    const insertData = {
+      user_id: user!.id,
+      full_name: formData.full_name,
+      gender: profile.gender,
+      age: formData.age ? parseInt(formData.age) : null,
+      university: formData.university,
+      faculty: formData.faculty || null,
+      department: formData.department || null,
+      course_of_study: formData.course_of_study || null,
+      year_of_study: formData.year_of_study ? parseInt(formData.year_of_study) : null,
+      religion: formData.religion || null,
+      state_of_origin: formData.state_of_origin || null,
+      languages: languagesArray.length > 0 ? languagesArray : null,
+      bio: formData.bio || null,
+      interests: interestsArray.length > 0 ? interestsArray : null,
+      budget_min: parseInt(formData.budget_min),
+      budget_max: parseInt(formData.budget_max),
+      preferred_location: formData.preferred_location || null,
+      preferred_property_type: formData.preferred_property_type || null,
+      move_in_date: formData.move_in_date || null,
+      looking_for_gender: profile.gender, // Same gender only
+      preferred_age_min: formData.preferred_age_min ? parseInt(formData.preferred_age_min) : null,
+      preferred_age_max: formData.preferred_age_max ? parseInt(formData.preferred_age_max) : null,
+      preferred_religion: formData.preferred_religion || 'Any',
+      lifestyle_preferences: {
+        cleanliness: formData.cleanliness || "",
+        noise_level: formData.noise_level || "",
+        study_habits: formData.study_habits || "",
+        sleep_schedule: formData.sleep_schedule || "",
+        cooking: formData.cooking || "",
+        smoking: formData.smoking,
+        drinking: formData.drinking,
+        pets: formData.pets,
+        visitors: formData.visitors || "",
+        party_lifestyle: formData.party_lifestyle || "",
+        fitness_habits: formData.fitness_habits || "",
+        music_preference: formData.music_preference || "",
+        food_preferences: formData.food_preferences || ""
+      },
+      verified: profile?.school_email_verified || false,
+      active: true
     }
+
+    console.log('Inserting data:', insertData) // DEBUG
+
+    const { data, error: insertError } = await supabase
+      .from('roommate_profiles')
+      .insert([insertData])
+      .select()
+
+    if (insertError) {
+      console.error('Insert error details:', insertError)
+      throw insertError
+    }
+
+    console.log('Insert successful:', data) // DEBUG
+
+    // Redirect to browse roommates
+    router.push('/roommate/browse')
+
+  } catch (error: any) {
+    console.error('Error creating profile:', error)
+    setError(error.message || 'Failed to create profile. Please check all required fields.')
+  } finally {
+    setSaving(false)
   }
+}
 
   if (loading) {
     return (
@@ -516,22 +529,22 @@ export default function CreateRoommateProfile() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <Label htmlFor="looking_for_gender">Preferred Gender</Label>
+                <Label htmlFor="looking_for_gender">Looking for Roommate (Gender)</Label>
                 <Select
-                  value={formData.looking_for_gender}
-                  onValueChange={(value) => setFormData({...formData, looking_for_gender: value})}
+                    value={formData.looking_for_gender}
+                    onValueChange={(value) => setFormData({...formData, looking_for_gender: value})}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Any gender" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Any">Any Gender</SelectItem>
-                    <SelectItem value="Male">Male Only</SelectItem>
-                    <SelectItem value="Female">Female Only</SelectItem>
-                  </SelectContent>
+                    <SelectTrigger>
+                    <SelectValue placeholder="Same gender only" />
+                    </SelectTrigger>
+                    <SelectContent>
+                    <SelectItem value="Same">Same Gender as Me</SelectItem>
+                    </SelectContent>
                 </Select>
-              </div>
-
+                <p className="text-xs text-slate-500 mt-1">
+                    For safety, Cribwise only allows same-gender roommate matching
+                </p>
+                </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <Label htmlFor="preferred_age_min">Min Age Preference</Label>

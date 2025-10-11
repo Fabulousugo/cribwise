@@ -3,8 +3,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { properties } from "@/lib/properties"
-import { Footer} from "@/components/Footer"
-import { Navbar} from "@/components/Navbar"
+
 
 export default function Home() {
   // Get first 3 verified properties for featured section
@@ -55,7 +54,7 @@ export default function Home() {
                     alt={property.title}
                     className="w-full h-full object-cover"
                   />
-                  <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
+                  <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-semibold" >
                     ✓ Verified
                   </span>
                 </div>

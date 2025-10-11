@@ -184,7 +184,17 @@ export default function StudentDashboard() {
               </Link>
             </CardContent>
           </Card>
-
+            <Card>
+            <CardHeader>
+              <CardTitle>Find Roommates</CardTitle>
+              <CardDescription>Browse compatible roommates</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/roommate/browse">
+                <Button className="w-full">Browse Roommates</Button>
+              </Link>
+            </CardContent>
+          </Card>
           <Card>
             <CardHeader>
               <CardTitle>Contact Requests</CardTitle>

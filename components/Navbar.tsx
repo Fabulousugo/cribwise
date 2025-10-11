@@ -48,7 +48,7 @@ export function Navbar() {
 
   // Condense primary nav links here for reuse (desktop + mobile)
   const primaryLinks = [
-    { href: "/housing", label: "Housing", icon: Building2 },
+    { href: "/properties", label: "Housing", icon: Building2 },
     { href: "/admissions", label: "Admissions", icon: GraduationCap },
     { href: "/materials", label: "Materials", icon: BookOpen },
     { href: "/market", label: "Marketplace", icon: Store },
