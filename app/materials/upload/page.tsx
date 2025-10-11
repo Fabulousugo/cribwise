@@ -76,7 +76,7 @@ export default async function MaterialsUploadPage() {
 
         <div>
           <label className="block text-sm font-medium">File (PDF preferred)</label>
-          <input type="file" name="file" accept="application/pdf,image/*" className="mt-1 w-full" />
+          <input title="file" type="file" name="file" accept="application/pdf,image/*" className="mt-1 w-full" />
           <p className="text-xs text-slate-500 mt-1">Tip: For now this submits to /api/materials/create (to be implemented next). Later we’ll upload to Cloudflare Images or Supabase Storage.</p>
         </div>
 
@@ -93,13 +93,3 @@ export default async function MaterialsUploadPage() {
   );
 }
 
-
-// ---------------- MOCK MUTATION (dev only) ----------------
-export async function __addMaterialMock(m: Material) {
-  // Prepend newest for visibility in mock mode
-  try {
-    await new Promise(r => setTimeout(r, 1000));
-    MATERIALS.unshift(m);
-  } catch {}
-  return m;
-}
