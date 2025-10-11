@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
@@ -11,26 +11,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
-import { ArrowLeft, Wand2, Copy, CheckCircle, Loader2, ArrowRight } from "lucide-react"
-import { Mic, MicOff } from "lucide-react"
+import { ArrowLeft, Wand2, Copy, CheckCircle, Loader2, ArrowRight, Mic, MicOff, Info } from "lucide-react"
 
-
-
-const NIGERIAN_UNIVERSITIES = [
-  "University of Lagos (UNILAG)",
-  "University of Ibadan (UI)",
-  "Obafemi Awolowo University (OAU)",
-  "University of Nigeria, Nsukka (UNN)",
-  "Ahmadu Bello University (ABU)",
-  "University of Benin (UNIBEN)",
-  "Lagos State University (LASU)",
-  "Covenant University",
-  "Babcock University",
-  "Other"
-]
-
-const PROPERTY_TYPES = ["Apartment", "Self-Contain", "Flat", "Shared", "Studio"]
-
+// ... keep your existing constants ...
 
 export default function GenerateListingPage() {
   const router = useRouter()
@@ -38,6 +21,10 @@ export default function GenerateListingPage() {
   const [generating, setGenerating] = useState(false)
   const [error, setError] = useState('')
   const [copied, setCopied] = useState(false)
+  const [isRecording, setIsRecording] = useState(false)
+  const [voiceError, setVoiceError] = useState('')
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const audioChunksRef = useRef<Blob[]>([])
 
   const [formData, setFormData] = useState({
     location: '',
@@ -54,74 +41,63 @@ export default function GenerateListingPage() {
     description: string
   } | null>(null)
 
-const [isRecording, setIsRecording] = useState(false)
-const [recognition, setRecognition] = useState<any>(null)
-const [voiceSupported, setVoiceSupported] = useState(false)
+  // Simple browser audio recording (works offline)
+  async function startRecording() {
+    try {
+      setVoiceError('')
+      
+      // Request microphone permission
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      
+      // Create MediaRecorder
+      const mediaRecorder = new MediaRecorder(stream)
+      mediaRecorderRef.current = mediaRecorder
+      audioChunksRef.current = []
 
-useEffect(() => {
-  // Check if browser supports speech recognition
-  if (typeof window !== 'undefined') {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition
-    
-    if (SpeechRecognition) {
-      setVoiceSupported(true)
-      const recognitionInstance = new SpeechRecognition()
-      recognitionInstance.continuous = false
-      recognitionInstance.interimResults = false
-      recognitionInstance.lang = 'en-US'
-      
-      recognitionInstance.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript
-        setFormData(prev => ({
-          ...prev,
-          agentNotes: prev.agentNotes ? `${prev.agentNotes} ${transcript}` : transcript
-        }))
-        setIsRecording(false)
-      }
-      
-      recognitionInstance.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error)
-        setIsRecording(false)
-        if (event.error === 'no-speech') {
-          alert('No speech detected. Please try again.')
-        } else {
-          alert('Voice recognition error. Please try again.')
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          audioChunksRef.current.push(event.data)
         }
       }
-      
-      recognitionInstance.onend = () => {
-        setIsRecording(false)
+
+      mediaRecorder.onstop = async () => {
+        // Create audio blob
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' })
+        
+        // For now, just let user know recording was captured
+        // In production, you'd send this to Whisper API
+        const sizeKB = Math.round(audioBlob.size / 1024)
+        setFormData(prev => ({
+          ...prev,
+          agentNotes: prev.agentNotes 
+            ? `${prev.agentNotes}\n\n[Voice recording captured (${sizeKB}KB). Please type your notes above for now, or describe the property features.]`
+            : `[Voice recording captured (${sizeKB}KB). Please type your notes for now.]`
+        }))
+        
+        // Stop all tracks
+        stream.getTracks().forEach(track => track.stop())
+        
+        // Show message
+        alert(`✅ Recording captured (${sizeKB}KB)!\n\nVoice transcription coming soon. For now, please type your property features in the notes field.`)
       }
-      
-      setRecognition(recognitionInstance)
+
+      // Start recording
+      mediaRecorder.start()
+      setIsRecording(true)
+
+    } catch (error: any) {
+      console.error('Recording error:', error)
+      setVoiceError('Microphone access denied or unavailable')
+      setIsRecording(false)
     }
   }
-}, [])
 
-function handleStartVoiceRecording() {
-  if (!recognition) {
-    alert('Voice recording not supported in your browser. Please use Chrome or Edge.')
-    return
+  function stopRecording() {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop()
+      setIsRecording(false)
+    }
   }
-  
-  try {
-    setIsRecording(true)
-    recognition.start()
-  } catch (error) {
-    console.error('Failed to start recording:', error)
-    setIsRecording(false)
-    alert('Failed to start voice recording. Please try again.')
-  }
-}
-
-function handleStopVoiceRecording() {
-  if (recognition) {
-    recognition.stop()
-    setIsRecording(false)
-  }
-}
-
-
 
   async function handleGenerate(e: React.FormEvent) {
     e.preventDefault()
@@ -166,14 +142,12 @@ function handleStopVoiceRecording() {
   function handleUseThisListing() {
     if (!generatedListing) return
 
-    // Store in sessionStorage to pass to add property page
     sessionStorage.setItem('ai_generated_listing', JSON.stringify({
       ...formData,
       title: generatedListing.title,
       description: generatedListing.description
     }))
 
-    // Redirect to add property page
     router.push('/agent/properties/add?from_ai=true')
   }
 
@@ -205,7 +179,6 @@ function handleStopVoiceRecording() {
           </p>
         </div>
 
-        {/* Input Form */}
         {!generatedListing && (
           <form onSubmit={handleGenerate} className="space-y-6">
             <Card>
@@ -216,6 +189,7 @@ function handleStopVoiceRecording() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Location & University */}
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="location">Location/Area *</Label>
@@ -239,14 +213,18 @@ function handleStopVoiceRecording() {
                         <SelectValue placeholder="Select university" />
                       </SelectTrigger>
                       <SelectContent>
-                        {NIGERIAN_UNIVERSITIES.map(uni => (
-                          <SelectItem key={uni} value={uni}>{uni}</SelectItem>
-                        ))}
+                        <SelectItem value="University of Lagos (UNILAG)">University of Lagos (UNILAG)</SelectItem>
+                        <SelectItem value="University of Ibadan (UI)">University of Ibadan (UI)</SelectItem>
+                        <SelectItem value="Obafemi Awolowo University (OAU)">Obafemi Awolowo University (OAU)</SelectItem>
+                        <SelectItem value="University of Nigeria, Nsukka (UNN)">University of Nigeria, Nsukka (UNN)</SelectItem>
+                        <SelectItem value="Ahmadu Bello University (ABU)">Ahmadu Bello University (ABU)</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
+                {/* Property Details */}
                 <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <Label htmlFor="propertyType">Property Type *</Label>
@@ -259,9 +237,11 @@ function handleStopVoiceRecording() {
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                       <SelectContent>
-                        {PROPERTY_TYPES.map(type => (
-                          <SelectItem key={type} value={type}>{type}</SelectItem>
-                        ))}
+                        <SelectItem value="Apartment">Apartment</SelectItem>
+                        <SelectItem value="Self-Contain">Self-Contain</SelectItem>
+                        <SelectItem value="Flat">Flat</SelectItem>
+                        <SelectItem value="Shared">Shared</SelectItem>
+                        <SelectItem value="Studio">Studio</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -315,51 +295,55 @@ function handleStopVoiceRecording() {
                   />
                 </div>
 
+                {/* Voice Notes Section */}
                 <div>
-                <Label htmlFor="agentNotes">Additional Notes (Optional)</Label>
-                <div className="flex gap-2 mb-2">
-                    <Textarea
+                  <Label htmlFor="agentNotes">Additional Notes (Optional)</Label>
+                  <Textarea
                     id="agentNotes"
                     value={formData.agentNotes}
                     onChange={(e) => setFormData({...formData, agentNotes: e.target.value})}
-                    placeholder="Any special features, amenities, or unique selling points you want to highlight..."
-                    rows={4}
-                    className="flex-1"
-                    />
-                </div>
-                
-                {voiceSupported && (
-                    <div className="flex items-center gap-2 mb-2">
+                    placeholder="Describe special features: security, amenities, proximity to landmarks, recent renovations, unique selling points..."
+                    rows={5}
+                  />
+                  
+                  {/* Voice Recording Button */}
+                  <div className="mt-3">
                     {!isRecording ? (
-                        <Button
+                      <Button
                         type="button"
                         variant="outline"
-                        onClick={handleStartVoiceRecording}
+                        onClick={startRecording}
                         className="w-full"
-                        >
+                      >
                         <Mic className="h-4 w-4 mr-2" />
-                        🎤 Speak Your Notes (Click to Start)
-                        </Button>
+                        🎤 Record Voice Notes (Coming Soon)
+                      </Button>
                     ) : (
-                        <Button
+                      <Button
                         type="button"
                         variant="destructive"
-                        onClick={handleStopVoiceRecording}
+                        onClick={stopRecording}
                         className="w-full animate-pulse"
-                        >
+                      >
                         <MicOff className="h-4 w-4 mr-2" />
-                        Recording... (Click to Stop)
-                        </Button>
+                        ⏺️ Recording... Click to Stop
+                      </Button>
                     )}
+                  </div>
+
+                  {voiceError && (
+                    <div className="mt-2 bg-yellow-50 border border-yellow-200 text-yellow-800 p-3 rounded-lg text-sm flex items-start gap-2">
+                      <Info className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Voice recording unavailable</p>
+                        <p className="text-xs mt-1">{voiceError}. Please type your notes instead.</p>
+                      </div>
                     </div>
-                )}
-                
-                <p className="text-xs text-slate-500">
-                    {voiceSupported 
-                    ? "Type or click the microphone to speak your notes naturally - the AI will incorporate them"
-                    : "Tell us what makes this property special - the AI will incorporate it naturally"
-                    }
-                </p>
+                  )}
+                  
+                  <p className="text-xs text-slate-500 mt-2">
+                    💡 <strong>Tip:</strong> Mention security, amenities, distance to campus, recent upgrades, or anything that makes this property special
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -384,16 +368,31 @@ function handleStopVoiceRecording() {
               ) : (
                 <>
                   <Wand2 className="h-5 w-5 mr-2" />
-                  Generate Professional Listing
+                  Generate Professional Listing with AI
                 </>
               )}
             </Button>
+
+            {/* Quick Tips */}
+            <Card className="bg-blue-50 border-blue-200">
+              <CardContent className="pt-6">
+                <h3 className="font-semibold text-blue-900 mb-2">✨ Pro Tips for Better Results:</h3>
+                <ul className="text-sm text-blue-800 space-y-1">
+                  <li>• Mention specific security features (24-hour guard, CCTV, gated)</li>
+                  <li>• Include distance to campus (&quot;5 minutes walks&quot;, &quot;10 minutes drive&quot;, &quot;next to main gate&quot;)</li>
+                  <li>• Note recent improvements (&quot;newly renovated&quot;, &quot;fresh paint&quot;)</li>
+                  <li>• List standout amenities (WiFi, generator, parking)</li>
+                  <li>• Add nearby landmarks (markets, bus stops, restaurants)</li>
+                </ul>
+              </CardContent>
+            </Card>
           </form>
         )}
 
-        {/* Generated Result */}
+        {/* Generated Result - Keep your existing code */}
         {generatedListing && (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            {/* ... rest of your generated listing display code ... */}
             <Card className="border-green-200 bg-green-50">
               <CardContent className="pt-6">
                 <div className="flex items-center gap-2 text-green-700 mb-2">
@@ -406,7 +405,6 @@ function handleStopVoiceRecording() {
               </CardContent>
             </Card>
 
-            {/* Title */}
             <Card>
               <CardHeader>
                 <CardTitle>Property Title</CardTitle>
@@ -418,7 +416,6 @@ function handleStopVoiceRecording() {
               </CardContent>
             </Card>
 
-            {/* Description */}
             <Card>
               <CardHeader>
                 <div className="flex justify-between items-center">
@@ -449,7 +446,6 @@ function handleStopVoiceRecording() {
               </CardContent>
             </Card>
 
-            {/* Actions */}
             <div className="flex gap-4">
               <Button
                 variant="outline"

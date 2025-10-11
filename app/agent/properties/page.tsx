@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { ArrowLeft, Plus, Edit, Trash2, Eye, MapPin, Home as HomeIcon } from "lucide-react"
+import { AIListingPrompt } from "@/components/ai-listing-prompt"
 
 type Property = {
   id: number
@@ -139,6 +140,7 @@ export default function MyPropertiesPage() {
             Manage your {properties.length} {properties.length === 1 ? 'listing' : 'listings'}
           </p>
         </div>
+        <AIListingPrompt />
 
         {/* Properties Grid */}
         {properties.length === 0 ? (
@@ -154,9 +156,10 @@ export default function MyPropertiesPage() {
                   <Plus className="h-4 w-4 mr-2" />
                   Add Your First Property
                 </Button>
-              </Link>
+              </Link> 
             </CardContent>
           </Card>
+          
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {properties.map((property) => (

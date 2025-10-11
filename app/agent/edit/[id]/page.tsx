@@ -2,7 +2,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import { supabase } from "@/lib/supabaseClient"
 import { Button } from "@/components/ui/button"
@@ -12,9 +12,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import Link from "next/link"
-import { ArrowLeft, Save, AlertCircle, Upload, X } from "lucide-react"
 import { AIListingPrompt } from "@/components/ai-listing-prompt"
+import Link from "next/link"
+import { ArrowLeft, Save, AlertCircle, Upload, X, CheckCircle } from "lucide-react"
 
 const NIGERIAN_UNIVERSITIES = [
   "University of Lagos (UNILAG)",
@@ -49,11 +49,14 @@ const COMMON_AMENITIES = [
   "CCTV"
 ]
 
-export default function AddPropertyPage() {
+export default function EditPropertyPage() {
   const router = useRouter()
+  const params = useParams()
   const { user, profile, loading } = useAuth()
   const [saving, setSaving] = useState(false)
+  const [loadingProperty, setLoadingProperty] = useState(true)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [imageUrls, setImageUrls] = useState<string[]>([])
   const [uploadingImages, setUploadingImages] = useState(false)
 
@@ -83,53 +86,55 @@ export default function AddPropertyPage() {
   }, [user, loading, router])
 
   useEffect(() => {
-    if (profile) {
-      // Check if user is an agent
+    if (profile && user) {
       if (profile.status !== 'agent') {
         router.push('/dashboard')
         return
       }
-
-      // Pre-fill landlord info
-      setFormData(prev => ({
-        ...prev,
-        landlord_name: profile.full_name || '',
-        landlord_phone: profile.phone || ''
-      }))
+      loadProperty()
     }
-  }, [profile])
+  }, [profile, user])
 
-  useEffect(() => {
-  // Check if coming from AI generator
-  const urlParams = new URLSearchParams(window.location.search)
-  const fromAI = urlParams.get('from_ai')
+  async function loadProperty() {
+    setLoadingProperty(true)
+    try {
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('id', params.id)
+        .eq('landlord_id', user!.id)
+        .single()
 
-  if (fromAI === 'true') {
-    const aiData = sessionStorage.getItem('ai_generated_listing')
-    if (aiData) {
-      const parsed = JSON.parse(aiData)
-      
-      // Pre-fill form with AI generated data
-      setFormData(prev => ({
-        ...prev,
-        title: parsed.title || '',
-        description: parsed.description || '',
-        location: parsed.location || '',
-        university: parsed.university || '',
-        price: parsed.price || '',
-        type: parsed.propertyType || '',
-        bedrooms: parsed.bedrooms || '1',
-        bathrooms: parsed.bathrooms || '1'
-      }))
+      if (error) throw error
 
-      // Clear from session storage
-      sessionStorage.removeItem('ai_generated_listing')
+      // Populate form
+      setFormData({
+        title: data.title || '',
+        description: data.description || '',
+        location: data.location || '',
+        university: data.university || '',
+        price: data.price?.toString() || '',
+        type: data.type || '',
+        bedrooms: data.bedrooms?.toString() || '1',
+        bathrooms: data.bathrooms?.toString() || '1',
+        address: data.address || '',
+        landlord_name: data.landlord_name || '',
+        landlord_phone: data.landlord_phone || '',
+        available_from: data.available_from || '',
+        property_rules: data.property_rules || '',
+        nearby_landmarks: data.nearby_landmarks?.join(', ') || ''
+      })
 
-      // Show success message
-      alert('✨ AI-generated listing loaded! Review and complete the remaining fields.')
+      setSelectedAmenities(data.amenities || [])
+      setImageUrls(data.images || [])
+
+    } catch (error) {
+      console.error('Error loading property:', error)
+      setError('Failed to load property. You may not have permission to edit this property.')
+    } finally {
+      setLoadingProperty(false)
     }
   }
-}, [])
 
   function toggleAmenity(amenity: string) {
     setSelectedAmenities(prev => 
@@ -143,7 +148,6 @@ export default function AddPropertyPage() {
     const files = Array.from(e.target.files || [])
     if (files.length === 0) return
 
-    // Limit to 10 images total
     if (imageUrls.length + files.length > 10) {
       alert('Maximum 10 images allowed')
       return
@@ -154,11 +158,9 @@ export default function AddPropertyPage() {
       const uploadedUrls: string[] = []
 
       for (const file of files) {
-        // Create unique filename
         const fileExt = file.name.split('.').pop()
         const fileName = `${user!.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`
 
-        // Upload to Supabase Storage
         const { error: uploadError } = await supabase.storage
           .from('property-images')
           .upload(fileName, file, {
@@ -168,7 +170,6 @@ export default function AddPropertyPage() {
 
         if (uploadError) throw uploadError
 
-        // Get public URL
         const { data: urlData } = supabase.storage
           .from('property-images')
           .getPublicUrl(fileName)
@@ -194,26 +195,17 @@ export default function AddPropertyPage() {
     e.preventDefault()
     setSaving(true)
     setError('')
+    setSuccess('')
 
     try {
-      // Validate required fields
-      if (!formData.title || !formData.description || !formData.location || 
-          !formData.university || !formData.price || !formData.type || 
-          !formData.address || !formData.landlord_name || !formData.landlord_phone) {
-        throw new Error('Please fill in all required fields')
-      }
-
-      // Parse landmarks
       const landmarksArray = formData.nearby_landmarks
         .split(',')
         .map(l => l.trim())
         .filter(Boolean)
 
-      // Insert property
-      const { data, error: insertError } = await supabase
+      const { error: updateError } = await supabase
         .from('properties')
-        .insert([{
-          landlord_id: user!.id,
+        .update({
           title: formData.title,
           description: formData.description,
           location: formData.location,
@@ -227,32 +219,33 @@ export default function AddPropertyPage() {
           address: formData.address,
           landlord_name: formData.landlord_name,
           landlord_phone: formData.landlord_phone,
-          landlord_verified: profile?.nin ? true : false,
-          available: true,
-          verified: false,
           available_from: formData.available_from || null,
           property_rules: formData.property_rules || null,
-          nearby_landmarks: landmarksArray.length > 0 ? landmarksArray : null
-        }])
-        .select()
+          nearby_landmarks: landmarksArray.length > 0 ? landmarksArray : null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', params.id)
+        .eq('landlord_id', user!.id)
 
-      if (insertError) throw insertError
+      if (updateError) throw updateError
 
-      // Redirect to my properties
-      router.push('/agent/properties')
+      setSuccess('Property updated successfully!')
+      setTimeout(() => {
+        router.push('/agent/properties')
+      }, 1500)
 
     } catch (error: any) {
-      console.error('Error creating property:', error)
-      setError(error.message || 'Failed to create property')
+      console.error('Error updating property:', error)
+      setError(error.message || 'Failed to update property')
     } finally {
       setSaving(false)
     }
   }
 
-  if (loading) {
+  if (loading || loadingProperty) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-2xl">Loading...</div>
+        <div className="text-2xl">Loading property...</div>
       </div>
     )
   }
@@ -270,10 +263,19 @@ export default function AddPropertyPage() {
         </Link>
 
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Add New Property</h1>
-          <p className="text-slate-600">List a property for students</p>
+          <h1 className="text-4xl font-bold mb-2">Edit Property</h1>
+          <p className="text-slate-600">Update your property details</p>
         </div>
+
+        {/* AI Listing Prompt */}
         <AIListingPrompt />
+
+        {success && (
+          <div className="mb-6 bg-green-50 border border-green-200 text-green-700 p-4 rounded-lg flex items-center gap-2">
+            <CheckCircle className="h-5 w-5" />
+            {success}
+          </div>
+        )}
 
         {error && (
           <div className="mb-6 bg-red-50 border border-red-200 text-red-700 p-4 rounded-lg flex items-center gap-2">
@@ -517,7 +519,7 @@ export default function AddPropertyPage() {
                           Main Photo
                         </div>
                       )}
-                      <button title="main-photo"
+                      <button title="remove-image"
                         type="button"
                         onClick={() => removeImage(index)}
                         className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
@@ -592,10 +594,10 @@ export default function AddPropertyPage() {
               </Button>
             </Link>
             <Button type="submit" disabled={saving} className="flex-1" size="lg">
-              {saving ? 'Creating...' : (
+              {saving ? 'Saving...' : (
                 <>
                   <Save className="h-4 w-4 mr-2" />
-                  Create Property Listing
+                  Save Changes
                 </>
               )}
             </Button>
