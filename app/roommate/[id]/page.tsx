@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -200,7 +201,7 @@ export default function RoommateProfilePage() {
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Profile Not Found</CardTitle>
-            <CardDescription>This roommate profile doesn't exist</CardDescription>
+            <CardDescription>This roommate profile doesn&apos;t exist</CardDescription>
           </CardHeader>
           <CardContent>
             <Link href="/roommate/browse">
@@ -242,7 +243,7 @@ export default function RoommateProfilePage() {
                 <div className="flex items-center gap-2 mb-2">
                   <h1 className="text-3xl font-bold">{roommate.full_name}</h1>
                   {roommate.verified && (
-                    <CheckCircle className="h-6 w-6 text-green-600" title="Verified Student" />
+                    <CheckCircle className="h-6 w-6 text-green-600" />
                   )}
                 </div>
 

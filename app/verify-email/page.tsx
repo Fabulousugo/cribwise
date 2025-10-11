@@ -132,7 +132,7 @@ function VerifyEmailContent() {
                   Update Your Status
                 </p>
                 <p className="text-blue-700 text-xs mb-3">
-                  You're currently listed as "Prospective Student" but you have a verified school email.
+                  You&apos;re currently listed as &quot;Prospective Student&quot; but you have a verified school email.
                   Would you like to update your status?
                 </p>
               </div>

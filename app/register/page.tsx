@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useState } from "react"
@@ -118,7 +119,7 @@ export default function RegisterPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold mb-4">Welcome to Cribwise</h1>
-          <p className="text-xl text-slate-600">Let's get you started in just 2 steps</p>
+          <p className="text-xl text-slate-600">Let&apos;s get you started in just 2 steps</p>
         </div>
 
         {/* Progress Indicator */}

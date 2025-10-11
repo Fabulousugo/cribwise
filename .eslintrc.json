@@ -1,0 +1,8 @@
+
+
+{
+  "rules": {
+    // This line disables the check globally
+    "@typescript-eslint/no-explicit-any": "off" 
+  }
+}

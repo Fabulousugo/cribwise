@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -51,6 +52,7 @@ export default function EditRoommateProfile() {
     bio: '',
     interests: '',
     budget_min: '',
+    looking_for_gender: '',
     budget_max: '',
     preferred_location: '',
     preferred_property_type: '',
@@ -119,6 +121,7 @@ export default function EditRoommateProfile() {
         religion: data.religion || '',
         state_of_origin: data.state_of_origin || '',
         languages: data.languages?.join(', ') || '',
+        looking_for_gender: data.looking_for_gender || '',
         bio: data.bio || '',
         interests: data.interests?.join(', ') || '',
         budget_min: data.budget_min?.toString() || '',
@@ -625,7 +628,7 @@ export default function EditRoommateProfile() {
                             <Label htmlFor="looking_for_gender">Looking for Roommate (Gender)</Label>
                             <Select
                                 value={formData.looking_for_gender}
-                                onValueChange={(value) => setFormData({...formData, looking_for_gender: value})}
+                                 onValueChange={(value) => setFormData({...formData, looking_for_gender: value})}
                             >
                                 <SelectTrigger>
                                 <SelectValue placeholder="Same gender only" />

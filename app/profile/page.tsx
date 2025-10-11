@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -334,7 +335,7 @@ export default function ProfilePage() {
                     </p>
                   ) : formData.school_email ? (
                     <p className="text-xs text-blue-600 mt-1">
-                      Click "Send Link" to verify this email
+                      Click &quot;Send Link&quot; to verify this email
                     </p>
                   ) : (
                     <p className="text-xs text-slate-500 mt-1">

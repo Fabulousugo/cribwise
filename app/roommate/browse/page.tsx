@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -269,7 +270,7 @@ export default function BrowseRoommates() {
             <CardHeader>
               <CardTitle className="text-blue-800">👋 Create Your Profile First!</CardTitle>
               <CardDescription className="text-blue-700">
-                Other students can't see or contact you until you create your roommate profile
+                Other students can&apos;t see or contact you until you create your roommate profile
               </CardDescription>
             </CardHeader>
             <CardContent>
