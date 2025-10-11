@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, School as SchoolIcon, BookOpen } from "lucide-react";
 import { getSchools, getProgrammeBySlugs } from "@/lib/admissions";
-import type { School, Programme } from "@/types/admissions";
+import type { School, Programme } from "../../types/admissions";
 import { getProgrammesBySchool } from "@/lib/admissions";
 
 function normalize(s: string) { return s.trim().toLowerCase(); }
