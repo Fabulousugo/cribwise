@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { GraduationCap, Clock, School as SchoolIcon, BookOpen } from "lucide-react";
 import { getSchools, getProgrammesBySchool } from "@/lib/admissions";
-import type { School, Programme } from "@/types/admissions";
+import type { School, Programme } from  "../../types/admissions";
 
 function parseISO(d?: string | null): Date | null {
   if (!d) return null;

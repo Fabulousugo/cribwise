@@ -1,4 +1,4 @@
-import type { ChecklistScope, ChecklistItemState, ChecklistPayload, ChecklistUpsertInput } from "@/types/checklist";
+import type { ChecklistScope, ChecklistItemState, ChecklistPayload, ChecklistUpsertInput } from "../app/types/checklist";
 
 // ---------------- MOCK (in-memory) ----------------
 // NOTE: This resets on server restart. Replace with Supabase later.
