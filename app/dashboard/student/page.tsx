@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
-import { ExternalLink } from "lucide-react"
+import { ExternalLink,MessageCircle } from "lucide-react"
 
 export default function StudentDashboard() {
   const router = useRouter()
@@ -161,6 +161,20 @@ export default function StudentDashboard() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
+          <Card>
+          <CardHeader>
+            <CardTitle>Messages</CardTitle>
+            <CardDescription>Chat with potential roommates</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href="/messages">
+              <Button variant="outline" className="w-full">
+                <MessageCircle className="h-4 w-4 mr-2" />
+                View Messages
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
           <Card>
             <CardHeader>
               <CardTitle>Browse Properties</CardTitle>

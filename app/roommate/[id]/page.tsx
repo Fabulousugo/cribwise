@@ -54,6 +54,7 @@ export default function RoommateProfilePage() {
   const [loadingProfile, setLoadingProfile] = useState(true)
   const [userProfile, setUserProfile] = useState<RoommateProfile | null>(null)
   const [compatibility, setCompatibility] = useState<number | null>(null)
+  const [startingChat, setStartingChat] = useState(false)
 
   useEffect(() => {
     if (!loading && !user) {
@@ -216,6 +217,29 @@ export default function RoommateProfilePage() {
   const lifestyle = roommate.lifestyle_preferences || {}
   const yearLabel = roommate.year_of_study === 0 ? 'Prospective' : `Year ${roommate.year_of_study}`
 
+  
+    async function handleStartConversation() {
+      setStartingChat(true)
+      try {
+        // Call the get_or_create_conversation function
+        const { data, error } = await supabase.rpc('get_or_create_conversation', {
+          user_a: user!.id,
+          user_b: roommate.user_id
+        })
+
+        if (error) throw error
+
+        // Redirect to conversation
+        router.push(`/messages/${data}`)
+
+      } catch (error) {
+        console.error('Error starting conversation:', error)
+        alert('Failed to start conversation')
+      } finally {
+        setStartingChat(false)
+      }
+    }
+
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">
       <div className="max-w-5xl mx-auto">
@@ -284,15 +308,15 @@ export default function RoommateProfilePage() {
                     </Link>
                   </div>
                 ) : (
-                  <>
-                    <Button size="lg" className="w-full">
-                      <MessageCircle className="h-4 w-4 mr-2" />
-                      Send Message
-                    </Button>
-                    <p className="text-xs text-slate-500 text-center">
-                      Messaging coming soon!
-                    </p>
-                  </>
+                  <Button 
+                    size="lg" 
+                    className="w-full"
+                    onClick={handleStartConversation}
+                    disabled={startingChat}
+                  >
+                    <MessageCircle className="h-4 w-4 mr-2" />
+                    {startingChat ? 'Loading...' : 'Send Message'}
+                  </Button>
                 )}
               </div>
             </div>
