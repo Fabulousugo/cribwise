@@ -3,37 +3,54 @@
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
+import { Loader2 } from "lucide-react"
 
-export default function DashboardPage() {
+export default function DashboardRouter() {
   const router = useRouter()
   const { user, profile, loading } = useAuth()
 
   useEffect(() => {
-    // Don't redirect while loading
     if (loading) return
 
-    // No user - go to signin
     if (!user) {
-      router.replace('/signin')
+      // Not logged in - redirect to login
+      router.push("/signin")
       return
     }
 
-    // No profile yet - wait for it
-    if (!profile) return
+    if (!profile) {
+      // No profile yet - redirect to choose status
+      router.push("/choose-status")
+      return
+    }
 
-    // Redirect based on status
-    if (profile.status === 'agent') {
-      router.replace('/dashboard/agent')
-    } else {
-      router.replace('/dashboard/student')
+    // Route based on user status
+    const status = profile.status as string
+
+    switch (status) {
+      case "AGENT":
+        router.push("/dashboard/agent")
+        break
+      
+      case "PROSPECTIVE":
+      case "ADMITTED":
+      case "CURRENT":
+      case "ALUMNI":
+        router.push("/dashboard/student")
+        break
+      
+      default:
+        // Unknown status - let them choose
+        router.push("/choose-status")
     }
   }, [user, profile, loading, router])
 
+  // Show loading state
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center">
-        <div className="text-2xl mb-2">Redirecting...</div>
-        <p className="text-slate-600">Taking you to your dashboard</p>
+        <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
+        <p className="text-xl text-muted-foreground">Loading your dashboard...</p>
       </div>
     </div>
   )
