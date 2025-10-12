@@ -1,17 +1,64 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { Building2, Users, BookOpen, Calendar, ShoppingBag, Shield, CheckCircle2, Lock, Sparkles, TrendingUp, Clock, Star } from "lucide-react"
+import { 
+  ProfileCompletionCard,
+  LevelProgressCard,
+  StreakCounter,
+  AchievementBadges,
+  DailyChallenges,
+  ActivityFeed,
+  ReferralCard,
+  LeaderboardCard
+} from "@/components/gamification"
+import { getUserStats, updateLoginStreak } from "../../../lib/xp-systems"
 
 export default function StudentDashboard() {
-  const { profile } = useAuth()
+  const { profile, user } = useAuth()
+  const [stats, setStats] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
   
   // Check verification status
   const isVerified = profile?.school_email_verified_at !== null
-  
+
+  // Load user stats and update streak on mount
+  useEffect(() => {
+    async function loadStats() {
+      if (!user?.id) return
+      
+      try {
+        // Update login streak (awards XP automatically)
+        await updateLoginStreak(user.id)
+        
+        // Get user stats
+        const userStats = await getUserStats(user.id)
+        setStats(userStats)
+      } catch (error) {
+        console.error("Error loading stats:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadStats()
+  }, [user?.id])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading your dashboard...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <main className="min-h-screen bg-background">
       {/* Welcome Header */}
@@ -85,8 +132,36 @@ export default function StudentDashboard() {
         </section>
       )}
 
+      {/* GAMIFICATION SECTION - Progress & Stats */}
+      <section className="py-12 px-4 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-foreground mb-8 flex items-center gap-2">
+            <TrendingUp className="h-8 w-8 text-primary" />
+            Your Progress
+          </h2>
+
+          {/* Top Row - Main Progress Cards */}
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <LevelProgressCard xp={stats?.xp || 0} />
+            <StreakCounter streak={stats?.loginStreak || 0} />
+            <ProfileCompletionCard profile={profile} />
+          </div>
+
+          {/* Daily Challenges */}
+          <div className="mb-8">
+            <DailyChallenges />
+          </div>
+
+          {/* Second Row - Achievements & Leaderboard */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            <AchievementBadges profile={profile} stats={stats} />
+            <LeaderboardCard currentUserId={user?.id} />
+          </div>
+        </div>
+      </section>
+
       {/* Quick Actions */}
-      <section className="py-12 px-4">
+      <section className="py-12 px-4 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-foreground mb-8">Quick Actions</h2>
           <div className="grid md:grid-cols-3 gap-6">
@@ -168,8 +243,22 @@ export default function StudentDashboard() {
         </div>
       </section>
 
-      {/* Student-Specific Features */}
+      {/* Activity & Social Section */}
       <section className="py-12 px-4 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-foreground mb-8">Activity & Rewards</h2>
+          <div className="grid lg:grid-cols-2 gap-6">
+            <ActivityFeed />
+            <ReferralCard 
+              referralCode={profile?.referral_code || 'CRIB123'} 
+              referralCount={stats?.referralCount || 0} 
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* More Tools */}
+      <section className="py-12 px-4 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-foreground mb-8">More Tools</h2>
           <div className="grid md:grid-cols-4 gap-6">
@@ -232,11 +321,11 @@ export default function StudentDashboard() {
         </div>
       </section>
 
-      {/* Recent Activity / Stats */}
-      <section className="py-12 px-4">
+      {/* Stats Overview */}
+      <section className="py-12 px-4 bg-gradient-to-br from-primary/5 to-purple-500/5">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-foreground mb-8">Your Activity</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <h2 className="text-3xl font-bold text-foreground mb-8">Your Impact</h2>
+          <div className="grid md:grid-cols-4 gap-6">
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
@@ -244,7 +333,7 @@ export default function StudentDashboard() {
                     <TrendingUp className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-foreground">12</p>
+                    <p className="text-3xl font-bold text-foreground">{stats?.propertiesViewed || 0}</p>
                     <p className="text-sm text-muted-foreground">Properties Viewed</p>
                   </div>
                 </div>
@@ -258,8 +347,8 @@ export default function StudentDashboard() {
                     <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-foreground">3</p>
-                    <p className="text-sm text-muted-foreground">Roommate Matches</p>
+                    <p className="text-3xl font-bold text-foreground">{stats?.connections || 0}</p>
+                    <p className="text-sm text-muted-foreground">Connections Made</p>
                   </div>
                 </div>
               </CardContent>
@@ -269,11 +358,25 @@ export default function StudentDashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 rounded-xl bg-green-100 dark:bg-green-900/20">
-                    <Clock className="h-6 w-6 text-green-600 dark:text-green-400" />
+                    <BookOpen className="h-6 w-6 text-green-600 dark:text-green-400" />
                   </div>
                   <div>
-                    <p className="text-3xl font-bold text-foreground">5</p>
+                    <p className="text-3xl font-bold text-foreground">{stats?.materialsDownloaded || 0}</p>
                     <p className="text-sm text-muted-foreground">Materials Downloaded</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-orange-100 dark:bg-orange-900/20">
+                    <Clock className="h-6 w-6 text-orange-600 dark:text-orange-400" />
+                  </div>
+                  <div>
+                    <p className="text-3xl font-bold text-foreground">{stats?.messagesSent || 0}</p>
+                    <p className="text-sm text-muted-foreground">Messages Sent</p>
                   </div>
                 </div>
               </CardContent>
