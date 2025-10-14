@@ -1,170 +1,144 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { properties } from "@/lib/properties"
-import { notFound } from "next/navigation"
+import Image from "next/image"
 import Link from "next/link"
-import { ContactLandlordModal } from "@/components/ContactLandlordModal"
-import { ScheduleViewingModal } from "@/components/ScheduleViewingModal"
+import { notFound } from "next/navigation"
+import { use } from "react"
 
-export default function PropertyDetailPage({ params }: { params: { id: string } }) {
-  const property = properties.find(p => p.id === parseInt(params.id))
-  
-  if (!property) {
-    notFound()
-  }
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
+import { properties } from "@/lib/properties"
+import SidebarActions from "@/components/property/SidebarActions"
+import Gallery from "@/components/property/Gallery"
+import Map from "@/components/property/Map" // ⬅️ NEW
+
+const NGN = new Intl.NumberFormat("en-NG", { style: "currency", currency: "NGN", maximumFractionDigits: 0 })
+
+type PageParams = { id: string }
+
+export default function PropertyDetailPage({ params }: { params: Promise<PageParams> }) {
+  const { id } = use(params) // unwrap Promise per Next 15
+  const idNum = Number(id)
+  const property = properties.find((p) => p.id === idNum)
+  if (!property) notFound()
+
+  const related = properties.filter((p) => p.id !== idNum && p.location === property.location).slice(0, 3)
 
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto py-8 px-4">
-        {/* Back Button */}
-        <Link href="/properties">
-          <Button variant="outline" className="mb-6">
-            ← Back to Properties
-          </Button>
-        </Link>
+        {/* Breadcrumbs */}
+        <div className="mb-6 flex items-center gap-2 text-sm text-slate-600">
+          <Link href="/properties" className="hover:underline">Properties</Link>
+          <span>/</span>
+          <span className="text-slate-800 line-clamp-1">{property.title}</span>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {/* Main Content */}
+          {/* Main content */}
           <div className="md:col-span-2 space-y-6">
-            {/* Image Gallery */}
+            {/* Gallery (client) */}
             <Card className="overflow-hidden">
-              <div className="relative h-96 bg-slate-200">
-                <img 
-                  src={property.images[0]} 
-                  alt={property.title}
-                  className="w-full h-full object-cover"
-                />
-                {property.verified && (
-                  <span className="absolute top-4 right-4 bg-green-500 text-white px-3 py-2 rounded-lg font-semibold flex items-center gap-2">
-                    ✓ Verified Property
-                  </span>
-                )}
-              </div>
-              
-              {/* Thumbnail Gallery */}
-              {property.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-2 p-4">
-                  {property.images.slice(1).map((img, idx) => (
-                    <img 
-                      key={idx}
-                      src={img} 
-                      alt={`View ${idx + 2}`}
-                      className="h-20 w-full object-cover rounded cursor-pointer hover:opacity-75"
-                    />
-                  ))}
-                </div>
-              )}
+              <Gallery images={property.images} title={property.title} badges={{
+                available: property.available,
+                verified: property.verified,
+                type: property.type,
+              }} />
             </Card>
 
-            {/* Property Details */}
+            {/* Details */}
             <Card>
               <CardContent className="p-6">
                 <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
-                <p className="text-slate-600 mb-4 flex items-center gap-2">
-                  📍 {property.address}, {property.location}
-                </p>
+                <p className="text-slate-600 mb-3 flex items-center gap-2">📍 {property.address}, {property.location}</p>
                 <p className="text-sm text-slate-500 mb-6">{property.university}</p>
-                
-                <div className="flex gap-6 mb-6 text-slate-700">
-                  <span className="flex items-center gap-2">
-                    🛏️ {property.bedrooms} Bedroom{property.bedrooms > 1 ? 's' : ''}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    🚿 {property.bathrooms} Bathroom{property.bathrooms > 1 ? 's' : ''}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    🏠 {property.type}
-                  </span>
+
+                <div className="flex flex-wrap gap-4 mb-6 text-slate-700">
+                  <span className="flex items-center gap-2">🛏️ {property.bedrooms} Bedroom{property.bedrooms > 1 ? "s" : ""}</span>
+                  <span className="flex items-center gap-2">🚿 {property.bathrooms} Bathroom{property.bathrooms > 1 ? "s" : ""}</span>
+                  <span className="flex items-center gap-2">🏠 {property.type}</span>
                 </div>
 
                 <div className="prose max-w-none">
                   <h2 className="text-xl font-semibold mb-3">Description</h2>
-                  <p className="text-slate-600">{property.description}</p>
+                  <p className="text-slate-700 leading-relaxed">{property.description}</p>
                 </div>
-              </CardContent>
-            </Card>
 
-            {/* Amenities */}
-            <Card>
-              <CardContent className="p-6">
+                <Separator className="my-6" />
                 <h2 className="text-xl font-semibold mb-4">Amenities</h2>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {property.amenities.map((amenity, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
+                    <div key={idx} className="flex items-center gap-2 text-slate-700">
                       <span className="text-green-600">✓</span>
                       <span>{amenity}</span>
                     </div>
                   ))}
                 </div>
+
+              <Separator className="my-6" />
+              <h2 className="text-xl font-semibold mb-4">Location</h2>
+
+              {Number.isFinite(property.lat) && Number.isFinite(property.lng) ? (
+                <div className="rounded-lg overflow-hidden">
+                  <Map
+                    lat={property.lat as number}
+                    lng={property.lng as number}
+                    title={property.title}
+                    address={`${property.address}, ${property.location}`}
+                    zoom={property.mapZoom ?? 16}          // tighter for small towns
+                    radiusMeters={property.mapRadius ?? 300}
+                    theme="auto"
+                  />
+                </div>
+              ) : (
+                <div className="bg-slate-200 h-64 rounded-lg grid place-items-center text-slate-600">
+                  No coordinates on this listing yet.
+                </div>
+              )}
+
               </CardContent>
             </Card>
 
-            {/* Location */}
-            <Card>
-              <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Location</h2>
-                <div className="bg-slate-200 h-64 rounded-lg flex items-center justify-center">
-                  <p className="text-slate-500">Map integration coming soon</p>
-                  {/* You can add Google Maps iframe here later */}
+            {/* Related properties */}
+            {related.length > 0 && (
+              <section className="pt-2">
+                <h3 className="text-xl font-semibold mb-4">Similar in {property.location}</h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  {related.map((rp) => (
+                    <Link key={rp.id} href={`/properties/${rp.id}`} className="block rounded-lg overflow-hidden border bg-white hover:shadow">
+                      <div className="relative h-32 bg-muted">
+                        <Image src={rp.images[0]} alt={rp.title} fill className="object-cover" sizes="(min-width:768px) 20vw, 100vw" />
+                      </div>
+                      <div className="p-3">
+                        <p className="font-medium line-clamp-1">{rp.title}</p>
+                        <p className="text-sm text-slate-600 line-clamp-1">📍 {rp.location}</p>
+                        <p className="text-sm font-semibold text-emerald-700">{NGN.format(rp.price)}<span className="text-slate-500">/yr</span></p>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-              </CardContent>
-            </Card>
+              </section>
+            )}
           </div>
 
-          {/* Sidebar */}
+          {/* Sidebar (client) */}
           <div className="space-y-6">
-            {/* Price Card */}
-            <Card className="sticky top-24">
-              <CardContent className="p-6">
-                <div className="text-3xl font-bold text-green-600 mb-6">
-                  ₦{property.price.toLocaleString()}/year
-                </div>
+            <SidebarActions
+              priceYear={property.price}
+              available={property.available}
+              landlord={property.landlord}
+              propertyTitle={property.title}
+            />
 
-                
+            {/* Optional: badges summary */}
+            <Card>
+              <CardContent className="p-4 flex flex-wrap gap-2">
                 {property.available ? (
-                <>
-                    <ContactLandlordModal 
-                    propertyTitle={property.title}
-                    landlordName={property.landlord.name}
-                    landlordPhone={property.landlord.phone}
-                    />
-                    <ScheduleViewingModal propertyTitle={property.title} />
-                </>
+                  <Badge className="bg-emerald-600 text-white">Available</Badge>
                 ) : (
-                <Button className="w-full" disabled>
-                    Not Available
-                </Button>
+                  <Badge className="bg-rose-600 text-white">Not Available</Badge>
                 )}
-
-                <div className="mt-6 pt-6 border-t">
-                  <h3 className="font-semibold mb-3">Landlord Information</h3>
-                  <div className="space-y-2 text-sm">
-                    <p className="flex justify-between">
-                      <span className="text-slate-600">Name:</span>
-                      <span className="font-medium">{property.landlord.name}</span>
-                    </p>
-                    <p className="flex justify-between">
-                      <span className="text-slate-600">Phone:</span>
-                      <span className="font-medium">{property.landlord.phone}</span>
-                    </p>
-                    <p className="flex justify-between items-center">
-                      <span className="text-slate-600">Verified:</span>
-                      <span className={property.landlord.verified ? "text-green-600" : "text-slate-400"}>
-                        {property.landlord.verified ? "✓ Yes" : "Pending"}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="mt-6 pt-6 border-t">
-                  <h3 className="font-semibold mb-3">Safety Features</h3>
-                  <div className="space-y-2 text-sm text-slate-600">
-                    <p>✓ Identity verified</p>
-                    <p>✓ Property inspected</p>
-                    <p>✓ Secure payment</p>
-                    <p>✓ Deposit protection</p>
-                  </div>
-                </div>
+                {property.verified && <Badge className="bg-green-600 text-white">✓ Verified</Badge>}
+                <Badge className="bg-slate-900/80 text-white">{property.type}</Badge>
               </CardContent>
             </Card>
           </div>
@@ -173,3 +147,4 @@ export default function PropertyDetailPage({ params }: { params: { id: string } 
     </main>
   )
 }
+

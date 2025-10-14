@@ -143,7 +143,7 @@ export default function ConversationPage() {
 
   if (loading || loadingMessages) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl">Loading conversation...</div>
       </div>
     )
@@ -152,7 +152,7 @@ export default function ConversationPage() {
   if (!user || !otherUser) return null
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
       <Card className="rounded-none border-x-0 border-t-0">
         <CardHeader className="py-4">

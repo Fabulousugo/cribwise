@@ -153,7 +153,7 @@ export default function GenerateListingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl">Loading...</div>
       </div>
     )

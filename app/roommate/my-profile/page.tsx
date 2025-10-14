@@ -81,7 +81,7 @@ export default function MyRoommateProfile() {
 
   if (loading || loadingProfile) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl">Loading your profile...</div>
       </div>
     )
@@ -92,7 +92,7 @@ export default function MyRoommateProfile() {
   // No profile exists
   if (!roommateProfile) {
     return (
-      <div className="min-h-screen bg-slate-50 py-8 px-4">
+      <div className="min-h-screen bg-background py-8 px-4">
         <div className="max-w-3xl mx-auto">
           <Link href="/dashboard">
             <Button variant="ghost" className="mb-6">
@@ -130,7 +130,7 @@ export default function MyRoommateProfile() {
   const yearLabel = roommateProfile.year_of_study === 0 ? 'Prospective' : `Year ${roommateProfile.year_of_study}`
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Navigation */}
         <div className="flex justify-between items-center mb-6">

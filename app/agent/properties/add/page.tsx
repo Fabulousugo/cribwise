@@ -251,7 +251,7 @@ export default function AddPropertyPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl">Loading...</div>
       </div>
     )
@@ -260,7 +260,7 @@ export default function AddPropertyPage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <Link href="/agent/properties">
           <Button variant="ghost" className="mb-6">

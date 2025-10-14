@@ -278,7 +278,7 @@ export default function EditRoommateProfile() {
 
   if (loading || loadingProfile) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl">Loading profile...</div>
       </div>
     )
@@ -287,7 +287,7 @@ export default function EditRoommateProfile() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Navigation */}
         <div className="flex justify-between items-center mb-6">

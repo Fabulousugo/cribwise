@@ -102,7 +102,7 @@ export default function MessagesPage() {
 
   if (loading || loadingConversations) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl">Loading messages...</div>
       </div>
     )
@@ -111,7 +111,7 @@ export default function MessagesPage() {
   if (!user) return null
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">

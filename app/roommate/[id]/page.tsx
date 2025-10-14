@@ -190,7 +190,7 @@ export default function RoommateProfilePage() {
 
   if (loading || loadingProfile) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-2xl">Loading profile...</div>
       </div>
     )
@@ -198,7 +198,7 @@ export default function RoommateProfilePage() {
 
   if (!user || !roommate) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="max-w-md">
           <CardHeader>
             <CardTitle>Profile Not Found</CardTitle>
@@ -219,6 +219,10 @@ export default function RoommateProfilePage() {
 
   
     async function handleStartConversation() {
+      if (!roommate) {
+        alert('Roommate profile not loaded.')
+        return
+      }
       setStartingChat(true)
       try {
         // Call the get_or_create_conversation function
@@ -241,7 +245,7 @@ export default function RoommateProfilePage() {
     }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Back Button */}
         <Link href="/roommate/browse">

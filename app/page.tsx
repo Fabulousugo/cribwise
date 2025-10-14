@@ -2,11 +2,86 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
+import Image from "next/image"
 import { properties } from "@/lib/properties"
 import { Building2, GraduationCap, BookOpen, Store, Calendar, ShieldCheck, Sparkles, ArrowRight, Search, CheckCircle2, Users, TrendingUp, Award, Clock } from "lucide-react"
 
+
 export default function HomePage() {
   const featuredProperties = properties.filter(p => p.verified && p.available).slice(0, 3)
+
+
+// Reusable section (same feel as Housing/Admissions)
+function FeatureSection({
+  icon: Icon,
+  title,
+  description,
+  bullets,
+  ctaHref,
+  ctaLabel,
+  imageSrc,
+  gradientFrom,
+  gradientTo,
+  reverse = false,
+}: {
+  icon: React.ComponentType<any>
+  title: string
+  description: string
+  bullets: string[]
+  ctaHref: string
+  ctaLabel: string
+  imageSrc: string
+  gradientFrom: string // e.g. "from-purple-500"
+  gradientTo: string   // e.g. "to-purple-600"
+  reverse?: boolean
+}) {
+  return (
+    <div className={`grid lg:grid-cols-2 gap-12 items-center mb-32 ${reverse ? "" : ""}`}>
+      {/* Media */}
+      <div className={`relative group ${reverse ? "lg:order-2" : ""}`}>
+        <div className={`absolute inset-0 bg-gradient-to-r ${gradientFrom} ${gradientTo} rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition`}></div>
+        <div className="relative h-[500px] rounded-3xl overflow-hidden">
+          <Image
+            src={imageSrc}
+            alt={title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            priority={false}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+        </div>
+      </div>
+
+      {/* Copy */}
+      <div className={`space-y-6 ${reverse ? "lg:order-1" : ""}`}>
+        <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${gradientFrom} ${gradientTo}`}>
+          <Icon className="h-8 w-8 text-white" />
+        </div>
+        <h3 className="text-4xl md:text-5xl font-bold text-foreground">
+          {title}
+        </h3>
+        <p className="text-xl text-muted-foreground leading-relaxed">
+          {description}
+        </p>
+        <ul className="space-y-4 text-lg">
+          {bullets.map((b, i) => (
+            <li key={i} className="flex items-center gap-3">
+              <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+              <span className="text-foreground">{b}</span>
+            </li>
+          ))}
+        </ul>
+        <Link href={ctaHref}>
+          <Button size="lg" className="text-lg px-8 py-6 rounded-xl mt-4">
+            {ctaLabel}
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+        </Link>
+      </div>
+    </div>
+  )
+}
 
   return (
     <main className="min-h-screen">
@@ -176,7 +251,7 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition"></div>
               <div className="relative h-[500px] rounded-3xl overflow-hidden">
                 <img 
-                  src="https://unsplash.com/photos/a-building-with-a-sign-that-says-the-university-on-it-fDuhxZ5vZPc" 
+                  src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1200&auto=format&fit=crop" 
                   alt="University Admissions"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                 />
@@ -185,80 +260,88 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Other Features - Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Materials */}
-            <Link href="/materials">
-              <Card className="group relative overflow-hidden h-full hover:shadow-2xl transition-all duration-300 border-2 hover:border-purple-500/50">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-                <CardContent className="p-8 relative">
-                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 mb-6">
-                    <BookOpen className="h-6 w-6 text-white" />
-                  </div>
-                  <h4 className="text-2xl font-bold text-foreground mb-3">Study Materials</h4>
-                  <p className="text-muted-foreground mb-6">Access notes, past questions, and study guides shared by top students.</p>
-                  <div className="flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
-                    Browse Materials
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+          {/* OTHER FEATURES — now split sections like the first two */}
+          <section id="more-features" className="py-32 px-4 bg-background">
+            <div className="max-w-7xl mx-auto">
+              <div className="text-center mb-20">
+                <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6">
+                  More Ways We Help
+                </h2>
+                <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
+                  Deep, focused tools—presented big and bold.
+                </p>
+              </div>
 
-            {/* Marketplace */}
-            <Link href="/market">
-              <Card className="group relative overflow-hidden h-full hover:shadow-2xl transition-all duration-300 border-2 hover:border-orange-500/50">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-                <CardContent className="p-8 relative">
-                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 mb-6">
-                    <Store className="h-6 w-6 text-white" />
-                  </div>
-                  <h4 className="text-2xl font-bold text-foreground mb-3">Marketplace</h4>
-                  <p className="text-muted-foreground mb-6">Buy and sell textbooks, electronics, and student essentials safely.</p>
-                  <div className="flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
-                    Visit Market
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+              <FeatureSection
+                icon={BookOpen}
+                title="Study Materials"
+                description="Access notes, past questions, and study guides shared by top students across 50+ universities."
+                bullets={[
+                  "Curated by high-performers",
+                  "Past questions with solutions",
+                  "Department & course filters",
+                ]}
+                ctaHref="/materials"
+                ctaLabel="Browse Materials"
+                imageSrc="/images/studentsHub.jpg"
+                gradientFrom="from-purple-500"
+                gradientTo="to-purple-600"
+                reverse={false}
+              />
 
-            {/* Events */}
-            <Link href="/events">
-              <Card className="group relative overflow-hidden h-full hover:shadow-2xl transition-all duration-300 border-2 hover:border-pink-500/50">
-                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-                <CardContent className="p-8 relative">
-                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-pink-500 to-pink-600 mb-6">
-                    <Calendar className="h-6 w-6 text-white" />
-                  </div>
-                  <h4 className="text-2xl font-bold text-foreground mb-3">Campus Events</h4>
-                  <p className="text-muted-foreground mb-6">Discover parties, workshops, and academic events happening around you.</p>
-                  <div className="flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
-                    See Events
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
+              <FeatureSection
+                icon={Store}
+                title="Student Marketplace"
+                description="Buy and sell textbooks, electronics, and campus essentials—rated sellers, dispute support, and secure checkout."
+                bullets={[
+                  "Verified sellers & ratings",
+                  "Secure, escrow-style payments",
+                  "Quick campus pickups",
+                ]}
+                ctaHref="/market"
+                ctaLabel="Visit Market"
+                imageSrc="/images/marketplace.jpg"
+                gradientFrom="from-orange-500"
+                gradientTo="to-orange-600"
+                reverse={true}
+              />
 
-            {/* Safety */}
-            <Link href="/safety">
-              <Card className="group relative overflow-hidden h-full hover:shadow-2xl transition-all duration-300 border-2 hover:border-red-500/50">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition"></div>
-                <CardContent className="p-8 relative">
-                  <div className="inline-flex p-3 rounded-xl bg-gradient-to-br from-red-500 to-red-600 mb-6">
-                    <ShieldCheck className="h-6 w-6 text-white" />
-                  </div>
-                  <h4 className="text-2xl font-bold text-foreground mb-3">Safety Hub</h4>
-                  <p className="text-muted-foreground mb-6">Emergency contacts, safety tips, and wellbeing resources when you need them.</p>
-                  <div className="flex items-center text-primary font-semibold group-hover:gap-2 transition-all">
-                    Safety Resources
-                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
+              <FeatureSection
+                icon={Calendar}
+                title="Campus Events"
+                description="From parties to workshops—discover what’s happening around you and never miss a deadline or meetup."
+                bullets={[
+                  "Smart recommendations by interest",
+                  "Add to calendar in one tap",
+                  "RSVP & reminders built-in",
+                ]}
+                ctaHref="/events"
+                ctaLabel="See Events"
+                imageSrc="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=1600&auto=format&fit=crop"
+                gradientFrom="from-pink-500"
+                gradientTo="to-pink-600"
+                reverse={false}
+              />
+
+              <FeatureSection
+                icon={ShieldCheck}
+                title="Safety Hub"
+                description="Emergency contacts, safety tips, incident reporting, and wellbeing resources—right when you need them."
+                bullets={[
+                  "One-tap campus emergency numbers",
+                  "Anonymous incident reporting",
+                  "24/7 wellbeing resources",
+                ]}
+                ctaHref="/safety"
+                ctaLabel="Safety Resources"
+                imageSrc="/images/Safety-2.jpg"
+                gradientFrom="from-red-500"
+                gradientTo="to-red-600"
+                reverse={true}
+              />
+            </div>
+          </section>
+
         </div>
       </section>
 
@@ -372,4 +455,5 @@ export default function HomePage() {
       </section>
     </main>
   )
+  
 }
