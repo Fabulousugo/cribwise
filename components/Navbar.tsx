@@ -99,7 +99,7 @@ function statusChipText(profile?: Profile | null) {
   if (s === "ADMITTED") return "Admitted";
   if (s === "PROSPECTIVE") return "Prospective";
   if (s === "ALUMNI") return "Alumni";
-  return typeof s === "string" ? s.toLowerCase() : undefined;
+  return s.toLowerCase();
 }
 
 /** Small skeleton to avoid layout shifts while auth loads */
@@ -416,7 +416,7 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen((s) => !s)}
               className="p-2"
               aria-label="Toggle menu"
-              aria-expanded={mobileMenuOpen ? true : false}
+              aria-expanded={mobileMenuOpen}
             >
               <Menu className="h-6 w-6" />
             </button>
