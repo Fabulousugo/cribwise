@@ -8,7 +8,7 @@
       /* Prevent horizontal scroll everywhere */
     html, body {
       width: 100%;
-      overflow-x: clip; /* or hidden if you prefer */
+      overflow-x: hidden; /* or hidden if you prefer */
     }
 
     /* Never let media exceed the container */
