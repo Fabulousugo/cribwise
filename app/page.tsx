@@ -334,7 +334,7 @@ function FeatureSection({
                 ]}
                 ctaHref="/safety"
                 ctaLabel="Safety Resources"
-                imageSrc="/images/Safety-2.jpg"
+                imageSrc="/images/safety-2.jpg"
                 gradientFrom="from-red-500"
                 gradientTo="to-red-600"
                 reverse={true}
