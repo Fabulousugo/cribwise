@@ -5,6 +5,32 @@
 
 
 @layer base {
+      /* Prevent horizontal scroll everywhere */
+    html, body {
+      width: 100%;
+      overflow-x: clip; /* or hidden if you prefer */
+    }
+
+    /* Never let media exceed the container */
+    img, video, canvas, svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Wrap long words/URLs by default */
+    * {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* Leaflet: keep controls inside & avoid weird scaling */
+    .leaflet-container {
+      width: 100% !important;
+    }
+    .leaflet-control-container .leaflet-control-attribution {
+      white-space: normal;
+    }
+
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
