@@ -3,34 +3,35 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* =========================
+   BASE: resets & tokens
+   ========================= */
 @layer base {
-      /* Prevent horizontal scroll everywhere */
-    html, body {
-      width: 100%;
-      overflow-x: hidden; /* or hidden if you prefer */
-    }
+  /* Root type scale: mobile → desktop */
+  html { font-size: 15px; }
+  @media (min-width: 768px) { html { font-size: 16px; } }
 
-    /* Never let media exceed the container */
-    img, video, canvas, svg {
-      max-width: 100%;
-      height: auto;
-    }
+  /* Prevent horizontal scrolling globally */
+  html, body {
+    width: 100%;
+    overflow-x: clip; /* safer than hidden */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
 
-    /* Wrap long words/URLs by default */
-    * {
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
+  /* Media should never overflow containers */
+  img, video, canvas, svg {
+    max-width: 100%;
+    height: auto;
+  }
 
-    /* Leaflet: keep controls inside & avoid weird scaling */
-    .leaflet-container {
-      width: 100% !important;
-    }
-    .leaflet-control-container .leaflet-control-attribution {
-      white-space: normal;
-    }
+  /* Wrap long words/URLs by default */
+  * {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 
+  /* Design tokens (HSL) */
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -64,7 +65,7 @@
   }
 
   .dark {
-    /* refined dark palette */
+    /* refined dark theme */
     --background: 222.2 84% 4.5%;
     --foreground: 210 40% 98%;
 
@@ -93,40 +94,47 @@
     --input: 220 14% 25%;
     --ring: 224.3 76.3% 48%;
   }
-}
 
-/* ---------- Base element styling ---------- */
-@layer base {
-  * {
-    @apply border-border;
-  }
+  /* Apply tokenized borders everywhere */
+  * { @apply border-border; }
 
-  html {
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-  }
-
+  /* Typography defaults */
   body {
     @apply antialiased;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
+    /* Use your Next.js font vars if set in layout.tsx */
+    font-family: var(--font-sans), system-ui, -apple-system, Segoe UI, Roboto,
+      "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol";
   }
 
-  /* text selection uses primary */
+  /* Headings auto-use heading font var */
+  h1, h2, h3, h4 { font-family: var(--font-heading), var(--font-sans), system-ui, sans-serif; }
+
+  /* Selection */
   ::selection {
     background: hsl(var(--primary) / 0.25);
     color: hsl(var(--foreground));
   }
+
+  /* Leaflet */
+  .leaflet-container { background: transparent; width: 100% !important; }
+  .leaflet-control-container .leaflet-control-attribution { white-space: normal; }
 }
 
-/* ---------- Components tweaks ---------- */
+/* =========================
+   COMPONENTS: helpers
+   ========================= */
 @layer components {
-  /* Focus ring helper (opt-in via class) */
+  /* Focus ring helper (opt-in) */
   .focus-ring {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+    @apply focus-visible:outline-none focus-visible:ring-2
+           focus-visible:ring-ring focus-visible:ring-offset-2
+           focus-visible:ring-offset-background;
   }
 
-  /* Prose (if using @tailwindcss/typography) */
+  /* If using @tailwindcss/typography (prose) */
   .prose {
     --tw-prose-body: hsl(var(--foreground));
     --tw-prose-headings: hsl(var(--foreground));
@@ -146,14 +154,27 @@
   }
 }
 
-/* ---------- Utilities & polish ---------- */
+/* =========================
+   UTILITIES: extras
+   ========================= */
 @layer utilities {
-  /* smooth scrolling, respects reduced motion */
-  .smooth-scroll {
-    scroll-behavior: smooth;
-  }
+  /* Smooth scroll (ignored if reduced motion) */
+  .smooth-scroll { scroll-behavior: smooth; }
+
+  /* Fluid type scale utilities (no Tailwind config required) */
+  .text-display { font-size: clamp(2.00rem, 4vw + 1rem, 3.75rem); line-height: 1.1; letter-spacing: -0.02em; }
+  .text-h1     { font-size: clamp(1.75rem, 2.2vw + 1rem, 2.5rem);  line-height: 1.15; }
+  .text-h2     { font-size: clamp(1.375rem, 1.2vw + 1rem, 1.875rem); line-height: 1.2; }
+  .text-h3     { font-size: clamp(1.125rem, 0.8vw + 1rem, 1.5rem);   line-height: 1.25; }
+
+  /* Heading helpers (compose with the sizes above) */
+  .heading-display { @apply font-heading font-extrabold tracking-tight; }
+  .heading-1      { @apply font-heading font-bold tracking-tight; }
+  .heading-2      { @apply font-heading font-semibold; }
+  .heading-3      { @apply font-heading font-semibold; }
 }
 
+/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
@@ -162,24 +183,12 @@
   }
 }
 
-/* Leaflet map container should inherit theme nicely */
-.leaflet-container {
-  background: transparent;
-}
-
-/* Optional: basic scrollbar styling (WebKit) */
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-*::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-}
+/* Optional: scrollbar polish (WebKit) */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: hsl(var(--muted)); }
 *::-webkit-scrollbar-thumb {
   background: hsl(var(--border));
   border-radius: 999px;
   border: 2px solid hsl(var(--muted));
 }
-*::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
-}
+*::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }

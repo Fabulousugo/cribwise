@@ -74,17 +74,16 @@ function PropertyCard({ property }: { property: any }) {
 
           <div className="flex flex-wrap gap-1">
             {property.amenities.slice(0, 3).map((amenity: string, idx: number) => (
-                <Badge key={idx} variant="secondary" className="text-[11px] font-normal">
+              <Badge key={idx} variant="secondary" className="text-[11px] font-normal">
                 {amenity}
-                </Badge>
+              </Badge>
             ))}
             {property.amenities.length > 3 && (
-                <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground">
                 +{property.amenities.length - 3} more
-                </span>
+              </span>
             )}
-            </div>
-
+          </div>
 
           <Link href={`/properties/${property.id}`}>
             <Button className="w-full" disabled={!property.available}>
@@ -120,6 +119,9 @@ export default function PropertiesPageClient() {
   const [hasParking, setHasParking] = useState<boolean>(searchParams.get("parking") === "yes");
   const [hasSecurity, setHasSecurity] = useState<boolean>(searchParams.get("security") === "yes");
   const [hasGenerator, setHasGenerator] = useState<boolean>(searchParams.get("generator") === "yes");
+
+  // Mobile filter toggle
+  const [showFilters, setShowFilters] = useState(false);
 
   // deferred search for smoother typing
   const deferredSearch = useDeferredValue(searchTerm);
@@ -263,206 +265,355 @@ export default function PropertiesPageClient() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto py-8 px-4">
-        {/* Filters */}
-        <div className="bg-background p-6 rounded-lg shadow mb-8">
-          <h1 className="text-2xl font-bold mb-6">Find Your Perfect Crib</h1>
+      <div className="max-w-7xl mx-auto py-8 px-4">
+        <div className="flex gap-8">
+          {/* Sidebar Filters - Desktop */}
+          <aside className="hidden lg:block w-80 flex-shrink-0">
+            <div className="bg-card p-6 rounded-lg shadow sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <h2 className="text-xl font-bold mb-6">Filters</h2>
 
-          <div className="space-y-6">
-            {/* Search */}
-            <div className="space-y-2">
-              <Label htmlFor="q">Search location, university or property name</Label>
-              <Input
-                id="q"
-                placeholder="e.g. Yaba, UNILAG, or Modern Apartment"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-
-            {/* Price Range */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="min">Min Price (₦)</Label>
-                <Input
-                  id="min"
-                  placeholder="e.g. 100000"
-                  type="number"
-                  inputMode="numeric"
-                  value={minPrice}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                  min={0}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="max">Max Price (₦)</Label>
-                <Input
-                  id="max"
-                  placeholder="e.g. 500000"
-                  type="number"
-                  inputMode="numeric"
-                  value={maxPrice}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                  min={0}
-                />
-              </div>
-            </div>
-
-            {/* Property Details */}
-            <div className="grid md:grid-cols-4 gap-4">
-              <div className="space-y-2">
-                <Label>Property Type</Label>
-                <Select value={propertyType} onValueChange={setPropertyType}>
-                  <SelectTrigger><SelectValue placeholder="All Types" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Types</SelectItem>
-                    <SelectItem value="Apartment">Apartment</SelectItem>
-                    <SelectItem value="Self-Contain">Self-Contain</SelectItem>
-                    <SelectItem value="Flat">Flat</SelectItem>
-                    <SelectItem value="Shared">Shared</SelectItem>
-                    <SelectItem value="Studio">Studio</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Bedrooms</Label>
-                <Select value={bedrooms} onValueChange={setBedrooms}>
-                  <SelectTrigger><SelectValue placeholder="Any" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Any</SelectItem>
-                    <SelectItem value="1">1 Bed</SelectItem>
-                    <SelectItem value="2">2 Beds</SelectItem>
-                    <SelectItem value="3">3 Beds</SelectItem>
-                    <SelectItem value="4+">4+ Beds</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Bathrooms</Label>
-                <Select value={bathrooms} onValueChange={setBathrooms}>
-                  <SelectTrigger><SelectValue placeholder="Any" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Any</SelectItem>
-                    <SelectItem value="1">1 Bath</SelectItem>
-                    <SelectItem value="2">2 Baths</SelectItem>
-                    <SelectItem value="3+">3+ Baths</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label>Verified</Label>
-                <Select value={onlyVerified} onValueChange={setOnlyVerified}>
-                  <SelectTrigger><SelectValue placeholder="All" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All</SelectItem>
-                    <SelectItem value="yes">Verified only</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            {/* Amenities */}
-            <div className="space-y-3">
-              <Label className="text-base font-semibold">Amenities</Label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="wifi"
-                    checked={hasWifi}
-                    onCheckedChange={(checked) => setHasWifi(checked === true)}
+              <div className="space-y-6">
+                {/* Search */}
+                <div className="space-y-2">
+                  <Label htmlFor="q" className="text-sm font-semibold">Search</Label>
+                  <Input
+                    id="q"
+                    placeholder="Location, university..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                  <label htmlFor="wifi" className="text-sm font-medium cursor-pointer">
-                    📶 WiFi
-                  </label>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="parking"
-                    checked={hasParking}
-                    onCheckedChange={(checked) => setHasParking(checked === true)}
-                  />
-                  <label htmlFor="parking" className="text-sm font-medium cursor-pointer">
-                    🚗 Parking
-                  </label>
+
+                <hr />
+
+                {/* Price Range */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold">Price Range</Label>
+                  <div className="space-y-2">
+                    <Input
+                      placeholder="Min (₦)"
+                      type="number"
+                      value={minPrice}
+                      onChange={(e) => setMinPrice(e.target.value)}
+                      min={0}
+                    />
+                    <Input
+                      placeholder="Max (₦)"
+                      type="number"
+                      value={maxPrice}
+                      onChange={(e) => setMaxPrice(e.target.value)}
+                      min={0}
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="security"
-                    checked={hasSecurity}
-                    onCheckedChange={(checked) => setHasSecurity(checked === true)}
-                  />
-                  <label htmlFor="security" className="text-sm font-medium cursor-pointer">
-                    🔒 Security
-                  </label>
+
+                <hr />
+
+                {/* Property Type */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Property Type</Label>
+                  <Select value={propertyType} onValueChange={setPropertyType}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Types</SelectItem>
+                      <SelectItem value="Apartment">Apartment</SelectItem>
+                      <SelectItem value="Self-Contain">Self-Contain</SelectItem>
+                      <SelectItem value="Flat">Flat</SelectItem>
+                      <SelectItem value="Shared">Shared</SelectItem>
+                      <SelectItem value="Studio">Studio</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="generator"
-                    checked={hasGenerator}
-                    onCheckedChange={(checked) => setHasGenerator(checked === true)}
-                  />
-                  <label htmlFor="generator" className="text-sm font-medium cursor-pointer">
-                    ⚡ Generator
-                  </label>
+
+                {/* Bedrooms */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Bedrooms</Label>
+                  <Select value={bedrooms} onValueChange={setBedrooms}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Any</SelectItem>
+                      <SelectItem value="1">1 Bed</SelectItem>
+                      <SelectItem value="2">2 Beds</SelectItem>
+                      <SelectItem value="3">3 Beds</SelectItem>
+                      <SelectItem value="4+">4+ Beds</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Bathrooms */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Bathrooms</Label>
+                  <Select value={bathrooms} onValueChange={setBathrooms}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Any</SelectItem>
+                      <SelectItem value="1">1 Bath</SelectItem>
+                      <SelectItem value="2">2 Baths</SelectItem>
+                      <SelectItem value="3+">3+ Baths</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <hr />
+
+                {/* Amenities */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold">Amenities</Label>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="wifi"
+                        checked={hasWifi}
+                        onCheckedChange={(checked) => setHasWifi(checked === true)}
+                      />
+                      <label htmlFor="wifi" className="text-sm cursor-pointer">
+                        📶 WiFi
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="parking"
+                        checked={hasParking}
+                        onCheckedChange={(checked) => setHasParking(checked === true)}
+                      />
+                      <label htmlFor="parking" className="text-sm cursor-pointer">
+                        🚗 Parking
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="security"
+                        checked={hasSecurity}
+                        onCheckedChange={(checked) => setHasSecurity(checked === true)}
+                      />
+                      <label htmlFor="security" className="text-sm cursor-pointer">
+                        🔒 Security
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="generator"
+                        checked={hasGenerator}
+                        onCheckedChange={(checked) => setHasGenerator(checked === true)}
+                      />
+                      <label htmlFor="generator" className="text-sm cursor-pointer">
+                        ⚡ Generator
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <hr />
+
+                {/* Additional Options */}
+                <div className="space-y-3">
+                  <Label className="text-sm font-semibold">Other Options</Label>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="verified"
+                        checked={onlyVerified === "yes"}
+                        onCheckedChange={(checked) => setOnlyVerified(checked ? "yes" : "all")}
+                      />
+                      <label htmlFor="verified" className="text-sm cursor-pointer">
+                        Verified only
+                      </label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="available"
+                        checked={onlyAvailable}
+                        onCheckedChange={(checked) => setOnlyAvailable(checked === true)}
+                      />
+                      <label htmlFor="available" className="text-sm cursor-pointer">
+                        Available only
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Clear Button */}
+                <Button variant="outline" onClick={clearAllFilters} className="w-full">
+                  Clear All Filters
+                </Button>
+              </div>
+            </div>
+          </aside>
+
+          {/* Main Content */}
+          <div className="flex-1 min-w-0">
+            {/* Mobile Filter Toggle */}
+            <div className="lg:hidden mb-4">
+              <Button
+                variant="outline"
+                onClick={() => setShowFilters(!showFilters)}
+                className="w-full"
+              >
+                {showFilters ? "Hide Filters" : "Show Filters"}
+              </Button>
+            </div>
+
+            {/* Mobile Filters */}
+            {showFilters && (
+              <div className="lg:hidden bg-card p-6 rounded-lg shadow mb-6">
+                <h2 className="text-xl font-bold mb-6">Filters</h2>
+                <div className="space-y-6">
+                  {/* Search */}
+                  <div className="space-y-2">
+                    <Label htmlFor="q-mobile" className="text-sm font-semibold">Search</Label>
+                    <Input
+                      id="q-mobile"
+                      placeholder="Location, university..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </div>
+
+                  {/* Price Range */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-semibold">Price Range</Label>
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Min (₦)"
+                        type="number"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                        min={0}
+                      />
+                      <Input
+                        placeholder="Max (₦)"
+                        type="number"
+                        value={maxPrice}
+                        onChange={(e) => setMaxPrice(e.target.value)}
+                        min={0}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Property Details */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold">Type</Label>
+                      <Select value={propertyType} onValueChange={setPropertyType}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">All</SelectItem>
+                          <SelectItem value="Apartment">Apartment</SelectItem>
+                          <SelectItem value="Self-Contain">Self-Contain</SelectItem>
+                          <SelectItem value="Flat">Flat</SelectItem>
+                          <SelectItem value="Shared">Shared</SelectItem>
+                          <SelectItem value="Studio">Studio</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-sm font-semibold">Beds</Label>
+                      <Select value={bedrooms} onValueChange={setBedrooms}>
+                        <SelectTrigger><SelectValue /></SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Any</SelectItem>
+                          <SelectItem value="1">1</SelectItem>
+                          <SelectItem value="2">2</SelectItem>
+                          <SelectItem value="3">3</SelectItem>
+                          <SelectItem value="4+">4+</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  {/* Amenities */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-semibold">Amenities</Label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="wifi-mobile"
+                          checked={hasWifi}
+                          onCheckedChange={(checked) => setHasWifi(checked === true)}
+                        />
+                        <label htmlFor="wifi-mobile" className="text-sm cursor-pointer">
+                          📶 WiFi
+                        </label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="parking-mobile"
+                          checked={hasParking}
+                          onCheckedChange={(checked) => setHasParking(checked === true)}
+                        />
+                        <label htmlFor="parking-mobile" className="text-sm cursor-pointer">
+                          🚗 Parking
+                        </label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="security-mobile"
+                          checked={hasSecurity}
+                          onCheckedChange={(checked) => setHasSecurity(checked === true)}
+                        />
+                        <label htmlFor="security-mobile" className="text-sm cursor-pointer">
+                          🔒 Security
+                        </label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Checkbox
+                          id="generator-mobile"
+                          checked={hasGenerator}
+                          onCheckedChange={(checked) => setHasGenerator(checked === true)}
+                        />
+                        <label htmlFor="generator-mobile" className="text-sm cursor-pointer">
+                          ⚡ Generator
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button variant="outline" onClick={clearAllFilters} className="w-full">
+                    Clear All Filters
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Header */}
+            <div className="mb-6">
+              <h1 className="text-3xl font-bold mb-2">Find Your Perfect Crib</h1>
+              <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+                <p className="text-muted-foreground">
+                  {count} {count === 1 ? "property" : "properties"} found
+                </p>
+                <div className="flex items-center gap-3">
+                  <Select value={sort} onValueChange={setSort}>
+                    <SelectTrigger className="w-full sm:w-56"><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="recommended">Recommended</SelectItem>
+                      <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                      <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                      <SelectItem value="beds-desc">Most Bedrooms</SelectItem>
+                      <SelectItem value="newest">Newest First</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
 
-            {/* Additional Filters */}
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="available"
-                checked={onlyAvailable}
-                onCheckedChange={(checked) => setOnlyAvailable(checked === true)}
-              />
-              <label htmlFor="available" className="text-sm font-medium cursor-pointer">
-                Show only available properties
-              </label>
-            </div>
-
-            {/* Clear Button */}
-            <Button variant="outline" onClick={clearAllFilters} className="w-full md:w-auto">
-              Clear All Filters
-            </Button>
+            {/* Grid */}
+            {count > 0 ? (
+              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {filtered.map((p) => (
+                  <PropertyCard key={p.id} property={p} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16 bg-card rounded-lg">
+                <p className="text-xl text-muted-foreground mb-4">No properties found matching your criteria</p>
+                <Button onClick={clearAllFilters}>
+                  Clear All Filters
+                </Button>
+              </div>
+            )}
           </div>
         </div>
-
-        {/* Summary + Sort */}
-        <div className="mb-4 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-          <p className="text-slate-600">
-            {count} {count === 1 ? "property" : "properties"} found
-          </p>
-          <div className="flex items-center gap-3">
-            <Label className="sr-only">Sort by</Label>
-            <Select value={sort} onValueChange={setSort}>
-              <SelectTrigger className="w-56"><SelectValue placeholder="Sort" /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="recommended">Sort: Recommended</SelectItem>
-                <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                <SelectItem value="beds-desc">Most Bedrooms</SelectItem>
-                <SelectItem value="newest">Newest First</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Grid */}
-        {count > 0 ? (
-          <div className="grid md:grid-cols-3 gap-6">
-            {filtered.map((p) => (
-              <PropertyCard key={p.id} property={p} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <p className="text-xl text-slate-600 mb-4">No properties found matching your criteria</p>
-            <Button onClick={clearAllFilters}>Clear All Filters</Button>
-          </div>
-        )}
       </div>
     </main>
   );
