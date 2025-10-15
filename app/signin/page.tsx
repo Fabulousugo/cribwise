@@ -56,7 +56,7 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <Card className="max-w-md w-full">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl">Welcome Back</CardTitle>

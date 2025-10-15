@@ -124,7 +124,7 @@ export default function Map(props: Props) {
           href={gmapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="pointer-events-auto rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium shadow hover:bg-white"
+          className="pointer-events-auto rounded-lg bg-background px-3 py-1.5 text-xs font-medium shadow hover:bg-background"
         >
           Open in Google Maps
         </a>
@@ -132,7 +132,7 @@ export default function Map(props: Props) {
           href={appleMapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="pointer-events-auto rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium shadow hover:bg-white"
+          className="pointer-events-auto rounded-lg bg-background px-3 py-1.5 text-xs font-medium shadow hover:bg-background"
         >
           Apple Maps
         </a>
@@ -140,7 +140,7 @@ export default function Map(props: Props) {
           href={gmapsDir}
           target="_blank"
           rel="noopener noreferrer"
-          className="pointer-events-auto rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium shadow hover:bg-white"
+          className="pointer-events-auto rounded-lg bg-background px-3 py-1.5 text-xs font-medium shadow hover:bg-background"
         >
           Directions
         </a>

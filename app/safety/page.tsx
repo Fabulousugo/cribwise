@@ -9,7 +9,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 
 export default function SafetyPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       {/* Hero Section with Gradient */}
       <section className="relative bg-gradient-to-br from-emerald-50 via-blue-50 to-purple-50 dark:from-emerald-950 dark:via-blue-950 dark:to-purple-950 overflow-hidden">
         {/* Animated background shapes */}

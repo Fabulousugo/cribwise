@@ -160,7 +160,7 @@ export default function GenerateListingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-background py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <Link href="/agent/properties">
           <Button variant="ghost" className="mb-6">

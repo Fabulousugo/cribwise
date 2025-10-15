@@ -94,7 +94,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
   return (
     <main className="max-w-7xl mx-auto p-4">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl bg-white mb-10 border">
+      <section className="relative overflow-hidden rounded-3xl bg-background mb-10 border">
         <div className="grid md:grid-cols-[1.15fr,0.85fr] gap-0">
           <div className="p-8 md:p-12">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border bg-slate-50 text-slate-700 text-xs">

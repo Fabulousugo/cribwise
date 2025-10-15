@@ -90,7 +90,7 @@ function FAQSchema({ items }: { items: { q: string; a: string }[] }) {
 
 export default function AgentFAQPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       {/* Breadcrumbs */}
       <nav className="max-w-6xl mx-auto px-4 pt-6 text-sm">
         <ol className="flex flex-wrap items-center gap-2 text-slate-500">

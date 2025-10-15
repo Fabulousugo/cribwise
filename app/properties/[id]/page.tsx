@@ -52,7 +52,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                 <p className="text-slate-600 mb-3 flex items-center gap-2">📍 {property.address}, {property.location}</p>
                 <p className="text-sm text-slate-500 mb-6">{property.university}</p>
 
-                <div className="flex flex-wrap gap-4 mb-6 text-slate-700">
+                <div className="flex flex-wrap gap-4 mb-6 text-muted-foreground">
                   <span className="flex items-center gap-2">🛏️ {property.bedrooms} Bedroom{property.bedrooms > 1 ? "s" : ""}</span>
                   <span className="flex items-center gap-2">🚿 {property.bathrooms} Bathroom{property.bathrooms > 1 ? "s" : ""}</span>
                   <span className="flex items-center gap-2">🏠 {property.type}</span>
@@ -67,7 +67,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                 <h2 className="text-xl font-semibold mb-4">Amenities</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {property.amenities.map((amenity, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-slate-700">
+                    <div key={idx} className="flex items-center gap-2 text-muted-foreground">
                       <span className="text-green-600">✓</span>
                       <span>{amenity}</span>
                     </div>

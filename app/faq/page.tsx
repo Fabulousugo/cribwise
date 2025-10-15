@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function FAQHubPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       {/* Hero */}
       <section className="relative bg-gradient-to-br from-slate-50 via-blue-50 to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <div className="max-w-6xl mx-auto px-4 py-16 md:py-20">

@@ -9,9 +9,9 @@ export default async function AdmissionsHome() {
   const featured = schools.slice(0, 8);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-background">
       {/* HERO */}
-      <section className="bg-gradient-to-b from-slate-50 to-white py-14 px-4">
+      <section className="min-h-screen bg-background py-14 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 text-xs font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full mb-4">
             <GraduationCap className="h-3.5 w-3.5" /> Admissions Hub
@@ -26,10 +26,28 @@ export default async function AdmissionsHome() {
           </form>
 
           {/* QUICK LINKS */}
-          <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm">
-            <Link href="/admissions/checklist" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-md">My Admission Checklist</Link>
-            <Link href="/admissions/deadlines" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-md">Upcoming Deadlines</Link>
-            <Link href="/admissions/guides" className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-md">Guides</Link>
+          <div className="mt-6 flex flex-wrap justify-center gap-2 text-sm ">  
+           <Link
+            href="/admissions/checklist"
+            className="px-3 py-1.5 rounded-md border bg-muted hover:bg-accent border-border text-foreground/80 hover:text-foreground transition-colors"
+          >
+            My Admission Checklist
+          </Link>
+
+          <Link
+            href="/admissions/deadlines"
+            className="px-3 py-1.5 rounded-md border bg-muted hover:bg-accent border-border text-foreground/80 hover:text-foreground transition-colors"
+          >
+            Upcoming Deadlines
+          </Link>
+
+          <Link
+            href="/admissions/guides"
+            className="px-3 py-1.5 rounded-md border bg-muted hover:bg-accent border-border text-foreground/80 hover:text-foreground transition-colors"
+          >
+            Guides
+          </Link>
+
           </div>
         </div>
       </section>

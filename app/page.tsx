@@ -84,7 +84,7 @@ function FeatureSection({
 }
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       {/* HERO - Full Screen, Bold */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         {/* Animated Grid Background */}

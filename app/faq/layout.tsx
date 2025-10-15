@@ -19,5 +19,5 @@ export default function FAQLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="min-h-screen">{children}</main>;
+  return <main className="min-h-screen bg-background">{children}</main>;
 }

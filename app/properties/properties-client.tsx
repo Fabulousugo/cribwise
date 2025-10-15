@@ -74,14 +74,17 @@ function PropertyCard({ property }: { property: any }) {
 
           <div className="flex flex-wrap gap-1">
             {property.amenities.slice(0, 3).map((amenity: string, idx: number) => (
-              <span key={idx} className="text-xs bg-slate-100 px-2 py-1 rounded">
+                <Badge key={idx} variant="secondary" className="text-[11px] font-normal">
                 {amenity}
-              </span>
+                </Badge>
             ))}
             {property.amenities.length > 3 && (
-              <span className="text-xs text-slate-500">+{property.amenities.length - 3} more</span>
+                <span className="text-xs text-muted-foreground">
+                +{property.amenities.length - 3} more
+                </span>
             )}
-          </div>
+            </div>
+
 
           <Link href={`/properties/${property.id}`}>
             <Button className="w-full" disabled={!property.available}>
@@ -262,7 +265,7 @@ export default function PropertiesPageClient() {
     <main className="min-h-screen bg-background">
       <div className="max-w-6xl mx-auto py-8 px-4">
         {/* Filters */}
-        <div className="bg-white p-6 rounded-lg shadow mb-8">
+        <div className="bg-background p-6 rounded-lg shadow mb-8">
           <h1 className="text-2xl font-bold mb-6">Find Your Perfect Crib</h1>
 
           <div className="space-y-6">

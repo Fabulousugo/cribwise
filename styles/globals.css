@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---------- Design tokens (HSL) ---------- */
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -26,7 +26,7 @@ import { Button } from "@/components/ui/button";
 
 export default function SafetyTipsPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-blue-950 dark:via-purple-950 dark:to-pink-950 overflow-hidden">
         {/* Animated background */}
