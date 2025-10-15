@@ -70,7 +70,7 @@ const agentFaq: { q: string; a: string }[] = [
     a: "Only when legally required or justified by safety (e.g., equipment rental). Keep requests minimal, store data securely, and never ask for irrelevant personal documents.",
   },
   {
-    q: "What evidence helps in case of a dispute?",
+    q: "What evidence helps in case of a dispute?", 
     a: "Clear scope of work, time-stamped messages, before/after photos, signed agreements, and proof of attendance or delivery. Keep records within CribWise when possible.",
   },
 ];

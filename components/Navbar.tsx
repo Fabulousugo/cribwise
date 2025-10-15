@@ -91,9 +91,10 @@ function getSchoolEmailEnforcement(profile?: Profile | null) {
   return { show, daysLeft };
 }
 
-function statusChipText(profile?: Profile | null) {
-  const s = profile?.status;
+function statusChipText(profile?: Profile | null): string | undefined {
+  const s = profile?.status as string | undefined; // widen
   if (!s) return undefined;
+
   if (s === "AGENT") return "Agent";
   if (s === "CURRENT") return "Student";
   if (s === "ADMITTED") return "Admitted";
@@ -101,6 +102,7 @@ function statusChipText(profile?: Profile | null) {
   if (s === "ALUMNI") return "Alumni";
   return s.toLowerCase();
 }
+
 
 /** Small skeleton to avoid layout shifts while auth loads */
 function AuthSkeleton() {

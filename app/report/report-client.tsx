@@ -1,13 +1,10 @@
-// ==========================================
-// FILE: app/report/page.tsx
-// Report Form — requires login, shows thank-you state on ?submitted=1
-// ==========================================
+// app/report/report-client.tsx
 "use client";
 
 import Link from "next/link";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAuth } from "@/lib/auth-context"; // assumes your existing auth context
+import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ShieldCheck } from "lucide-react";
 
-export default function ReportPage() {
+export default function ReportPageClient() {
   const { user, loading } = useAuth();
   const search = useSearchParams();
   const submitted = search?.get("submitted") === "1";
@@ -49,7 +46,7 @@ export default function ReportPage() {
       <main className="max-w-3xl mx-auto p-4">
         <div className="border rounded-xl p-6 bg-green-50">
           <h1 className="text-xl font-semibold mb-2">Report received ✅</h1>
-          <p className="text-slate-700">Thank you. Our team will review your report shortly. You can track responses in your inbox.</p>
+        <p className="text-slate-700">Thank you. Our team will review your report shortly. You can track responses in your inbox.</p>
           <div className="mt-4 flex gap-2">
             <Link href="/safety"><Button>Back to Safety</Button></Link>
             <Link href="/"><Button variant="outline">Home</Button></Link>
