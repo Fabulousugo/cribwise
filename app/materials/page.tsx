@@ -227,21 +227,21 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
                   <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 group">
                     {/* Header with Material Type */}
                     <div className={`h-3 w-full rounded-t-xl ${
-                      m.kind === "past-question" ? "bg-gradient-to-r from-purple-500 to-pink-500" :
-                      m.kind === "lecture-note" ? "bg-gradient-to-r from-blue-500 to-cyan-500" :
-                      m.kind === "syllabus" ? "bg-gradient-to-r from-green-500 to-emerald-500" :
+                      m.kind.toLowerCase().includes("past") ? "bg-gradient-to-r from-purple-500 to-pink-500" :
+                      m.kind.toLowerCase().includes("lecture") || m.kind.toLowerCase().includes("note") ? "bg-gradient-to-r from-blue-500 to-cyan-500" :
+                      m.kind.toLowerCase().includes("syllabus") ? "bg-gradient-to-r from-green-500 to-emerald-500" :
                       "bg-gradient-to-r from-yellow-500 to-orange-500"
                     }`}></div>
 
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <Badge className={`${
-                          m.kind === "past-question" ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300" :
-                          m.kind === "lecture-note" ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300" :
-                          m.kind === "syllabus" ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" :
+                          m.kind.toLowerCase().includes("past") ? "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300" :
+                          m.kind.toLowerCase().includes("lecture") || m.kind.toLowerCase().includes("note") ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300" :
+                          m.kind.toLowerCase().includes("syllabus") ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300" :
                           "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300"
                         } font-bold text-xs`}>
-                          {m.kind.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                          {m.kind}
                         </Badge>
                         {m.year && (
                           <Badge variant="outline" className="text-xs">

@@ -313,7 +313,7 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
                       )}
                       
                       {/* Favorite button overlay */}
-                      <button className="absolute top-3 right-3 w-10 h-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-all shadow-lg opacity-0 group-hover:opacity-100">
+                      <button title = "favorite" className="absolute top-3 right-3 w-10 h-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-all shadow-lg opacity-0 group-hover:opacity-100">
                         <Heart className="h-5 w-5 text-slate-600 dark:text-slate-300" />
                       </button>
 
