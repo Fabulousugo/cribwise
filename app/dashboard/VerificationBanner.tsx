@@ -56,3 +56,4 @@ export function VerificationBanner({ isVerified }: { isVerified: boolean }) {
     </section>
   )
 }
+

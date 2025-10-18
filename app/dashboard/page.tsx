@@ -1,4 +1,3 @@
-// ==========================================
 // FILE: app/dashboard/page.tsx
 // Enhanced Dashboard Router with Gamification
 // ==========================================
@@ -43,6 +42,3 @@ export default async function DashboardPage() {
       redirect('/dashboard/current')
   }
 }
-
-
-

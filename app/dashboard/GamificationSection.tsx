@@ -1,3 +1,5 @@
+
+
 // ==========================================
 // FILE: components/dashboard/GamificationSection.tsx
 // Shared Gamification Component for all dashboards
@@ -93,3 +95,4 @@ export function GamificationSection({
     </section>
   )
 }
+

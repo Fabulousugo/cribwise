@@ -23,6 +23,7 @@ import {
   Star,
   Lock
 } from "lucide-react"
+import { ActivityFeed, ReferralCard } from "@/components/gamification"
 
 export default function CurrentStudentDashboard() {
   const [loading, setLoading] = useState(true)
@@ -310,8 +311,22 @@ export default function CurrentStudentDashboard() {
         </div>
       </section>
 
-      {/* Your Impact Stats */}
+      {/* Activity & Referral */}
       <section className="py-12 px-4 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-foreground mb-8">Activity & Rewards</h2>
+          <div className="grid lg:grid-cols-2 gap-6">
+            <ActivityFeed />
+            <ReferralCard 
+              referralCode={profile?.referral_code || 'CRIB123'} 
+              referralCount={stats?.referralCount || 0} 
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Your Impact Stats */}
+      <section className="py-12 px-4 bg-background">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-foreground mb-8">Your Impact</h2>
           <div className="grid md:grid-cols-4 gap-6">
@@ -375,4 +390,4 @@ export default function CurrentStudentDashboard() {
       </section>
     </main>
   )
-}    
+}
