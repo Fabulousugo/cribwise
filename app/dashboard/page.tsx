@@ -1,57 +1,48 @@
-"use client"
+// ==========================================
+// FILE: app/dashboard/page.tsx
+// Enhanced Dashboard Router with Gamification
+// ==========================================
+import { redirect } from "next/navigation"
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
+import { cookies } from "next/headers"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/lib/auth-context"
-import { Loader2 } from "lucide-react"
+export default async function DashboardPage() {
+  const supabase = createServerComponentClient({ cookies })
+  
+  const { data: { session } } = await supabase.auth.getSession()
+  
+  if (!session) {
+    redirect('/signin')
+  }
 
-export default function DashboardRouter() {
-  const router = useRouter()
-  const { user, profile, loading } = useAuth()
+  // Get user profile
+  const { data: profile } = await supabase
+    .from('user_profiles')
+    .select('user_type, status, school_email_verified_at')
+    .eq('id', session.user.id)
+    .single()
 
-  useEffect(() => {
-    if (loading) return
+  if (!profile) {
+    redirect('/onboarding')
+  }
 
-    if (!user) {
-      // Not logged in - redirect to login
-      router.push("/signin")
-      return
-    }
-
-    if (!profile) {
-      // No profile yet - redirect to choose status
-      router.push("/choose-status")
-      return
-    }
-
-    // Route based on user status
-    const status = profile.status as string
-
-    switch (status) {
-      case "AGENT":
-        router.push("/dashboard/agent")
-        break
-      
-      case "PROSPECTIVE":
-      case "ADMITTED":
-      case "CURRENT":
-      case "ALUMNI":
-        router.push("/dashboard/student")
-        break
-      
-      default:
-        // Unknown status - let them choose
-        router.push("/choose-status")
-    }
-  }, [user, profile, loading, router])
-
-  // Show loading state
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto mb-4" />
-        <p className="text-xl text-muted-foreground">Loading your dashboard...</p>
-      </div>
-    </div>
-  )
+  // Route based on user type
+  switch (profile.user_type) {
+    case 'prospective':
+      redirect('/dashboard/prospective')
+    case 'admitted':
+      redirect('/dashboard/admitted')
+    case 'current':
+      redirect('/dashboard/current')
+    case 'alumni':
+      redirect('/dashboard/alumni')
+    case 'agent':
+    case 'landlord':
+      redirect('/dashboard/agent')
+    default:
+      redirect('/dashboard/current')
+  }
 }
+
+
+

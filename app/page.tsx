@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
-import Image from "next/image"
 import { properties } from "@/lib/properties"
-import { Building2, GraduationCap, BookOpen, Store, Calendar, ShieldCheck, Sparkles, ArrowRight, Search, CheckCircle2, Users, TrendingUp, Award, Clock } from "lucide-react"
+import { Building2, GraduationCap, BookOpen, Store, Calendar, ShieldCheck, Sparkles, ArrowRight, CheckCircle2, Users, Award, UserPlus, Heart, Zap } from "lucide-react"
 
 
 export default function HomePage() {
@@ -31,23 +29,21 @@ function FeatureSection({
   ctaHref: string
   ctaLabel: string
   imageSrc: string
-  gradientFrom: string // e.g. "from-purple-500"
-  gradientTo: string   // e.g. "to-purple-600"
+  gradientFrom: string
+  gradientTo: string
   reverse?: boolean
 }) {
   return (
     <div className={`grid lg:grid-cols-2 gap-12 items-center mb-32 ${reverse ? "" : ""}`}>
       {/* Media */}
       <div className={`relative group ${reverse ? "lg:order-2" : ""}`}>
-        <div className={`absolute inset-0 bg-gradient-to-r ${gradientFrom} ${gradientTo} rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition`}></div>
+        <div className={`absolute inset-0 bg-gradient-to-r ${gradientFrom} ${gradientTo} rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity`}></div>
         <div className="relative h-[500px] rounded-3xl overflow-hidden">
-          <Image
+          <img 
             src={imageSrc}
             alt={title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-700"
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            priority={false}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
         </div>
@@ -90,9 +86,9 @@ function FeatureSection({
         {/* Animated Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f12_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f12_1px,transparent_1px)] bg-[size:64px_64px]"></div>
         
-        {/* Gradient Orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        {/* Gradient Orbs - Simplified */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-3xl"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 py-32 md:py-40">
           <div className="max-w-4xl">
@@ -156,6 +152,183 @@ function FeatureSection({
         </div>
       </section>
 
+      {/* ROOMMATE SEARCH - HERO FEATURE (New Prominent Section) */}
+      <section className="py-32 px-4 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 dark:from-purple-950/20 dark:via-pink-950/20 dark:to-blue-950/20 relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-300 dark:bg-purple-900 rounded-full blur-3xl opacity-20"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-pink-300 dark:bg-pink-900 rounded-full blur-3xl opacity-20"></div>
+
+        <div className="max-w-7xl mx-auto relative">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Copy */}
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full font-bold text-sm shadow-lg">
+                <Sparkles className="h-5 w-5" />
+                🔥 Most Popular Feature
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-black text-foreground leading-[1.1]">
+                Find Your Perfect
+                <br />
+                <span className="bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
+                  Roommate Match
+                </span>
+              </h2>
+
+              <p className="text-2xl text-muted-foreground leading-relaxed">
+                Our AI-powered matching connects you with compatible roommates based on lifestyle, study habits, and preferences. No more awkward living situations!
+              </p>
+
+              <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
+                    <Zap className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-foreground mb-1">Smart AI Matching</h4>
+                    <p className="text-muted-foreground">Algorithm matches you with roommates who share your vibe</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0">
+                    <Heart className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-foreground mb-1">Lifestyle Compatibility</h4>
+                    <p className="text-muted-foreground">Sleep schedules, cleanliness, noise levels, and more</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+                    <Users className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-bold text-foreground mb-1">Verified Profiles</h4>
+                    <p className="text-muted-foreground">Student ID verification for safety and trust</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Link href="/roommates">
+                  <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl px-10 py-8 rounded-2xl shadow-2xl hover:scale-105 transition-all">
+                    <UserPlus className="mr-3 h-6 w-6" />
+                    Find Roommates
+                  </Button>
+                </Link>
+                <Link href="/roommates/create">
+                  <Button size="lg" variant="outline" className="border-2 border-purple-300 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-950/30 text-xl px-10 py-8 rounded-2xl">
+                    Create Profile
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Social Proof */}
+              <div className="flex items-center gap-2 pt-4">
+                <div className="flex -space-x-3">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="w-12 h-12 rounded-full border-4 border-background bg-gradient-to-br from-purple-400 to-pink-400"></div>
+                  ))}
+                </div>
+                <div className="ml-2">
+                  <p className="text-foreground font-bold">1,200+ successful matches</p>
+                  <p className="text-sm text-muted-foreground">Students living happily together</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Visual Card Grid */}
+            <div className="relative">
+              <div className="grid grid-cols-2 gap-6">
+                {/* Sample Roommate Cards */}
+                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-purple-400 dark:hover:border-purple-500 hover:-translate-y-2">
+                  <CardContent className="p-6">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 mb-4 mx-auto"></div>
+                    <h4 className="font-bold text-center mb-1">Chidi O.</h4>
+                    <p className="text-sm text-center text-muted-foreground mb-3">CS Major • UNILAG</p>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full">Early Bird</span>
+                      </div>
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">Clean</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-center">
+                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">98% Match</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-pink-400 dark:hover:border-pink-500 hover:-translate-y-2 mt-8">
+                  <CardContent className="p-6">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-pink-400 to-orange-400 mb-4 mx-auto"></div>
+                    <h4 className="font-bold text-center mb-1">Amaka N.</h4>
+                    <p className="text-sm text-center text-muted-foreground mb-3">Law • UI</p>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-2 py-1 rounded-full">Social</span>
+                      </div>
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full">Music</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-center">
+                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">95% Match</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-blue-400 dark:hover:border-blue-500 hover:-translate-y-2">
+                  <CardContent className="p-6">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 mb-4 mx-auto"></div>
+                    <h4 className="font-bold text-center mb-1">Tunde A.</h4>
+                    <p className="text-sm text-center text-muted-foreground mb-3">Engineering • OAU</p>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">Quiet</span>
+                      </div>
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">Study</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-center">
+                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">92% Match</span>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-green-400 dark:hover:border-green-500 hover:-translate-y-2 mt-8">
+                  <CardContent className="p-6">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-400 mb-4 mx-auto"></div>
+                    <h4 className="font-bold text-center mb-1">Blessing M.</h4>
+                    <p className="text-sm text-center text-muted-foreground mb-3">Medicine • UNIBEN</p>
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded-full">Organized</span>
+                      </div>
+                      <div className="flex items-center gap-2 justify-center">
+                        <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded-full">Night Owl</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 text-center">
+                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">94% Match</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Floating Badge - Removed animation */}
+              <div className="absolute -top-4 -right-4 bg-gradient-to-br from-yellow-400 to-orange-400 text-white font-black px-6 py-3 rounded-2xl shadow-2xl rotate-12">
+                <p className="text-sm">AI Powered</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FEATURES - Large Split Sections */}
       <section id="features" className="py-32 px-4 bg-background">
         <div className="max-w-7xl mx-auto">
@@ -171,12 +344,13 @@ function FeatureSection({
           {/* Housing - Large Feature */}
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-32">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
               <div className="relative h-[500px] rounded-3xl overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&auto=format&fit=crop" 
+                  src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&auto=format&fit=crop&q=80" 
                   alt="Student Housing"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               </div>
@@ -248,12 +422,13 @@ function FeatureSection({
               </Link>
             </div>
             <div className="relative group lg:order-2">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
               <div className="relative h-[500px] rounded-3xl overflow-hidden">
                 <img 
-                  src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=1200&auto=format&fit=crop" 
+                  src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?q=80&w=800&auto=format&fit=crop" 
                   alt="University Admissions"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
               </div>
@@ -309,7 +484,7 @@ function FeatureSection({
               <FeatureSection
                 icon={Calendar}
                 title="Campus Events"
-                description="From parties to workshops—discover what’s happening around you and never miss a deadline or meetup."
+                description="From parties to workshops—discover what's happening around you and never miss a deadline or meetup."
                 bullets={[
                   "Smart recommendations by interest",
                   "Add to calendar in one tap",
@@ -369,9 +544,9 @@ function FeatureSection({
             </div>
             <div>
               <div className="text-6xl md:text-7xl font-black bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent mb-4">
-                5K+
+                1.2K+
               </div>
-              <p className="text-xl text-muted-foreground font-medium">Resources Shared</p>
+              <p className="text-xl text-muted-foreground font-medium">Roommate Matches</p>
             </div>
           </div>
         </div>
