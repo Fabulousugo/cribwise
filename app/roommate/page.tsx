@@ -85,7 +85,7 @@ export default function RoommatesLandingPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link href="/roommates/browse">
+                <Link href="/roommate/browse">
                   <Button 
                     size="lg" 
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold rounded-2xl px-8 py-6 text-lg shadow-xl hover:scale-105 transition-all"
@@ -94,7 +94,7 @@ export default function RoommatesLandingPage() {
                     Browse Roommates
                   </Button>
                 </Link>
-                <Link href="/roommates/create">
+                <Link href="/roommate/create">
                   <Button 
                     size="lg" 
                     variant="outline"
@@ -213,6 +213,51 @@ export default function RoommatesLandingPage() {
               </CardContent>
             </Card>
           </div>
+
+          {/* Student-Only Notice */}
+          <Card className="mt-12 border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-950/20 dark:to-cyan-950/20">
+            <CardContent className="p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-lg mb-2 text-slate-900 dark:text-white">
+                    Student-to-Student Only 🎓
+                  </h4>
+                  <p className="text-slate-700 dark:text-slate-300 mb-3">
+                    This feature is exclusively for students. No agents or landlords — just genuine peer-to-peer connections.
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-3 text-sm">
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-slate-600 dark:text-slate-400">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">Authentic matches:</span> Connect with real students
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-slate-600 dark:text-slate-400">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">Your space:</span> One person rents, then sublets
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-slate-600 dark:text-slate-400">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">Safe & private:</span> No commercial interference
+                      </span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-slate-600 dark:text-slate-400">
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">Verified students:</span> Student ID required
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -415,7 +460,7 @@ export default function RoommatesLandingPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/roommates/create">
+            <Link href="/roommate/create">
               <Button 
                 size="lg"
                 className="bg-white text-purple-700 hover:bg-slate-100 font-bold text-xl px-10 py-7 rounded-2xl shadow-2xl hover:scale-105 transition-all"
@@ -424,7 +469,7 @@ export default function RoommatesLandingPage() {
                 Create Your Profile
               </Button>
             </Link>
-            <Link href="/roommates/browse">
+            <Link href="/roommate/browse">
               <Button 
                 size="lg"
                 variant="outline"

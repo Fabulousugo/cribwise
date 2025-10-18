@@ -186,10 +186,13 @@ export default async function SchoolsListingPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
+           
               size="lg"
               className="bg-white text-purple-700 hover:bg-slate-100 font-bold rounded-2xl px-8"
             >
+               <Link href="/admissions/request-school">
               Request a School
+              </Link>
             </Button>
             <Button 
               size="lg"
