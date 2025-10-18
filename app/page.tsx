@@ -212,13 +212,13 @@ function FeatureSection({
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Link href="/roommates">
+                <Link href="/roommate">
                   <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl px-10 py-8 rounded-2xl shadow-2xl hover:scale-105 transition-all">
                     <UserPlus className="mr-3 h-6 w-6" />
                     Find Roommates
                   </Button>
                 </Link>
-                <Link href="/roommates/create">
+                <Link href="/roommate/create">
                   <Button size="lg" variant="outline" className="border-2 border-purple-300 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-950/30 text-xl px-10 py-8 rounded-2xl">
                     Create Profile
                   </Button>
