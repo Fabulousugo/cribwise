@@ -206,7 +206,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
                 </div>
                 <h3 className="text-xl font-bold mb-3">No materials match your search 🤔</h3>
                 <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
-                  Try removing some filters or searching by course code instead. We're constantly adding new resources!
+                  Try removing some filters or searching by course code instead. We&apos;re constantly adding new resources!
                 </p>
                 <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400 mb-6">
                   <p>💡 <span className="font-semibold">Pro tip:</span> Search by course code (e.g., CSC201) for best results</p>
@@ -300,7 +300,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full mb-6">
-            <Sparkles className="h-4 w-4" /> Can't Find What You Need?
+            <Sparkles className="h-4 w-4" /> Can&apos;t Find What You Need?
           </div>
 
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
@@ -308,7 +308,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
           </h2>
           
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-            Missing a past question or lecture note? Let us know and we'll source it for you. We're here to help you succeed!
+            Missing a past question or lecture note? Let us know and we&apos;ll source it for you. We&apos;re here to help you succeed!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -316,8 +316,10 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
               size="lg"
               className="bg-white text-purple-700 hover:bg-slate-100 font-bold rounded-2xl px-8"
             >
-              <FileText className="h-5 w-5 mr-2" />
+              <Link href="/materials/request-material">
+              {/* <FileText className="h-5 w-5 mr-2" /> */}
               Request Material
+              </Link>
             </Button>
             <Button 
               size="lg"
