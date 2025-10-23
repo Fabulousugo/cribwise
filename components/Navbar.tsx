@@ -269,7 +269,7 @@ export function Navbar() {
                               </span>
                             )}
                             {isVerified && (
-                              <span className="text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-2 py-1 rounded-full flex items-center gap-1">
+                              <span className="text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-success px-2 py-1 rounded-full flex items-center gap-1">
                                 <CheckCircle2 className="h-3 w-3" />
                                 Verified
                               </span>
@@ -403,7 +403,7 @@ export function Navbar() {
                   <Button variant="ghost">Sign In</Button>
                 </Link>
                 <Link href="/register">
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0">
+                  <Button className="bg-gradient-to-r from-primary to-accent text-primary-foreground border-0">
                     Get Started
                   </Button>
                 </Link>
@@ -475,7 +475,7 @@ export function Navbar() {
                           </span>
                         )}
                         {isVerified && (
-                          <span className="text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 px-2 py-1 rounded-full flex items-center gap-1">
+                          <span className="text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-success px-2 py-1 rounded-full flex items-center gap-1">
                             <CheckCircle2 className="h-3 w-3" />
                             Verified
                           </span>
@@ -487,7 +487,7 @@ export function Navbar() {
                   {/* Verification CTA */}
                   {!isVerified && (
                     <Link href={isAgent ? "/verify-landlord" : "/verify"}>
-                      <Button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+                      <Button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-primary-foreground">
                         <Shield className="mr-2 h-4 w-4" />
                         Get Verified
                       </Button>
@@ -545,7 +545,7 @@ export function Navbar() {
                     </Button>
                   </Link>
                   <Link href="/register">
-                    <Button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white border-0">
+                    <Button className="w-full bg-gradient-to-r from-primary to-accent text-primary-foreground border-0">
                       Get Started
                     </Button>
                   </Link>
@@ -574,7 +574,7 @@ export function Navbar() {
               )}
             </div>
             <Link href="/verify">
-              <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white flex-shrink-0">
+              <Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-primary-foreground flex-shrink-0">
                 Verify Now
               </Button>
             </Link>

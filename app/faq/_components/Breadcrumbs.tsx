@@ -12,7 +12,7 @@ type Crumb = { label: string; href?: string; current?: boolean };
 export function Breadcrumbs({ items }: { items: Crumb[] }) {
   return (
     <nav aria-label="Breadcrumb" className="w-full">
-      <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+      <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-muted-foreground">
         <li className="flex items-center gap-2">
           <Link
             href="/"

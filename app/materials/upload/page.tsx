@@ -81,7 +81,7 @@ export default async function MaterialsUploadPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">Upload</button>
+          <button type="submit" className="px-4 py-2 bg-blue-600 text-primary-foreground rounded-md">Upload</button>
           <Link href="/materials" className="text-sm text-blue-600 hover:underline">Cancel</Link>
         </div>
       </form>

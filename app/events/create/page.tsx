@@ -118,7 +118,7 @@ export default function CreateEventPage() {
           </Button>
 
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground px-5 py-2 rounded-full mb-4">
               <Sparkles className="h-4 w-4" /> Create Event
             </div>
             
@@ -126,8 +126,8 @@ export default function CreateEventPage() {
               List Your Event 🎉
             </h1>
             
-            <p className="text-slate-700 dark:text-slate-300 text-lg max-w-2xl mx-auto">
-              Share your campus event with thousands of students. Fill in the details below and let's make it happen!
+            <p className="text-slate-700 dark:text-muted-foreground text-lg max-w-2xl mx-auto">
+              Share your campus event with thousands of students. Fill in the details below and let&apos;s make it happen!
             </p>
           </div>
         </div>
@@ -150,7 +150,7 @@ export default function CreateEventPage() {
                 {/* Step 1 */}
                 <div className="text-center space-y-3">
                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                    <span className="text-white text-2xl font-black">1</span>
+                    <span className="text-primary-foreground text-2xl font-black">1</span>
                   </div>
                   <h3 className="font-bold text-lg">Fill Event Details</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -161,7 +161,7 @@ export default function CreateEventPage() {
                 {/* Step 2 */}
                 <div className="text-center space-y-3">
                   <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 dark:from-pink-600 dark:to-pink-700 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                    <span className="text-white text-2xl font-black">2</span>
+                    <span className="text-primary-foreground text-2xl font-black">2</span>
                   </div>
                   <h3 className="font-bold text-lg">Review & Publish</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -172,7 +172,7 @@ export default function CreateEventPage() {
                 {/* Step 3 */}
                 <div className="text-center space-y-3">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
-                    <span className="text-white text-2xl font-black">3</span>
+                    <span className="text-primary-foreground text-2xl font-black">3</span>
                   </div>
                   <h3 className="font-bold text-lg">Reach Students</h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -187,28 +187,28 @@ export default function CreateEventPage() {
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">Free to post</span>
+                      <span className="font-semibold text-slate-700 dark:text-muted-foreground">Free to post</span>
                       <p className="text-slate-600 dark:text-slate-400">No hidden fees or charges</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">Instant visibility</span>
+                      <span className="font-semibold text-slate-700 dark:text-muted-foreground">Instant visibility</span>
                       <p className="text-slate-600 dark:text-slate-400">Goes live immediately after posting</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">Edit anytime</span>
+                      <span className="font-semibold text-slate-700 dark:text-muted-foreground">Edit anytime</span>
                       <p className="text-slate-600 dark:text-slate-400">Update details whenever needed</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-slate-700 dark:text-slate-300">Track RSVPs</span>
+                      <span className="font-semibold text-slate-700 dark:text-muted-foreground">Track RSVPs</span>
                       <p className="text-slate-600 dark:text-slate-400">See who's interested in your event</p>
                     </div>
                   </div>
@@ -423,7 +423,7 @@ export default function CreateEventPage() {
                           htmlFor="imageFile"
                           className="flex-1 cursor-pointer"
                         >
-                          <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 hover:border-purple-400 dark:hover:border-purple-600 transition-colors">
+                          <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-6 hover:border-primary/50 dark:hover:border-purple-600 transition-colors">
                             <div className="flex flex-col items-center gap-2 text-center">
                               <ImageIcon className="h-10 w-10 text-slate-400" />
                               <div className="text-sm font-medium">
@@ -465,12 +465,12 @@ export default function CreateEventPage() {
                         aria-label="Remove image"
                         type="button"
                         onClick={handleRemoveImage}
-                        className="absolute top-3 right-3 w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg transition-colors"
+                        className="absolute top-3 right-3 w-8 h-8 bg-red-500 hover:bg-red-600 text-primary-foreground rounded-full flex items-center justify-center shadow-lg transition-colors"
                       >
                         <X className="h-4 w-4" />
                       </button>
                       <div className="absolute bottom-3 left-3">
-                        <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full">
+                        <span className="bg-black/60 backdrop-blur-sm text-primary-foreground text-xs px-3 py-1 rounded-full">
                           Preview
                         </span>
                       </div>
@@ -564,8 +564,8 @@ export default function CreateEventPage() {
                 <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="h-5 w-5 text-primary-foreground" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-bold text-sm mb-1">Quick Tips for a Great Event Listing</h4>
@@ -585,7 +585,7 @@ export default function CreateEventPage() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl h-12 text-base"
+                    className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl h-12 text-base"
                   >
                     {isSubmitting ? (
                       <>

@@ -30,7 +30,7 @@ export default function AlumniDashboard() {
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
               <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <GraduationCap className="h-6 w-6 text-white" />
+                <GraduationCap className="h-6 w-6 text-primary-foreground" />
               </div>
               <div>
                 <h2 className="text-2xl font-black text-amber-900 dark:text-amber-100 mb-2">
@@ -89,7 +89,7 @@ export default function AlumniDashboard() {
 
         {/* Main Actions */}
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-blue-400">
+          <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
             <CardHeader>
               <Users className="h-12 w-12 text-blue-600 mb-3" />
               <CardTitle className="text-xl">Alumni Network</CardTitle>
@@ -98,7 +98,7 @@ export default function AlumniDashboard() {
             </CardHeader>
           </Card>
 
-          <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-green-400">
+          <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
             <CardHeader>
               <Briefcase className="h-12 w-12 text-green-600 mb-3" />
               <CardTitle className="text-xl">Job Board</CardTitle>
@@ -107,7 +107,7 @@ export default function AlumniDashboard() {
             </CardHeader>
           </Card>
 
-          <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-purple-400">
+          <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
             <CardHeader>
               <BookOpen className="h-12 w-12 text-purple-600 mb-3" />
               <CardTitle className="text-xl">Mentor Students</CardTitle>

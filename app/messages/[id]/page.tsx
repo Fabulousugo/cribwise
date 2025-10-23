@@ -196,7 +196,7 @@ export default function ConversationPage() {
               <div key={message.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-md ${isMe ? 'order-2' : 'order-1'}`}>
                   <div className={`rounded-2xl px-4 py-2 ${
-                    isMe ? 'bg-blue-600 text-white' : 'bg-white text-slate-900 border'
+                    isMe ? 'bg-blue-600 text-primary-foreground' : 'bg-white text-slate-900 border'
                   }`}>
                     <p className="whitespace-pre-wrap break-words">{message.message}</p>
                   </div>

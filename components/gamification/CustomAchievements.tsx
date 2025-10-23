@@ -51,7 +51,7 @@ export function CustomAchievements({
                 }`}
               >
                 <div className={`w-12 h-12 bg-gradient-to-br ${achievement.color} rounded-xl flex items-center justify-center mb-3`}>
-                  <Icon className="h-6 w-6 text-white" />
+                  <Icon className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <h4 className="font-bold text-sm mb-1">{achievement.name}</h4>
                 <p className="text-xs text-muted-foreground">{achievement.description}</p>

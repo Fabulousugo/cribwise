@@ -52,7 +52,7 @@ function FeatureSection({
       {/* Copy */}
       <div className={`space-y-6 ${reverse ? "lg:order-1" : ""}`}>
         <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${gradientFrom} ${gradientTo}`}>
-          <Icon className="h-8 w-8 text-white" />
+          <Icon className="h-8 w-8 text-primary-foreground" />
         </div>
         <h3 className="text-4xl md:text-5xl font-bold text-foreground">
           {title}
@@ -82,24 +82,24 @@ function FeatureSection({
   return (
     <main className="min-h-screen bg-background">
       {/* HERO - Full Screen, Bold */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-gradient-to-br from-[hsl(var(--hero-from))] via-[hsl(var(--hero-via))] to-[hsl(var(--hero-to))] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         {/* Animated Grid Background */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f12_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f12_1px,transparent_1px)] bg-[size:64px_64px]"></div>
         
         {/* Gradient Orbs - Simplified */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-purple-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-accent/20 rounded-full blur-3xl"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 py-32 md:py-40">
           <div className="max-w-4xl">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-6 py-3 mb-8">
               <Award className="h-5 w-5 text-yellow-400" />
-              <span className="text-white font-medium">Trusted by 2,500+ Students Across Nigeria</span>
+              <span className="text-primary-foreground font-medium">Trusted by 2,500+ Students Across Nigeria</span>
             </div>
 
             {/* Main Headline - HUGE */}
-            <h1 className="text-6xl md:text-8xl font-black text-white leading-[1.1] mb-8">
+            <h1 className="text-6xl md:text-8xl font-black text-primary-foreground leading-[1.1] mb-8">
               Your University
               <br />
               <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -107,7 +107,7 @@ function FeatureSection({
               </span>
             </h1>
 
-            <p className="text-2xl md:text-3xl text-slate-300 mb-12 max-w-3xl leading-relaxed">
+            <p className="text-2xl md:text-3xl text-muted-foreground mb-12 max-w-3xl leading-relaxed">
               The all-in-one platform for Nigerian students. Housing, admissions, materials, marketplace—everything you need to succeed.
             </p>
 
@@ -120,24 +120,24 @@ function FeatureSection({
                 </Button>
               </Link>
               <Link href="#features">
-                <Button size="lg" variant="outline" className="border-white/30 bg-white/5 backdrop-blur text-white hover:bg-white/10 text-xl px-10 py-8 rounded-2xl">
+                <Button size="lg" variant="outline" className="border-white/30 bg-white/5 backdrop-blur text-primary-foreground hover:bg-white/10 text-xl px-10 py-8 rounded-2xl">
                   Explore Platform
                 </Button>
               </Link>
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-wrap gap-8 text-white/80">
+            <div className="flex flex-wrap gap-8 text-primary-foreground/80">
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-400" />
+                <CheckCircle2 className="h-5 w-5 text-success" />
                 <span className="text-lg">Verified Properties</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-400" />
+                <CheckCircle2 className="h-5 w-5 text-success" />
                 <span className="text-lg">Secure Payments</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-400" />
+                <CheckCircle2 className="h-5 w-5 text-success" />
                 <span className="text-lg">24/7 Support</span>
               </div>
             </div>
@@ -162,7 +162,7 @@ function FeatureSection({
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left: Copy */}
             <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-full font-bold text-sm shadow-lg">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-primary-foreground px-6 py-3 rounded-full font-bold text-sm shadow-lg">
                 <Sparkles className="h-5 w-5" />
                 🔥 Most Popular Feature
               </div>
@@ -182,7 +182,7 @@ function FeatureSection({
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center flex-shrink-0">
-                    <Zap className="h-6 w-6 text-white" />
+                    <Zap className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-foreground mb-1">Smart AI Matching</h4>
@@ -192,7 +192,7 @@ function FeatureSection({
 
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-pink-600 flex items-center justify-center flex-shrink-0">
-                    <Heart className="h-6 w-6 text-white" />
+                    <Heart className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-foreground mb-1">Lifestyle Compatibility</h4>
@@ -202,7 +202,7 @@ function FeatureSection({
 
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
-                    <Users className="h-6 w-6 text-white" />
+                    <Users className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <div>
                     <h4 className="text-xl font-bold text-foreground mb-1">Verified Profiles</h4>
@@ -213,7 +213,7 @@ function FeatureSection({
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Link href="/roommate">
-                  <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white text-xl px-10 py-8 rounded-2xl shadow-2xl hover:scale-105 transition-all">
+                  <Button size="lg" className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-primary-foreground text-xl px-10 py-8 rounded-2xl shadow-2xl hover:scale-105 transition-all">
                     <UserPlus className="mr-3 h-6 w-6" />
                     Find Roommates
                   </Button>
@@ -243,7 +243,7 @@ function FeatureSection({
             <div className="relative">
               <div className="grid grid-cols-2 gap-6">
                 {/* Sample Roommate Cards */}
-                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-purple-400 dark:hover:border-purple-500 hover:-translate-y-2">
+                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/50 dark:hover:border-purple-500 hover:-translate-y-2">
                   <CardContent className="p-6">
                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 mb-4 mx-auto"></div>
                     <h4 className="font-bold text-center mb-1">Chidi O.</h4>
@@ -257,7 +257,7 @@ function FeatureSection({
                       </div>
                     </div>
                     <div className="mt-4 text-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">98% Match</span>
+                      <span className="text-green-600 dark:text-success font-bold text-sm">98% Match</span>
                     </div>
                   </CardContent>
                 </Card>
@@ -276,12 +276,12 @@ function FeatureSection({
                       </div>
                     </div>
                     <div className="mt-4 text-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">95% Match</span>
+                      <span className="text-green-600 dark:text-success font-bold text-sm">95% Match</span>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-blue-400 dark:hover:border-blue-500 hover:-translate-y-2">
+                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/50 dark:hover:border-blue-500 hover:-translate-y-2">
                   <CardContent className="p-6">
                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 mb-4 mx-auto"></div>
                     <h4 className="font-bold text-center mb-1">Tunde A.</h4>
@@ -295,12 +295,12 @@ function FeatureSection({
                       </div>
                     </div>
                     <div className="mt-4 text-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">92% Match</span>
+                      <span className="text-green-600 dark:text-success font-bold text-sm">92% Match</span>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-green-400 dark:hover:border-green-500 hover:-translate-y-2 mt-8">
+                <Card className="group hover:shadow-2xl transition-all duration-300 border-2 hover:border-primary/50 dark:hover:border-green-500 hover:-translate-y-2 mt-8">
                   <CardContent className="p-6">
                     <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-400 to-emerald-400 mb-4 mx-auto"></div>
                     <h4 className="font-bold text-center mb-1">Blessing M.</h4>
@@ -314,14 +314,14 @@ function FeatureSection({
                       </div>
                     </div>
                     <div className="mt-4 text-center">
-                      <span className="text-green-600 dark:text-green-400 font-bold text-sm">94% Match</span>
+                      <span className="text-green-600 dark:text-success font-bold text-sm">94% Match</span>
                     </div>
                   </CardContent>
                 </Card>
               </div>
 
               {/* Floating Badge - Removed animation */}
-              <div className="absolute -top-4 -right-4 bg-gradient-to-br from-yellow-400 to-orange-400 text-white font-black px-6 py-3 rounded-2xl shadow-2xl rotate-12">
+              <div className="absolute -top-4 -right-4 bg-gradient-to-br from-yellow-400 to-orange-400 text-primary-foreground font-black px-6 py-3 rounded-2xl shadow-2xl rotate-12">
                 <p className="text-sm">AI Powered</p>
               </div>
             </div>
@@ -344,7 +344,7 @@ function FeatureSection({
           {/* Housing - Large Feature */}
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-32">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
               <div className="relative h-[500px] rounded-3xl overflow-hidden">
                 <img 
                   src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&auto=format&fit=crop&q=80" 
@@ -357,7 +357,7 @@ function FeatureSection({
             </div>
             <div className="space-y-6">
               <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600">
-                <Building2 className="h-8 w-8 text-white" />
+                <Building2 className="h-8 w-8 text-primary-foreground" />
               </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 Find Your Perfect Home
@@ -392,7 +392,7 @@ function FeatureSection({
           <div className="grid lg:grid-cols-2 gap-12 items-center mb-32">
             <div className="space-y-6 lg:order-1">
               <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-green-500 to-green-600">
-                <GraduationCap className="h-8 w-8 text-white" />
+                <GraduationCap className="h-8 w-8 text-primary-foreground" />
               </div>
               <h3 className="text-4xl md:text-5xl font-bold text-foreground">
                 Navigate Admissions
@@ -578,7 +578,7 @@ function FeatureSection({
                       alt={property.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    <div className="absolute top-4 right-4 flex items-center gap-1 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg">
+                    <div className="absolute top-4 right-4 flex items-center gap-1 bg-success text-success-foreground px-4 py-2 rounded-full text-sm font-bold shadow-lg">
                       <CheckCircle2 className="h-4 w-4" />
                       Verified
                     </div>
@@ -608,16 +608,16 @@ function FeatureSection({
       {/* FINAL CTA */}
       <section className="py-32 px-4 bg-gradient-to-br from-blue-950 via-purple-950 to-slate-950 dark:from-slate-950 dark:via-blue-950 dark:to-slate-950 relative overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:64px_64px]"></div>
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 b-primary/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl"></div>
         
         <div className="max-w-4xl mx-auto text-center relative">
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
+          <h2 className="text-5xl md:text-6xl font-bold text-primary-foreground mb-8">
             Ready to Transform Your
             <br />
             University Experience?
           </h2>
-          <p className="text-2xl text-slate-300 mb-12">
+          <p className="text-2xl text-muted-foreground mb-12">
             Join thousands of Nigerian students already thriving on CribWise
           </p>
           <Link href="/register">

@@ -1,79 +1,48 @@
-import type { Config } from "tailwindcss"
+// tailwind.config.ts
+import type { Config } from "tailwindcss";
 
-const config: Config = {
-  darkMode: "class",
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+const withOpacity = (v: `--${string}`) => `hsl(var(${v}) / <alpha-value>)`;
+
+export default {
+  content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
+        /* you already had these in the previous reply */
+        background: withOpacity("--background"),
+        foreground: withOpacity("--foreground"),
+        card: withOpacity("--card"),
+        "card-foreground": withOpacity("--card-foreground"),
+        popover: withOpacity("--popover"),
+        "popover-foreground": withOpacity("--popover-foreground"),
+        primary: withOpacity("--primary"),
+        "primary-foreground": withOpacity("--primary-foreground"),
+        secondary: withOpacity("--secondary"),
+        "secondary-foreground": withOpacity("--secondary-foreground"),
+        muted: withOpacity("--muted"),
+        "muted-foreground": withOpacity("--muted-foreground"),
+        accent: withOpacity("--accent"),
+        "accent-foreground": withOpacity("--accent-foreground"),
+        destructive: withOpacity("--destructive"),
+        "destructive-foreground": withOpacity("--destructive-foreground"),
+        border: withOpacity("--border"),
+        input: withOpacity("--input"),
+        ring: withOpacity("--ring"),
+
+        /* new semantic/state */
+        success: withOpacity("--success"),
+        "success-foreground": withOpacity("--success-foreground"),
+        warning: withOpacity("--warning"),
+        "warning-foreground": withOpacity("--warning-foreground"),
+        info: withOpacity("--info"),
+        "info-foreground": withOpacity("--info-foreground"),
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
     },
   },
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  plugins: [require("tailwindcss-animate")],
-}
-
-export default config
+  plugins: [],
+} satisfies Config;

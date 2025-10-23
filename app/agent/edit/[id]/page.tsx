@@ -515,14 +515,14 @@ export default function EditPropertyPage() {
                         className="w-full h-32 object-cover rounded-lg"
                       />
                       {index === 0 && (
-                        <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                        <div className="absolute top-2 left-2 bg-blue-600 text-primary-foreground text-xs px-2 py-1 rounded">
                           Main Photo
                         </div>
                       )}
                       <button title="remove-image"
                         type="button"
                         onClick={() => removeImage(index)}
-                        className="absolute top-2 right-2 bg-red-600 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-2 right-2 bg-red-600 text-primary-foreground p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <X className="h-4 w-4" />
                       </button>

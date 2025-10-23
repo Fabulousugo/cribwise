@@ -34,7 +34,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
         <div className="absolute bottom-10 left-10 w-64 h-64 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-pulse delay-75"></div>
 
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground px-5 py-2 rounded-full mb-6">
             <BookOpen className="h-4 w-4" /> Study Resources
           </div>
           
@@ -42,7 +42,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
             Level Up Your Study Game 📚
           </h1>
           
-          <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-slate-700 dark:text-muted-foreground text-lg md:text-xl mb-8 max-w-2xl mx-auto">
             Past questions, lecture notes, and syllabi — all the materials you need to ace your exams, no cap
           </p>
 
@@ -71,7 +71,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 rounded-xl flex items-center justify-center">
-                  <Filter className="h-5 w-5 text-white" />
+                  <Filter className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Find Exactly What You Need</CardTitle>
@@ -99,7 +99,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
                 <div className="grid md:grid-cols-4 gap-3">
                   {/* School */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">School</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">School</label>
                     <Select name="school" defaultValue={rawSchool || "all"}>
                       <SelectTrigger className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl">
                         <SelectValue placeholder="All schools" />
@@ -115,7 +115,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
 
                   {/* Programme */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Programme</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">Programme</label>
                     <Input 
                       name="programme" 
                       defaultValue={programme} 
@@ -126,7 +126,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
 
                   {/* Level */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Level</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">Level</label>
                     <Select name="level" defaultValue={rawLevel || "any"}>
                       <SelectTrigger className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl">
                         <SelectValue placeholder="Any level" />
@@ -142,7 +142,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
 
                   {/* Course Code */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Course Code</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">Course Code</label>
                     <Input 
                       name="course" 
                       defaultValue={course} 
@@ -156,7 +156,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
                 <div className="flex flex-wrap gap-3">
                   <Button 
                     type="submit"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl px-6"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl px-6"
                   >
                     <Search className="h-4 w-4 mr-2" />
                     Apply Filters
@@ -214,7 +214,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
                   <p>🎓 <span className="font-semibold">Alternative:</span> Filter by school only to see all available materials</p>
                 </div>
                 <Link href="/materials">
-                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl">
+                  <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl">
                     Clear All Filters
                   </Button>
                 </Link>
@@ -224,7 +224,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {materials.map((m) => (
                 <Link key={m.id} href={`/materials/${m.id}`}>
-                  <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 group">
+                  <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-purple-500 group">
                     {/* Header with Material Type */}
                     <div className={`h-3 w-full rounded-t-xl ${
                       m.kind.toLowerCase().includes("past") ? "bg-gradient-to-r from-purple-500 to-pink-500" :
@@ -256,7 +256,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
                       
                       <CardDescription className="text-sm dark:text-slate-400">
                         <div className="space-y-1 mt-2">
-                          <p className="font-medium text-slate-700 dark:text-slate-300">
+                          <p className="font-medium text-slate-700 dark:text-muted-foreground">
                             📍 {m.schoolName}
                           </p>
                           {m.programmeName && (
@@ -279,7 +279,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
 
                     <CardContent>
                       <Button 
-                        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl group-hover:scale-105 transition-transform"
+                        className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl group-hover:scale-105 transition-transform"
                         size="sm"
                       >
                         <Download className="h-4 w-4 mr-2" />
@@ -299,15 +299,15 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-95"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-primary-foreground px-4 py-2 rounded-full mb-6">
             <Sparkles className="h-4 w-4" /> Can&apos;t Find What You Need?
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-black text-primary-foreground mb-4">
             Request Study Materials ✨
           </h2>
           
-          <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-primary-foreground/90 text-lg mb-8 max-w-2xl mx-auto">
             Missing a past question or lecture note? Let us know and we&apos;ll source it for you. We&apos;re here to help you succeed!
           </p>
 
@@ -324,7 +324,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
             <Button 
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
+              className="border-2 border-white text-primary-foreground hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
               asChild
             >
               <Link href="/admissions">
@@ -334,7 +334,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
             </Button>
           </div>
 
-          <p className="text-white/70 text-sm mt-8">
+          <p className="text-primary-foreground/70 text-sm mt-8">
             Helping 50,000+ students ace their exams 📖
           </p>
         </div>

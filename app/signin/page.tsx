@@ -115,7 +115,7 @@ export default function SignInPage() {
       <Card className="max-w-md w-full border-2 border-purple-100 dark:border-purple-900/30 shadow-2xl relative z-10">
         <CardHeader className="text-center space-y-2 pb-6">
           <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-2xl flex items-center justify-center mb-2">
-            <Lock className="h-8 w-8 text-white" />
+            <Lock className="h-8 w-8 text-primary-foreground" />
           </div>
           <CardTitle className="text-3xl md:text-4xl font-black bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
             Welcome Back! 👋
@@ -212,7 +212,7 @@ export default function SignInPage() {
           {/* Email/Password Form */}
           <form onSubmit={handleSignIn} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground flex items-center gap-2">
                 <Mail className="h-4 w-4" />
                 Email
               </label>
@@ -227,7 +227,7 @@ export default function SignInPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground flex items-center gap-2">
                 <Lock className="h-4 w-4" />
                 Password
               </label>
@@ -259,7 +259,7 @@ export default function SignInPage() {
             <Button 
               type="submit" 
               disabled={loading || !!oauthLoading} 
-              className="w-full h-12 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl text-base shadow-lg hover:shadow-xl transition-all" 
+              className="w-full h-12 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl text-base shadow-lg hover:shadow-xl transition-all" 
               size="lg"
             >
               {loading ? (

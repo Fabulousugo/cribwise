@@ -29,12 +29,12 @@ export default function Gallery({
         />
         <div className="absolute top-4 left-4 flex flex-wrap gap-2">
           {badges.available ? (
-            <Badge className="bg-emerald-600 text-white">Available</Badge>
+            <Badge className="bg-emerald-600 text-primary-foreground">Available</Badge>
           ) : (
-            <Badge className="bg-rose-600 text-white">Not Available</Badge>
+            <Badge className="bg-rose-600 text-primary-foreground">Not Available</Badge>
           )}
-          {badges.verified && <Badge className="bg-green-600 text-white">✓ Verified</Badge>}
-          <Badge className="bg-slate-900/80 text-white">{badges.type}</Badge>
+          {badges.verified && <Badge className="bg-green-600 text-primary-foreground">✓ Verified</Badge>}
+          <Badge className="bg-slate-900/80 text-primary-foreground">{badges.type}</Badge>
         </div>
       </div>
 

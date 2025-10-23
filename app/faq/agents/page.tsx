@@ -98,7 +98,7 @@ export default function AgentFAQPage() {
           <li>›</li>
           <li><Link href="/faq" className="hover:underline">FAQ</Link></li>
           <li>›</li>
-          <li className="text-slate-700 dark:text-slate-300 font-medium">Agents</li>
+          <li className="text-slate-700 dark:text-muted-foreground font-medium">Agents</li>
         </ol>
       </nav>
 
@@ -107,11 +107,11 @@ export default function AgentFAQPage() {
         <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-gradient-to-br from-emerald-500 to-blue-500 rounded-2xl shadow">
-              <Building2 className="h-7 w-7 text-white" />
+              <Building2 className="h-7 w-7 text-primary-foreground" />
             </div>
             <h1 className="text-3xl md:text-5xl font-black">Agent & Provider FAQs</h1>
           </div>
-          <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
+          <p className="text-slate-600 dark:text-muted-foreground max-w-2xl">
             Guidance for inclusive listings, safe communications, escrow, cancellations, disputes, and privacy.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -127,7 +127,7 @@ export default function AgentFAQPage() {
           {agentFaq.map((item, i) => (
             <AccordionItem key={i} value={`agent-${i}`}>
               <AccordionTrigger className="text-left">{item.q}</AccordionTrigger>
-              <AccordionContent className="text-slate-700 dark:text-slate-300">{item.a}</AccordionContent>
+              <AccordionContent className="text-slate-700 dark:text-muted-foreground">{item.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

@@ -126,14 +126,14 @@ export default function RegisterPage() {
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-4">
             <div className={`flex items-center gap-2 ${step === 'status' ? 'text-blue-600 font-semibold' : 'text-slate-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'status' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'status' ? 'bg-blue-600 text-primary-foreground' : 'bg-slate-200'}`}>
                 1
               </div>
               <span>Choose Status</span>
             </div>
             <div className="w-12 h-0.5 bg-slate-300"></div>
             <div className={`flex items-center gap-2 ${step === 'details' ? 'text-blue-600 font-semibold' : 'text-slate-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'details' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'details' ? 'bg-blue-600 text-primary-foreground' : 'bg-slate-200'}`}>
                 2
               </div>
               <span>Your Details</span>

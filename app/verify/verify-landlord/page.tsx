@@ -123,10 +123,10 @@ export default function AgentVerificationPage() {
       <main className="min-h-screen bg-background py-20 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <div className="w-20 h-20 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-green-400" />
+            <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-success" />
           </div>
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            You're Verified! 🎉
+            You are Verified! 🎉
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
             Your landlord account is verified and ready for premium features.
@@ -150,10 +150,10 @@ export default function AgentVerificationPage() {
             Application Submitted! ✅
           </h1>
           <p className="text-xl text-muted-foreground mb-4">
-            We're reviewing your verification documents.
+            We are reviewing your verification documents.
           </p>
           <p className="text-muted-foreground mb-8">
-            This usually takes 24-48 hours. We'll email you once approved!
+            This usually takes 24-48 hours. We will email you once approved!
           </p>
           <div className="flex gap-4 justify-center">
             <Button size="lg" onClick={() => router.push("/dashboard/agent")}>
@@ -174,7 +174,7 @@ export default function AgentVerificationPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-500 mb-6">
-            <Award className="h-12 w-12 text-white" />
+            <Award className="h-12 w-12 text-primary-foreground" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Become a Verified Landlord
@@ -279,7 +279,7 @@ export default function AgentVerificationPage() {
                     <div>
                       <Label htmlFor="idCard">
                         Government-Issued ID Card *
-                        <span className="text-xs text-muted-foreground ml-2">(Driver's License, National ID, or Passport)</span>
+                        <span className="text-xs text-muted-foreground ml-2">(Driver&apos;s License, National ID, or Passport)</span>
                       </Label>
                       <div className="mt-2 flex items-center gap-4">
                         <Input

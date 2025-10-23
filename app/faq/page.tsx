@@ -29,7 +29,7 @@ export default function FAQHubPage() {
               How can we help{" "}
               <span className="bg-gradient-to-r from-blue-600 to-emerald-600 bg-clip-text text-transparent">today?</span>
             </h1>
-            <p className="mt-4 text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+            <p className="mt-4 text-slate-600 dark:text-muted-foreground max-w-2xl mx-auto">
               Pick your audience to see tailored answers. We’ll add questions and guides next.
             </p>
 
@@ -42,7 +42,7 @@ export default function FAQHubPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
+                  <p className="text-sm text-slate-600 dark:text-muted-foreground">
                     Safety tips, viewings, secure payments, refunds, and what to do if something feels off.
                   </p>
                   <Link href="/faq/students">
@@ -59,7 +59,7 @@ export default function FAQHubPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
+                  <p className="text-sm text-slate-600 dark:text-muted-foreground">
                     Verification, payouts/escrow, listing quality, scheduling viewings, and disputes.
                   </p>
                   <Link href="/faq/agents">
@@ -77,7 +77,7 @@ export default function FAQHubPage() {
                     <ShieldCheck className="h-5 w-5" /> Verification
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-slate-600 dark:text-slate-300">
+                <CardContent className="text-sm text-slate-600 dark:text-muted-foreground">
                   KYC, badges, and fraud checks to keep everyone safer.
                 </CardContent>
               </Card>
@@ -87,7 +87,7 @@ export default function FAQHubPage() {
                     <Banknote className="h-5 w-5" /> Secure Payments
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-slate-600 dark:text-slate-300">
+                <CardContent className="text-sm text-slate-600 dark:text-muted-foreground">
                   Funds held in escrow until conditions are met.
                 </CardContent>
               </Card>
@@ -97,7 +97,7 @@ export default function FAQHubPage() {
                     <AlertTriangle className="h-5 w-5" /> Fast Support
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-slate-600 dark:text-slate-300">
+                <CardContent className="text-sm text-slate-600 dark:text-muted-foreground">
                   Report issues anytime—most cases reviewed within 24 hours.
                 </CardContent>
               </Card>

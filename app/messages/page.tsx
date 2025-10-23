@@ -132,7 +132,7 @@ export default function MessagesPage() {
         {conversations.length === 0 ? (
           <Card>
             <CardContent className="py-16 text-center">
-              <Inbox className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+              <Inbox className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No messages yet</h3>
               <p className="text-slate-600 mb-6">
                 Start a conversation by viewing a roommate&apos;s profile and clicking &quot;Send Message&quot;

@@ -1,280 +1,386 @@
-import { supabase } from "./supabaseClient"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// ==========================================
+// FILE: lib/xp-systems.ts
+// Fixed XP & Gamification System with Proper Error Handling
+// ==========================================
 
-// XP reward amounts for different actions
-export const XP_REWARDS = {
-  // Profile actions
-  COMPLETE_PROFILE: 50,
-  ADD_AVATAR: 20,
-  ADD_PHONE: 10,
-  VERIFY_EMAIL: 50,
-  ADD_BIO: 15,
-  
-  // Property actions
-  VIEW_PROPERTY: 5,
-  SAVE_PROPERTY: 10,
-  CONTACT_LANDLORD: 15,
-  
-  // Roommate actions
-  CREATE_ROOMMATE_PROFILE: 30,
-  SEND_ROOMMATE_REQUEST: 10,
-  ACCEPT_ROOMMATE: 20,
-  
-  // Social actions
-  SEND_MESSAGE: 10,
-  RECEIVE_MESSAGE: 5,
-  MAKE_CONNECTION: 15,
-  
-  // Content actions
-  DOWNLOAD_MATERIAL: 10,
-  UPLOAD_MATERIAL: 25,
-  RATE_PROPERTY: 10,
-  WRITE_REVIEW: 20,
-  
-  // Attendance
-  RSVP_EVENT: 15,
-  ATTEND_EVENT: 30,
-  
-  // Daily actions
-  DAILY_LOGIN: 10,
-  MAINTAIN_STREAK: 5,
-  
-  // Referrals
-  REFER_FRIEND: 100,
-  FRIEND_COMPLETES_PROFILE: 50,
-}
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
-// Award XP to a user
-export async function awardXP(userId: string, amount: number, reason: string) {
-  try {
-    // Get current user data
-    const { data: profile, error: fetchError } = await supabase
-      .from("user_profiles")
-      .select("xp, level")
-      .eq("id", userId)
-      .single()
+const supabase = createClientComponentClient()
 
-    if (fetchError) throw fetchError
+// ==========================================
+// Login Streak System
+// ==========================================
 
-    const currentXP = profile?.xp || 0
-    const newXP = currentXP + amount
-    const newLevel = Math.floor(newXP / 100) + 1
-
-    // Update user XP and level
-    const { error: updateError } = await supabase
-      .from("user_profiles")
-      .update({
-        xp: newXP,
-        level: newLevel,
-      })
-      .eq("id", userId)
-
-    if (updateError) throw updateError
-
-    // Log XP transaction
-    await logXPTransaction(userId, amount, reason, newXP)
-
-    // Check for level up
-    if (newLevel > (profile?.level || 1)) {
-      await handleLevelUp(userId, newLevel)
-    }
-
-    return { success: true, newXP, newLevel, leveledUp: newLevel > (profile?.level || 1) }
-  } catch (error) {
-    console.error("Error awarding XP:", error)
-    return { success: false, error }
-  }
-}
-
-// Log XP transaction for history
-async function logXPTransaction(userId: string, amount: number, reason: string, newTotal: number) {
-  try {
-    await supabase.from("xp_transactions").insert({
-      user_id: userId,
-      amount,
-      reason,
-      new_total: newTotal,
-      created_at: new Date().toISOString(),
-    })
-  } catch (error) {
-    console.error("Error logging XP transaction:", error)
-  }
-}
-
-// Handle level up rewards and notifications
-async function handleLevelUp(userId: string, newLevel: number) {
-  try {
-    // Award bonus XP for leveling up
-    const bonusXP = newLevel * 10
-
-    // You could send a notification here
-    console.log(`User ${userId} leveled up to ${newLevel}! Bonus: ${bonusXP} XP`)
-
-    // Unlock achievements based on level
-    await checkLevelAchievements(userId, newLevel)
-  } catch (error) {
-    console.error("Error handling level up:", error)
-  }
-}
-
-// Check and unlock level-based achievements
-async function checkLevelAchievements(userId: string, level: number) {
-  const achievements = []
-
-  if (level >= 5) achievements.push("level_5")
-  if (level >= 10) achievements.push("level_10")
-  if (level >= 25) achievements.push("level_25")
-  if (level >= 50) achievements.push("level_50")
-  if (level >= 100) achievements.push("level_100")
-
-  if (achievements.length > 0) {
-    // Update user achievements
-    const { data: profile } = await supabase
-      .from("user_profiles")
-      .select("achievements")
-      .eq("id", userId)
-      .single()
-
-    const currentAchievements = profile?.achievements || []
-    const newAchievements = [...new Set([...currentAchievements, ...achievements])]
-
-    await supabase
-      .from("user_profiles")
-      .update({ achievements: newAchievements })
-      .eq("id", userId)
-  }
-}
-
-// Update user's login streak
 export async function updateLoginStreak(userId: string) {
+  if (!userId) {
+    console.error('updateLoginStreak: userId is required')
+    return { success: false, error: 'User ID is required' }
+  }
+
   try {
-    const { data: profile, error } = await supabase
-      .from("user_profiles")
-      .select("login_streak, last_login_at")
-      .eq("id", userId)
+    const today = new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+    
+    // Get current user stats
+    const { data: stats, error: fetchError } = await supabase
+      .from('user_stats')
+      .select('*')
+      .eq('user_id', userId)
       .single()
 
-    if (error) throw error
-
-    const now = new Date()
-    const lastLogin = profile?.last_login_at ? new Date(profile.last_login_at) : null
-    let newStreak = profile?.login_streak || 0
-
-    if (lastLogin) {
-      const hoursSinceLastLogin = (now.getTime() - lastLogin.getTime()) / (1000 * 60 * 60)
-
-      if (hoursSinceLastLogin < 24) {
-        // Same day login - no change
-        return { streak: newStreak }
-      } else if (hoursSinceLastLogin < 48) {
-        // Consecutive day login
-        newStreak += 1
-        await awardXP(userId, XP_REWARDS.MAINTAIN_STREAK, "Daily streak maintained")
-      } else {
-        // Streak broken
-        newStreak = 1
-      }
-    } else {
-      // First login
-      newStreak = 1
+    if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116 = no rows returned
+      console.error('Error fetching user stats:', fetchError)
+      return { success: false, error: fetchError.message }
     }
 
-    // Update streak and last login
-    await supabase
-      .from("user_profiles")
+    // If no stats exist, create initial record
+    if (!stats) {
+      const { error: insertError } = await supabase
+        .from('user_stats')
+        .insert({
+          user_id: userId,
+          login_streak: 1,
+          last_login: today,
+          xp: 0
+        })
+
+      if (insertError) {
+        console.error('Error creating user stats:', insertError)
+        return { success: false, error: insertError.message }
+      }
+
+      // Award XP for first login
+      await awardXP(userId, 10, 'first_login')
+      return { success: true, streak: 1, xp_awarded: 10 }
+    }
+
+    // Check if already logged in today
+    if (stats.last_login === today) {
+      return { success: true, streak: stats.login_streak, already_logged_today: true }
+    }
+
+    // Calculate if streak continues or breaks
+    const lastLogin = new Date(stats.last_login)
+    const todayDate = new Date(today)
+    const diffTime = todayDate.getTime() - lastLogin.getTime()
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+
+    let newStreak = stats.login_streak
+    let xpAwarded = 0
+
+    if (diffDays === 1) {
+      // Consecutive day - increment streak
+      newStreak = stats.login_streak + 1
+      xpAwarded = 10 + Math.min(newStreak * 5, 50) // Max 50 XP bonus
+    } else if (diffDays > 1) {
+      // Streak broken - reset to 1
+      newStreak = 1
+      xpAwarded = 10
+    }
+
+    // Update stats
+    const { error: updateError } = await supabase
+      .from('user_stats')
       .update({
         login_streak: newStreak,
-        last_login_at: now.toISOString(),
+        last_login: today
       })
-      .eq("id", userId)
+      .eq('user_id', userId)
 
-    // Award daily login XP
-    await awardXP(userId, XP_REWARDS.DAILY_LOGIN, "Daily login")
+    if (updateError) {
+      console.error('Error updating user stats:', updateError)
+      return { success: false, error: updateError.message }
+    }
 
-    return { streak: newStreak }
+    // Award XP
+    if (xpAwarded > 0) {
+      await awardXP(userId, xpAwarded, 'daily_login')
+    }
+
+    return { 
+      success: true, 
+      streak: newStreak, 
+      xp_awarded: xpAwarded,
+      streak_broken: diffDays > 1
+    }
+
   } catch (error) {
-    console.error("Error updating login streak:", error)
-    return { streak: 0 }
+    console.error('Error in updateLoginStreak:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    }
   }
 }
 
-// Get user stats for gamification
-export async function getUserStats(userId: string) {
+// ==========================================
+// XP Award System
+// ==========================================
+
+export async function awardXP(
+  userId: string, 
+  xpAmount: number, 
+  reason: string
+) {
+  if (!userId) {
+    console.error('awardXP: userId is required')
+    return { success: false, error: 'User ID is required' }
+  }
+
+  if (xpAmount <= 0) {
+    console.error('awardXP: xpAmount must be positive')
+    return { success: false, error: 'XP amount must be positive' }
+  }
+
   try {
-    const { data: profile } = await supabase
-      .from("user_profiles")
-      .select("*")
-      .eq("id", userId)
+    // Get current XP
+    const { data: stats, error: fetchError } = await supabase
+      .from('user_stats')
+      .select('xp')
+      .eq('user_id', userId)
       .single()
 
-    // Count various activities
-    const [
-      { count: propertiesViewed },
-      { count: messagesSent },
-      { count: materialsDownloaded },
-      { count: connectionsCount },
-    ] = await Promise.all([
-      supabase.from("property_views").select("*", { count: "exact", head: true }).eq("user_id", userId),
-      supabase.from("messages").select("*", { count: "exact", head: true }).eq("sender_id", userId),
-      supabase.from("material_downloads").select("*", { count: "exact", head: true }).eq("user_id", userId),
-      supabase.from("connections").select("*", { count: "exact", head: true }).eq("user_id", userId),
-    ])
-
-    return {
-      xp: profile?.xp || 0,
-      level: profile?.level || 1,
-      loginStreak: profile?.login_streak || 0,
-      achievements: profile?.achievements || [],
-      propertiesViewed: propertiesViewed || 0,
-      messagesSent: messagesSent || 0,
-      materialsDownloaded: materialsDownloaded || 0,
-      connections: connectionsCount || 0,
-      referralCount: profile?.referral_count || 0,
+    if (fetchError && fetchError.code !== 'PGRST116') {
+      console.error('Error fetching user XP:', fetchError)
+      return { success: false, error: fetchError.message }
     }
+
+    const currentXP = stats?.xp || 0
+    const newXP = currentXP + xpAmount
+
+    // Update or insert XP
+    const { error: upsertError } = await supabase
+      .from('user_stats')
+      .upsert({
+        user_id: userId,
+        xp: newXP
+      }, {
+        onConflict: 'user_id'
+      })
+
+    if (upsertError) {
+      console.error('Error updating XP:', upsertError)
+      return { success: false, error: upsertError.message }
+    }
+
+    // Log XP transaction
+    await supabase
+      .from('xp_transactions')
+      .insert({
+        user_id: userId,
+        amount: xpAmount,
+        reason: reason,
+        created_at: new Date().toISOString()
+      })
+
+    return { 
+      success: true, 
+      new_xp: newXP, 
+      awarded: xpAmount 
+    }
+
   } catch (error) {
-    console.error("Error getting user stats:", error)
-    return {
-      xp: 0,
-      level: 1,
-      loginStreak: 0,
-      achievements: [],
-      propertiesViewed: 0,
-      messagesSent: 0,
-      materialsDownloaded: 0,
-      connections: 0,
-      referralCount: 0,
+    console.error('Error in awardXP:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
     }
   }
 }
 
-// Get leaderboard
-export async function getLeaderboard(limit = 10) {
+// ==========================================
+// Get User Stats
+// ==========================================
+
+export async function getUserStats(userId: string) {
+  if (!userId) {
+    console.error('getUserStats: userId is required')
+    return null
+  }
+
   try {
-    const { data: users, error } = await supabase
-      .from("user_profiles")
-      .select("id, full_name, xp, level, avatar_url")
-      .order("xp", { ascending: false })
-      .limit(limit)
+    const { data: stats, error } = await supabase
+      .from('user_stats')
+      .select('*')
+      .eq('user_id', userId)
+      .single()
 
-    if (error) throw error
+    if (error && error.code !== 'PGRST116') {
+      console.error('Error fetching user stats:', error)
+      return null
+    }
 
-    return users?.map((user, index) => ({
-      id: user.id,
-      name: user.full_name,
-      points: user.xp,
-      level: user.level,
-      avatar: user.avatar_url,
-      rank: index + 1,
-    })) || []
+    // Return default stats if user has none
+    if (!stats) {
+      return {
+        user_id: userId,
+        xp: 0,
+        login_streak: 0,
+        last_login: null,
+        properties_viewed: 0,
+        connections_made: 0,
+        materials_downloaded: 0,
+        messages_sent: 0,
+        referral_count: 0
+      }
+    }
+
+    return stats
+
   } catch (error) {
-    console.error("Error getting leaderboard:", error)
-    return []
+    console.error('Error in getUserStats:', error)
+    return null
   }
 }
 
-// Track action and award XP
-export async function trackAction(userId: string, action: keyof typeof XP_REWARDS) {
-  const xpAmount = XP_REWARDS[action]
-  if (!xpAmount) return { success: false, error: "Invalid action" }
+// ==========================================
+// Level Calculation
+// ==========================================
 
-  return await awardXP(userId, xpAmount, action.replace(/_/g, " ").toLowerCase())
+export function calculateLevel(xp: number): number {
+  // Simple level formula: Level = floor(sqrt(XP / 100))
+  // Level 1: 0-99 XP
+  // Level 2: 100-399 XP
+  // Level 3: 400-899 XP
+  // Level 4: 900-1599 XP
+  // etc.
+  return Math.floor(Math.sqrt(xp / 100)) + 1
+}
+
+export function getXPForNextLevel(currentLevel: number): number {
+  // XP needed for next level
+  return currentLevel * currentLevel * 100
+}
+
+export function getXPProgress(xp: number): {
+  currentLevel: number
+  xpInCurrentLevel: number
+  xpNeededForNextLevel: number
+  progressPercentage: number
+} {
+  const currentLevel = calculateLevel(xp)
+  const xpForCurrentLevel = (currentLevel - 1) * (currentLevel - 1) * 100
+  const xpForNextLevel = getXPForNextLevel(currentLevel)
+  const xpInCurrentLevel = xp - xpForCurrentLevel
+  const xpNeededForNextLevel = xpForNextLevel - xpForCurrentLevel
+  const progressPercentage = (xpInCurrentLevel / xpNeededForNextLevel) * 100
+
+  return {
+    currentLevel,
+    xpInCurrentLevel,
+    xpNeededForNextLevel,
+    progressPercentage: Math.min(progressPercentage, 100)
+  }
+}
+
+// ==========================================
+// Activity Tracking
+// ==========================================
+
+export async function trackActivity(
+  userId: string,
+  activityType: 'property_view' | 'connection_made' | 'material_download' | 'message_sent',
+  metadata?: Record<string, any>
+) {
+  if (!userId) {
+    console.error('trackActivity: userId is required')
+    return { success: false, error: 'User ID is required' }
+  }
+
+  try {
+    // Increment stat counter
+    const statField = `${activityType}s` // property_views, connections_made, etc.
+    
+    const { error: updateError } = await supabase.rpc('increment_stat', {
+      p_user_id: userId,
+      p_stat_field: statField
+    })
+
+    if (updateError) {
+      console.error('Error incrementing stat:', updateError)
+      // Don't return error - we'll create the record if it doesn't exist
+      
+      // Try manual increment
+      const { data: stats } = await supabase
+        .from('user_stats')
+        .select(statField)
+        .eq('user_id', userId)
+        .single()
+
+      const currentValue = stats?.[statField] || 0
+      
+      await supabase
+        .from('user_stats')
+        .upsert({
+          user_id: userId,
+          [statField]: currentValue + 1
+        }, {
+          onConflict: 'user_id'
+        })
+    }
+
+    // Log activity
+    await supabase
+      .from('user_activities')
+      .insert({
+        user_id: userId,
+        activity_type: activityType,
+        metadata: metadata || {},
+        created_at: new Date().toISOString()
+      })
+
+    return { success: true }
+
+  } catch (error) {
+    console.error('Error in trackActivity:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    }
+  }
+}
+
+// ==========================================
+// Referral System
+// ==========================================
+
+export async function trackReferral(referrerId: string, referredUserId: string) {
+  if (!referrerId || !referredUserId) {
+    console.error('trackReferral: both referrerId and referredUserId are required')
+    return { success: false, error: 'Both user IDs are required' }
+  }
+
+  try {
+    // Create referral record
+    const { error: referralError } = await supabase
+      .from('referrals')
+      .insert({
+        referrer_id: referrerId,
+        referred_user_id: referredUserId,
+        created_at: new Date().toISOString()
+      })
+
+    if (referralError) {
+      console.error('Error creating referral:', referralError)
+      return { success: false, error: referralError.message }
+    }
+
+    // Award XP to referrer
+    await awardXP(referrerId, 100, 'referral')
+
+    // Increment referral count
+    await supabase.rpc('increment_stat', {
+      p_user_id: referrerId,
+      p_stat_field: 'referral_count'
+    })
+
+    return { success: true, xp_awarded: 100 }
+
+  } catch (error) {
+    console.error('Error in trackReferral:', error)
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error' 
+    }
+  }
 }

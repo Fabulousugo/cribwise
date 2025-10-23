@@ -133,12 +133,12 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
             <Card>
               <CardContent className="p-4 flex flex-wrap gap-2">
                 {property.available ? (
-                  <Badge className="bg-emerald-600 text-white">Available</Badge>
+                  <Badge className="bg-emerald-600 text-primary-foreground">Available</Badge>
                 ) : (
-                  <Badge className="bg-rose-600 text-white">Not Available</Badge>
+                  <Badge className="bg-rose-600 text-primary-foreground">Not Available</Badge>
                 )}
-                {property.verified && <Badge className="bg-green-600 text-white">✓ Verified</Badge>}
-                <Badge className="bg-slate-900/80 text-white">{property.type}</Badge>
+                {property.verified && <Badge className="bg-green-600 text-primary-foreground">✓ Verified</Badge>}
+                <Badge className="bg-slate-900/80 text-primary-foreground">{property.type}</Badge>
               </CardContent>
             </Card>
           </div>

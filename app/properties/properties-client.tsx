@@ -39,13 +39,13 @@ function PropertyCard({ property }: { property: any }) {
           sizes="(min-width: 768px) 33vw, 100vw"
         />
         {property.verified && (
-          <Badge className="absolute top-2 right-2 bg-green-600 text-white shadow" variant="default">
+          <Badge className="absolute top-2 right-2 bg-green-600 text-primary-foreground shadow" variant="default">
             ✓ Verified
           </Badge>
         )}
         {!property.available && (
           <div className="absolute inset-0 bg-black/50 grid place-items-center">
-            <span className="bg-red-500 text-white px-3 py-1 rounded-md font-medium">Not Available</span>
+            <span className="bg-red-500 text-primary-foreground px-3 py-1 rounded-md font-medium">Not Available</span>
           </div>
         )}
       </div>

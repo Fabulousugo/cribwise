@@ -69,10 +69,10 @@ export default function RequestMaterialPage() {
         <Card className="max-w-md w-full border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
           <CardContent className="p-12 text-center">
             <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-              <CheckCircle2 className="h-10 w-10 text-white" />
+              <CheckCircle2 className="h-10 w-10 text-primary-foreground" />
             </div>
             <h2 className="text-3xl font-black mb-3">Request Submitted! 🎉</h2>
-            <p className="text-slate-700 dark:text-slate-300 mb-6">
+            <p className="text-slate-700 dark:text-muted-foreground mb-6">
               Thank you! We&apos;ll search for the material you requested and add it to our library as soon as we find it.
             </p>
             <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -100,7 +100,7 @@ export default function RequestMaterialPage() {
           </Button>
 
           <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-full mb-4">
+            <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground px-5 py-2 rounded-full mb-4">
               <Sparkles className="h-4 w-4" /> Request Material
             </div>
             
@@ -108,7 +108,7 @@ export default function RequestMaterialPage() {
               Can&apos;t Find What You Need? 📚
             </h1>
             
-            <p className="text-slate-700 dark:text-slate-300 text-lg max-w-2xl mx-auto">
+            <p className="text-slate-700 dark:text-muted-foreground text-lg max-w-2xl mx-auto">
               Request the study material you need and we&apos;ll source it for you. Help us build the best academic library!
             </p>
           </div>
@@ -122,7 +122,7 @@ export default function RequestMaterialPage() {
             <Card className="border-2 border-purple-100 dark:border-purple-900/30">
               <CardContent className="p-4 text-center">
                 <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <BookOpen className="h-5 w-5 text-white" />
+                  <BookOpen className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <p className="text-sm font-semibold">5,000+ Materials</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400">Already available</p>
@@ -132,7 +132,7 @@ export default function RequestMaterialPage() {
             <Card className="border-2 border-pink-100 dark:border-pink-900/30">
               <CardContent className="p-4 text-center">
                 <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <CheckCircle2 className="h-5 w-5 text-white" />
+                  <CheckCircle2 className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <p className="text-sm font-semibold">Quick Response</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400">Within 2-3 days</p>
@@ -142,7 +142,7 @@ export default function RequestMaterialPage() {
             <Card className="border-2 border-blue-100 dark:border-blue-900/30">
               <CardContent className="p-4 text-center">
                 <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <Sparkles className="h-5 w-5 text-white" />
+                  <Sparkles className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <p className="text-sm font-semibold">100% Free</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400">No cost to request</p>
@@ -335,8 +335,8 @@ export default function RequestMaterialPage() {
                 <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Sparkles className="h-5 w-5 text-primary-foreground" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-bold text-sm mb-1">What Happens Next?</h4>
@@ -356,7 +356,7 @@ export default function RequestMaterialPage() {
                   <CardContent className="p-4">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <CheckCircle2 className="h-5 w-5 text-white" />
+                        <CheckCircle2 className="h-5 w-5 text-primary-foreground" />
                       </div>
                       <div className="flex-1">
                         <h4 className="font-bold text-sm mb-1">💡 Pro Tip</h4>
@@ -373,7 +373,7 @@ export default function RequestMaterialPage() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl h-12 text-base"
+                    className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl h-12 text-base"
                   >
                     {isSubmitting ? (
                       <>

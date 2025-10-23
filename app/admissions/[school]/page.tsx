@@ -18,7 +18,7 @@ export default async function SchoolsListingPage() {
         <div className="absolute bottom-10 left-10 w-64 h-64 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-pulse delay-75"></div>
 
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground px-5 py-2 rounded-full mb-6">
             <School className="h-4 w-4" /> All Universities
           </div>
           
@@ -26,7 +26,7 @@ export default async function SchoolsListingPage() {
             Explore Nigerian Universities 🎓
           </h1>
           
-          <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-slate-700 dark:text-muted-foreground text-lg md:text-xl mb-8 max-w-2xl mx-auto">
             Browse all universities with admission requirements, deadlines, and program details
           </p>
         </div>
@@ -103,12 +103,12 @@ export default async function SchoolsListingPage() {
                 href={`/admissions/${school.slug}`}
                 className="group"
               >
-                <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 overflow-hidden">
+                <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-purple-500 overflow-hidden">
                   {/* Header with gradient */}
                   <div className="relative h-32 bg-gradient-to-br from-purple-500 via-pink-500 to-blue-500 dark:from-purple-600 dark:via-pink-600 dark:to-blue-600 overflow-hidden">
                     <div className="absolute inset-0 bg-black/10"></div>
                     <div className="absolute top-4 right-4 w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                      <School className="h-8 w-8 text-white" />
+                      <School className="h-8 w-8 text-primary-foreground" />
                     </div>
                     
                     {/* Badge */}
@@ -133,7 +133,7 @@ export default async function SchoolsListingPage() {
                     {/* Deadline */}
                     <div className="flex items-center gap-2 text-sm bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/50 dark:to-purple-950/50 px-3 py-2 rounded-xl">
                       <Clock className="h-4 w-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
-                      <span className="text-slate-700 dark:text-slate-300 font-medium">
+                      <span className="text-slate-700 dark:text-muted-foreground font-medium">
                         Next: {school.nextDeadline ?? "TBA"}
                       </span>
                     </div>
@@ -149,7 +149,7 @@ export default async function SchoolsListingPage() {
                     </div>
 
                     <Button 
-                      className="w-full mt-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl"
+                      className="w-full mt-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl"
                       size="sm"
                     >
                       View Details →
@@ -178,10 +178,10 @@ export default async function SchoolsListingPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-95"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-black text-primary-foreground mb-4">
             Can't Find Your School? 🤔
           </h2>
-          <p className="text-white/90 text-lg mb-8">
+          <p className="text-primary-foreground/90 text-lg mb-8">
             Let us know and we'll add it ASAP. We're constantly updating our database!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -197,7 +197,7 @@ export default async function SchoolsListingPage() {
             <Button 
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
+              className="border-2 border-white text-primary-foreground hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
               asChild
             >
               <Link href="/admissions">← Back to Admissions</Link>

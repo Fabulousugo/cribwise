@@ -65,7 +65,7 @@ export default async function SellPage() {
           <p className="text-xs text-slate-500 mt-1">Images are optional for now. We'll wire storage later.</p>
         </div>
         <div className="flex items-center gap-2">
-          <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">Create listing</button>
+          <button type="submit" className="px-4 py-2 bg-blue-600 text-primary-foreground rounded-md">Create listing</button>
           <Link href="/marketplace" className="text-sm text-blue-600 hover:underline">Cancel</Link>
         </div>
       </form>

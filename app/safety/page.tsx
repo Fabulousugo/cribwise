@@ -15,8 +15,8 @@ export default function SafetyPage() {
         {/* Animated background shapes */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-300/20 dark:bg-emerald-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-300/20 dark:bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-300/20 dark:bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-300/20 dark:bg-primary/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+          <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-300/20 dark:bg-accent/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
         </div>
 
         <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24">
@@ -33,12 +33,12 @@ export default function SafetyPage() {
                 Sleep Better. 
               </span>
               <br />
-              <span className="text-slate-900 dark:text-white">We've Got Your Back.</span>
+              <span className="text-slate-900 dark:text-primary-foreground">We have Got Your Back.</span>
             </h1>
 
             {/* Subheading */}
-            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Finding a place shouldn't feel sketchy. Our <strong>multi-layer verification system</strong> keeps scammers out and gives you (and your parents) total peace of mind. 🛡️
+            <p className="text-lg md:text-xl text-slate-600 dark:text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
+              Finding a place shouldn&apos;t feel sketchy. Our <strong>multi-layer verification system</strong> keeps scammers out and gives you (and your parents) total peace of mind. 🛡️
             </p>
 
             {/* Stats row */}
@@ -60,7 +60,7 @@ export default function SafetyPage() {
             {/* CTA Buttons */}
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/verify">
-                <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-white font-bold px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-blue-600 hover:from-emerald-700 hover:to-blue-700 text-primary-foreground font-bold px-8 py-6 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                   <ShieldCheck className="mr-2 h-5 w-5" />
                   Get Verified Now
                 </Button>
@@ -125,7 +125,7 @@ export default function SafetyPage() {
                 <div className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-colors">
                   <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <strong>Smart Monitoring:</strong> Suspicious activity? We'll ask you to re-verify (takes 2 mins)
+                    <strong>Smart Monitoring:</strong> Suspicious activity? We will ask you to re-verify (takes 2 mins)
                   </div>
                 </div>
               </div>
@@ -133,7 +133,7 @@ export default function SafetyPage() {
           </Card>
 
           {/* Card 2: Verified Landlords */}
-          <Card className="relative overflow-hidden border-2 hover:border-blue-500 dark:hover:border-blue-400 transition-all duration-300 hover:shadow-2xl group">
+          <Card className="relative overflow-hidden border-2 hover:border-blue-500 dark:hover:border-primary/50 transition-all duration-300 hover:shadow-2xl group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-bl-full"></div>
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -143,7 +143,7 @@ export default function SafetyPage() {
                   </div>
                   <div>
                     <CardTitle className="text-xl font-bold">Verified Landlords</CardTitle>
-                    <CardDescription className="text-sm">Know who you're dealing with 🏠</CardDescription>
+                    <CardDescription className="text-sm">Know who you are dealing with 🏠</CardDescription>
                   </div>
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default function SafetyPage() {
           </Card>
 
           {/* Card 3: Verified Listings */}
-          <Card className="relative overflow-hidden border-2 hover:border-purple-500 dark:hover:border-purple-400 transition-all duration-300 hover:shadow-2xl group">
+          <Card className="relative overflow-hidden border-2 hover:border-purple-500 dark:hover:border-primary/50 transition-all duration-300 hover:shadow-2xl group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-transparent rounded-bl-full"></div>
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -233,7 +233,7 @@ export default function SafetyPage() {
                 <div className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-colors">
                   <CheckCircle className="h-5 w-5 text-pink-600 dark:text-pink-400 flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <strong>Smart Alerts:</strong> We flag risky phrases like "send money to this account"
+                    <strong>Smart Alerts:</strong> We flag risky phrases like &quot;send money to this account&quot;
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-900/20 transition-colors">
@@ -263,10 +263,10 @@ export default function SafetyPage() {
               BEHIND THE SCENES
             </div>
             <h2 className="text-3xl md:text-4xl font-black mb-4">
-              How We <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Verify Everything</span>
+              How We <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Verify Everything</span>
             </h2>
             <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Our verification isn't just a checkbox. It's a full-stack security system working 24/7.
+              Our verification isn&apos;t just a checkbox. It&apos;s a full-stack security system working 24/7.
             </p>
           </div>
 
@@ -274,11 +274,11 @@ export default function SafetyPage() {
             <Card className="bg-white dark:bg-slate-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <CardHeader>
                 <div className="w-16 h-16 bg-gradient-to-br from-pink-500 to-red-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                  <Camera className="h-8 w-8 text-white" />
+                  <Camera className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="text-xl font-bold">Photo Capture Flow</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-slate-700 dark:text-slate-300 space-y-3">
+              <CardContent className="text-sm text-slate-700 dark:text-muted-foreground space-y-3">
                 <p>Agents follow our <strong>4-shot capture guide</strong>: front view, room interior, facilities, and neighborhood. Works on any phone, even low-spec devices.</p>
                 <div className="bg-gradient-to-r from-pink-50 to-red-50 dark:from-pink-900/20 dark:to-red-900/20 p-3 rounded-lg border border-pink-200 dark:border-pink-800">
                   <p className="text-xs font-semibold text-pink-700 dark:text-pink-300">🎯 Pro tip: Our WhatsApp link makes it super easy for landlords</p>
@@ -289,11 +289,11 @@ export default function SafetyPage() {
             <Card className="bg-white dark:bg-slate-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <CardHeader>
                 <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-green-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                  <MapPinCheck className="h-8 w-8 text-white" />
+                  <MapPinCheck className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="text-xl font-bold">Location Lock</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-slate-700 dark:text-slate-300 space-y-3">
+              <CardContent className="text-sm text-slate-700 dark:text-muted-foreground space-y-3">
                 <p>GPS is captured <em>automatically</em> when photos are taken. Pins are <strong>not draggable</strong> by agents. We hash the geo-token for privacy.</p>
                 <div className="bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-900/20 dark:to-green-900/20 p-3 rounded-lg border border-emerald-200 dark:border-emerald-800">
                   <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">🔒 Result: No fake addresses, no catfishing locations</p>
@@ -303,12 +303,12 @@ export default function SafetyPage() {
 
             <Card className="bg-white dark:bg-slate-800 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
               <CardHeader>
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                  <ShieldCheck className="h-8 w-8 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-2xl flex items-center justify-center mb-4 shadow-lg">
+                  <ShieldCheck className="h-8 w-8 text-primary-foreground" />
                 </div>
                 <CardTitle className="text-xl font-bold">AI Risk Scoring</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-slate-700 dark:text-slate-300 space-y-3">
+              <CardContent className="text-sm text-slate-700 dark:text-muted-foreground space-y-3">
                 <p>Signals from identity, device fingerprints, media quality, and user history determine if we need extra verification before going live.</p>
                 <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
                   <p className="text-xs font-semibold text-blue-700 dark:text-blue-300">⚡ High-risk? Face match required. Low-risk? Instant approval.</p>
@@ -343,14 +343,14 @@ export default function SafetyPage() {
                 </div>
                 <CardTitle className="text-xl font-bold">Report Suspicious Activity</CardTitle>
               </div>
-              <CardDescription className="text-slate-700 dark:text-slate-300">We prioritize reports from verified students</CardDescription>
+              <CardDescription className="text-slate-700 dark:text-muted-foreground">We prioritize reports from verified students</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-sm text-slate-700 dark:text-slate-300">
+              <p className="text-sm text-slate-700 dark:text-muted-foreground">
                 Every property page has a <strong>Report</strong> button. Use it if you see fake photos, price manipulation, or sketchy behavior.
               </p>
               <Link href="/report">
-                <Button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-bold">
+                <Button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-primary-foreground font-bold">
                   <AlertTriangle className="mr-2 h-4 w-4" />
                   File a Report Now
                 </Button>
@@ -366,10 +366,10 @@ export default function SafetyPage() {
                 </div>
                 <CardTitle className="text-xl font-bold">Essential Safety Tips</CardTitle>
               </div>
-              <CardDescription className="text-slate-700 dark:text-slate-300">Read before you pay or visit</CardDescription>
+              <CardDescription className="text-slate-700 dark:text-muted-foreground">Read before you pay or visit</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+              <ul className="space-y-2 text-sm text-slate-700 dark:text-muted-foreground">
                 <li className="flex items-start gap-2">
                   <CheckCircle className="h-4 w-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
                   <span>Tour in <strong>daylight</strong>, preferably with a friend</span>
@@ -384,7 +384,7 @@ export default function SafetyPage() {
                 </li>
               </ul>
               <Link href="/safety/tips">
-                <Button variant="outline" className="w-full border-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-bold">
+                <Button variant="outline" className="w-full border-2 border-blue-600 dark:border-primary/50 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 font-bold">
                   <Eye className="mr-2 h-4 w-4" />
                   Read All Safety Tips
                 </Button>
@@ -402,10 +402,10 @@ export default function SafetyPage() {
             FOR PARENTS
           </div>
           <h2 className="text-3xl md:text-4xl font-black mb-6">
-            <span className="bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent">Your Child's Safety</span> Is Our Priority
+            <span className="bg-gradient-to-r from-violet-600 to-pink-600 bg-clip-text text-transparent">Your Child&apos;s Safety</span> Is Our Priority
           </h2>
-          <p className="text-lg text-slate-700 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
-            We know you want the best for your kids. That's why we've built verification systems that give you visibility and control — without being invasive.
+          <p className="text-lg text-slate-700 dark:text-muted-foreground mb-8 max-w-2xl mx-auto">
+            We know you want the best for your kids. That&apos;s why we have built verification systems that give you visibility and control — without being invasive.
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
@@ -433,11 +433,11 @@ export default function SafetyPage() {
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl max-w-2xl mx-auto">
-            <p className="text-slate-700 dark:text-slate-300 italic mb-4">
-              "As a parent, I was worried about my daughter moving off-campus. CribWise's verification badges gave me peace of mind. I could actually see the landlord's real identity and location before she paid anything."
+            <p className="text-slate-700 dark:text-muted-foreground italic mb-4">
+              &quot;As a parent, I was worried about my daughter moving off-campus. CribWise&apos;s verification badges gave me peace of mind. I could actually see the landlord&apos;s real identity and location before she paid anything.&quot;
             </p>
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold">
+              <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-primary-foreground font-bold">
                 MO
               </div>
               <div className="text-left">
@@ -451,7 +451,7 @@ export default function SafetyPage() {
 
       {/* Final CTA Section */}
       <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="bg-gradient-to-br from-emerald-600 via-blue-600 to-purple-600 rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
+        <div className="bg-gradient-to-br from-emerald-600 via-blue-600 to-purple-600 rounded-3xl p-8 md:p-12 text-primary-foreground shadow-2xl relative overflow-hidden">
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
@@ -466,7 +466,7 @@ export default function SafetyPage() {
               Ready to Join the Verified Community?
             </h2>
             
-            <p className="text-lg md:text-xl mb-8 text-white/90 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
               Get your verification badge in under 5 minutes. Stand out from the crowd, build trust instantly, and unlock full platform access.
             </p>
 
@@ -478,7 +478,7 @@ export default function SafetyPage() {
                 </Button>
               </Link>
               <Link href="/properties">
-                <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 font-bold px-10 py-7 text-lg backdrop-blur-sm">
+                <Button size="lg" variant="outline" className="border-2 border-white text-primary-foreground hover:bg-white/10 font-bold px-10 py-7 text-lg backdrop-blur-sm">
                   Browse Safe Listings
                 </Button>
               </Link>

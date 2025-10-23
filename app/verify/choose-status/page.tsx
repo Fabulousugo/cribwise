@@ -165,14 +165,14 @@ export default function ChooseStatusPage() {
               >
                 {option.recommended && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    <span className="bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs font-bold px-3 py-1 rounded-full">
                       POPULAR
                     </span>
                   </div>
                 )}
                 <CardHeader>
                   <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${option.color} flex items-center justify-center mb-4`}>
-                    <option.icon className="h-6 w-6 text-white" />
+                    <option.icon className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <CardTitle className="text-lg">{option.title}</CardTitle>
                   <CardDescription>{option.description}</CardDescription>
@@ -220,7 +220,7 @@ export default function ChooseStatusPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${agentOption.color} flex items-center justify-center`}>
-                    <agentOption.icon className="h-8 w-8 text-white" />
+                    <agentOption.icon className="h-8 w-8 text-primary-foreground" />
                   </div>
                   <div>
                     <CardTitle className="text-2xl">{agentOption.title}</CardTitle>

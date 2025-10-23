@@ -40,7 +40,7 @@ export const prospectiveAchievements = [
     description: 'Uploaded all required documents',
     icon: 'Trophy',
     unlocked: false,
-    color: 'from-blue-500 to-purple-500'
+    color: 'from-primary to-accent'
   },
   { 
     name: 'School Scout', 
@@ -64,7 +64,7 @@ export const admittedAchievements = [
     description: 'Secured accommodation',
     icon: 'Trophy',
     unlocked: false,
-    color: 'from-blue-500 to-purple-500'
+    color: 'from-primary to-accent'
   },
   { 
     name: 'Perfect Match', 
@@ -88,7 +88,7 @@ export const alumniAchievements = [
     description: 'Mentored 10+ students',
     icon: 'Trophy',
     unlocked: false,
-    color: 'from-blue-500 to-purple-500'
+    color: 'from-primary to-accent'
   },
   { 
     name: 'Philanthropist', 

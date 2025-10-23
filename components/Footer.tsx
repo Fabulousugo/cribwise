@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export function Footer() {
   return (
-    <footer className="bg-slate-900 text-white py-12 px-4 mt-16">
+    <footer className="bg-slate-900 text-primary-foreground py-12 px-4 mt-16">
       <div className="max-w-6xl mx-auto grid md:grid-cols-4 gap-8">
         <div>
           <h3 className="font-bold text-xl mb-4">Cribwise</h3>

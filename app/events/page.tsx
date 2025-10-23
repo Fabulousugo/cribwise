@@ -59,7 +59,7 @@ function Cover({ ev, className }: { ev: EventItem; className?: string }) {
     <div className={`h-full w-full bg-gradient-to-br ${g} relative ${className || ""}`}>
       <div className="absolute inset-0 opacity-25 bg-[radial-gradient(ellipse_at_top_left,white,transparent_40%)]" />
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-white/90 font-black tracking-tight text-4xl drop-shadow-sm">
+        <span className="text-primary-foreground/90 font-black tracking-tight text-4xl drop-shadow-sm">
           {titleInitials}
         </span>
       </div>
@@ -98,15 +98,15 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
         <div className="absolute bottom-10 left-10 w-64 h-64 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-pulse delay-75"></div>
 
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground px-5 py-2 rounded-full mb-6">
             <Sparkles className="h-4 w-4" /> Campus Events
           </div>
           
           <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
-            What's Happening This Week 🎉
+            What&apos;s Happening This Week 🎉
           </h1>
           
-          <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-slate-700 dark:text-muted-foreground text-lg md:text-xl mb-8 max-w-2xl mx-auto">
             Workshops, career fairs, tech meetups, and socials — real events you can actually attend, no cap
           </p>
 
@@ -140,20 +140,20 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
             <div className="grid md:grid-cols-3 gap-6">
               {featured.map((ev) => (
                 <Link key={ev.id} href={`/events/${ev.id}`}>
-                  <Card className="group overflow-hidden border-2 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+                  <Card className="group overflow-hidden border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-purple-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
                     <div className="relative aspect-[16/9]">
                       <Cover ev={ev} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                       {ev.category && (
                         <div className="absolute top-3 left-3">
-                          <Badge className="bg-purple-600 text-white font-bold shadow-lg">
+                          <Badge className="bg-purple-600 text-primary-foreground font-bold shadow-lg">
                             {ev.category}
                           </Badge>
                         </div>
                       )}
-                      <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 text-primary-foreground">
                         <h3 className="font-bold text-lg line-clamp-2 drop-shadow-lg">{ev.title}</h3>
-                        <p className="text-sm text-white/90 mt-1">{ev.schoolName || ev.schoolSlug}</p>
+                        <p className="text-sm text-primary-foreground/90 mt-1">{ev.schoolName || ev.schoolSlug}</p>
                       </div>
                     </div>
                   </Card>
@@ -171,7 +171,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
             <CardHeader className="pb-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 rounded-xl flex items-center justify-center">
-                  <Search className="h-5 w-5 text-white" />
+                  <Search className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Find Your Next Event</CardTitle>
@@ -199,7 +199,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
                 <div className="grid md:grid-cols-4 gap-3">
                   {/* School */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">School</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">School</label>
                     <Select name="school" defaultValue={school || "all"}>
                       <SelectTrigger className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl">
                         <SelectValue placeholder="All schools" />
@@ -215,7 +215,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
 
                   {/* Category */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Category</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">Category</label>
                     <Select name="category" defaultValue={category || "all"}>
                       <SelectTrigger className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl">
                         <SelectValue placeholder="All categories" />
@@ -231,7 +231,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
 
                   {/* Date From */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">From Date</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">From Date</label>
                     <Input 
                       type="date" 
                       name="from" 
@@ -242,7 +242,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
 
                   {/* Date To */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">To Date</label>
+                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">To Date</label>
                     <Input 
                       type="date" 
                       name="to" 
@@ -256,7 +256,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
                 <div className="flex flex-wrap gap-3">
                   <Button 
                     type="submit"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl px-6"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl px-6"
                   >
                     <Search className="h-4 w-4 mr-2" />
                     Apply Filters
@@ -302,7 +302,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
                 scroll={false} 
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${
                   view !== "list" 
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg" 
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground shadow-lg" 
                     : "bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700"
                 }`}
               >
@@ -314,7 +314,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
                 scroll={false} 
                 className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all ${
                   view === "list" 
-                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg" 
+                    ? "bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground shadow-lg" 
                     : "bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700"
                 }`}
               >
@@ -352,15 +352,15 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-95"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-primary-foreground px-4 py-2 rounded-full mb-6">
             <Sparkles className="h-4 w-4" /> Host Your Event
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-black text-primary-foreground mb-4">
             Got an Event Coming Up? 📣
           </h2>
           
-          <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-primary-foreground/90 text-lg mb-8 max-w-2xl mx-auto">
             List your campus event and reach thousands of students. Whether it's a workshop, meetup, or party — let's make it epic!
           </p>
 
@@ -378,7 +378,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
             <Button 
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
+              className="border-2 border-white text-primary-foreground hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
               asChild
             >
               <Link href="/">
@@ -387,7 +387,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
             </Button>
           </div>
 
-          <p className="text-white/70 text-sm mt-8">
+          <p className="text-primary-foreground/70 text-sm mt-8">
             Connecting 20,000+ students across Nigeria 🇳🇬
           </p>
         </div>
@@ -414,7 +414,7 @@ function EmptyState() {
           <p>🎓 <span className="font-semibold">All events:</span> Remove filters to see everything</p>
         </div>
         <Link href="/events">
-          <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl">
+          <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl">
             Clear All Filters
           </Button>
         </Link>
@@ -426,13 +426,13 @@ function EmptyState() {
 function EventCard({ ev }: { ev: EventItem }) {
   return (
     <Link href={`/events/${ev.id}`}>
-      <Card className="group h-full overflow-hidden border-2 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+      <Card className="group h-full overflow-hidden border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-purple-500 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
         <div className="relative aspect-[16/9]">
           <Cover ev={ev} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           {ev.category && (
             <div className="absolute top-3 left-3">
-              <Badge className="bg-purple-600 text-white font-bold shadow-lg">
+              <Badge className="bg-purple-600 text-primary-foreground font-bold shadow-lg">
                 {ev.category}
               </Badge>
             </div>
@@ -461,7 +461,7 @@ function EventCard({ ev }: { ev: EventItem }) {
           </div>
 
           <Button 
-            className="w-full mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl group-hover:scale-105 transition-transform"
+            className="w-full mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl group-hover:scale-105 transition-transform"
             size="sm"
           >
             <Zap className="h-4 w-4 mr-2" />
@@ -476,13 +476,13 @@ function EventCard({ ev }: { ev: EventItem }) {
 function EventRow({ ev }: { ev: EventItem }) {
   return (
     <Link href={`/events/${ev.id}`}>
-      <Card className="group grid md:grid-cols-[240px,1fr] gap-0 overflow-hidden border-2 border-slate-200 dark:border-slate-700 hover:border-purple-400 dark:hover:border-purple-500 hover:shadow-xl transition-all">
+      <Card className="group grid md:grid-cols-[240px,1fr] gap-0 overflow-hidden border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-purple-500 hover:shadow-xl transition-all">
         <div className="relative aspect-[16/9] md:aspect-auto">
           <Cover ev={ev} className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           {ev.category && (
             <div className="absolute top-3 left-3">
-              <Badge className="bg-purple-600 text-white font-bold shadow-lg text-xs">
+              <Badge className="bg-purple-600 text-primary-foreground font-bold shadow-lg text-xs">
                 {ev.category}
               </Badge>
             </div>

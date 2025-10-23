@@ -134,10 +134,10 @@ export default function StudentVerificationPage() {
       <main className="min-h-screen bg-background py-20 px-4">
         <div className="max-w-2xl mx-auto text-center">
           <div className="w-20 h-20 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-green-400" />
+            <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-success" />
           </div>
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            You're Already Verified! ✅
+            You are Already Verified! ✅
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
             Your student account is verified and ready to go.
@@ -155,8 +155,8 @@ export default function StudentVerificationPage() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 mb-6">
-            <Shield className="h-12 w-12 text-white" />
+          <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-primary to-accent mb-6">
+            <Shield className="h-12 w-12 text-primary-foreground" />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
             Verify Your Student Status
@@ -212,8 +212,8 @@ export default function StudentVerificationPage() {
 
                     {success && (
                       <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                        <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
-                        <p className="text-sm text-green-600 dark:text-green-400">{success}</p>
+                        <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-success" />
+                        <p className="text-sm text-green-600 dark:text-success">{success}</p>
                       </div>
                     )}
 
@@ -249,8 +249,8 @@ export default function StudentVerificationPage() {
 
                     {success && (
                       <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                        <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
-                        <p className="text-sm text-green-600 dark:text-green-400">{success}</p>
+                        <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-success" />
+                        <p className="text-sm text-green-600 dark:text-success">{success}</p>
                       </div>
                     )}
 
@@ -278,7 +278,7 @@ export default function StudentVerificationPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sparkles className="h-6 w-6 text-primary" />
-                  What You'll Unlock
+                  What You will Unlock
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -328,11 +328,11 @@ export default function StudentVerificationPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-start gap-3">
-                  <Shield className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-1" />
+                  <Shield className="h-6 w-6 text-green-600 dark:text-success flex-shrink-0 mt-1" />
                   <div>
                     <p className="font-semibold text-foreground mb-2">Your Privacy Matters</p>
                     <p className="text-sm text-muted-foreground">
-                      We only use your school email to verify you're a real student. We never share your information with third parties.
+                      We only use your school email to verify you are a real student. We never share your information with third parties.
                     </p>
                   </div>
                 </div>

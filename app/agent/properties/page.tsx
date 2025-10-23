@@ -146,7 +146,7 @@ export default function MyPropertiesPage() {
         {properties.length === 0 ? (
           <Card>
             <CardContent className="py-16 text-center">
-              <HomeIcon className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+              <HomeIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">No properties yet</h3>
               <p className="text-slate-600 mb-6">
                 Start by adding your first property listing

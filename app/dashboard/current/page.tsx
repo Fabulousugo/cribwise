@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // ==========================================
 // FILE: app/dashboard/current/page.tsx
 // Fixed Current Student Dashboard
@@ -81,7 +82,7 @@ export default function CurrentStudentDashboard() {
             </div>
             {!isVerified && (
               <Link href="/verify">
-                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                <Button size="lg" className="bg-gradient-to-r from-primary to-accent text-primary-foreground">
                   <Shield className="mr-2 h-5 w-5" />
                   Get Verified
                 </Button>
@@ -123,8 +124,8 @@ export default function CurrentStudentDashboard() {
                       </div>
                     </div>
                     <Link href="/verify">
-                      <Button className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
-                        Verify Now - It's Free
+                      <Button className="bg-gradient-to-r from-amber-500 to-orange-500 text-primary-foreground">
+                        Verify Now - It&apos;s Free
                         <Sparkles className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
@@ -195,7 +196,7 @@ export default function CurrentStudentDashboard() {
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
                     <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600">
-                      <BookOpen className="h-6 w-6 text-white" />
+                      <BookOpen className="h-6 w-6 text-primary-foreground" />
                     </div>
                     <CheckCircle2 className="h-5 w-5 text-green-500" />
                   </div>
@@ -216,7 +217,7 @@ export default function CurrentStudentDashboard() {
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
                     <div className="p-3 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600">
-                      <ShoppingBag className="h-6 w-6 text-white" />
+                      <ShoppingBag className="h-6 w-6 text-primary-foreground" />
                     </div>
                     <CheckCircle2 className="h-5 w-5 text-green-500" />
                   </div>
@@ -237,13 +238,13 @@ export default function CurrentStudentDashboard() {
                 <CardHeader>
                   <div className="flex items-center justify-between mb-4">
                     <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600">
-                      <Calendar className="h-6 w-6 text-white" />
+                      <Calendar className="h-6 w-6 text-primary-foreground" />
                     </div>
                     <CheckCircle2 className="h-5 w-5 text-green-500" />
                   </div>
                   <CardTitle className="text-2xl">Campus Events</CardTitle>
                   <CardDescription className="text-base">
-                    Discover what's happening
+                    Discover what&apos;s happening
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -262,7 +263,7 @@ export default function CurrentStudentDashboard() {
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle>This Week's Classes</CardTitle>
+                  <CardTitle>This Week&apos;s Classes</CardTitle>
                   <Button variant="ghost" size="sm">View All</Button>
                 </div>
               </CardHeader>
@@ -362,7 +363,7 @@ export default function CurrentStudentDashboard() {
               <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="p-3 rounded-xl bg-green-100 dark:bg-green-900/20">
-                    <BookOpen className="h-6 w-6 text-green-600 dark:text-green-400" />
+                    <BookOpen className="h-6 w-6 text-green-600 dark:text-success" />
                   </div>
                   <div>
                     <p className="text-3xl font-bold text-foreground">{stats.materialsDownloaded}</p>

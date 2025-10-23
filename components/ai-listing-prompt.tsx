@@ -9,7 +9,7 @@ export function AIListingPrompt() {
       <CardContent className="py-4">
         <div className="flex items-start gap-4">
           <div className="p-3 bg-gradient-to-br from-purple-600 to-blue-600 rounded-xl flex-shrink-0">
-            <Wand2 className="h-6 w-6 text-white" />
+            <Wand2 className="h-6 w-6 text-primary-foreground" />
           </div>
           <div className="flex-1">
             <h3 className="font-semibold text-lg mb-1 text-purple-900">

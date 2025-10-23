@@ -171,7 +171,7 @@ export default function ChecklistViewPage() {
             </p>
             <Button 
               size="lg"
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl w-full"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl w-full"
               asChild
             >
               <Link href="/admissions/checklist">
@@ -235,7 +235,7 @@ export default function ChecklistViewPage() {
               <div className="mt-4 p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-2 border-green-200 dark:border-green-800 rounded-xl">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
-                    <CheckCircle2 className="h-6 w-6 text-white" />
+                    <CheckCircle2 className="h-6 w-6 text-primary-foreground" />
                   </div>
                   <div>
                     <h3 className="font-bold text-green-900 dark:text-green-100">🎉 All Done!</h3>
@@ -254,15 +254,15 @@ export default function ChecklistViewPage() {
           <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
             <CardContent className="p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                  <Bell className="h-5 w-5 text-white" />
+                <div className="w-10 h-10 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0">
+                  <Bell className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <div>
                   <h3 className="font-bold text-sm">Never Miss a Deadline</h3>
                   <p className="text-xs text-slate-600 dark:text-slate-400">Get WhatsApp reminders for important tasks</p>
                 </div>
               </div>
-              <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold rounded-xl whitespace-nowrap">
+              <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-primary-foreground font-bold rounded-xl whitespace-nowrap">
                 Enable Reminders
               </Button>
             </CardContent>
@@ -405,7 +405,7 @@ export default function ChecklistViewPage() {
                               {/* Resources */}
                               {step.resources && step.resources.length > 0 && (
                                 <div className="space-y-2">
-                                  <h5 className="font-bold text-sm text-slate-700 dark:text-slate-300">Helpful Resources:</h5>
+                                  <h5 className="font-bold text-sm text-slate-700 dark:text-muted-foreground">Helpful Resources:</h5>
                                   <div className="flex flex-wrap gap-2">
                                     {step.resources.map((resource, i) => (
                                       <a

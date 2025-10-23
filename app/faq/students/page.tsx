@@ -98,7 +98,7 @@ export default function StudentFAQPage() {
           <li>›</li>
           <li><Link href="/faq" className="hover:underline">FAQ</Link></li>
           <li>›</li>
-          <li className="text-slate-700 dark:text-slate-300 font-medium">Students</li>
+          <li className="text-slate-700 dark:text-muted-foreground font-medium">Students</li>
         </ol>
       </nav>
 
@@ -107,11 +107,11 @@ export default function StudentFAQPage() {
         <div className="max-w-6xl mx-auto px-4 py-12 md:py-16">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-3 bg-gradient-to-br from-blue-500 to-emerald-500 rounded-2xl shadow">
-              <GraduationCap className="h-7 w-7 text-white" />
+              <GraduationCap className="h-7 w-7 text-primary-foreground" />
             </div>
             <h1 className="text-3xl md:text-5xl font-black">Student FAQs</h1>
           </div>
-          <p className="text-slate-600 dark:text-slate-300 max-w-2xl">
+          <p className="text-slate-600 dark:text-muted-foreground max-w-2xl">
             Safety-first answers for housing, services, activities, payments, accessibility, and reporting.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -127,7 +127,7 @@ export default function StudentFAQPage() {
           {studentFaq.map((item, i) => (
             <AccordionItem key={i} value={`student-${i}`}>
               <AccordionTrigger className="text-left">{item.q}</AccordionTrigger>
-              <AccordionContent className="text-slate-700 dark:text-slate-300">{item.a}</AccordionContent>
+              <AccordionContent className="text-slate-700 dark:text-muted-foreground">{item.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

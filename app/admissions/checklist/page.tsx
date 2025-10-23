@@ -115,7 +115,7 @@ export default function ChecklistSelectorPage() {
         <div className="absolute bottom-10 left-10 w-64 h-64 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-pulse delay-75"></div>
 
         <div className="max-w-5xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-white px-5 py-2 rounded-full mb-4">
+          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground px-5 py-2 rounded-full mb-4">
             <Target className="h-4 w-4" /> Personalized Planning
           </div>
           
@@ -123,8 +123,8 @@ export default function ChecklistSelectorPage() {
             Build Your Custom Checklist ✨
           </h1>
           
-          <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-6">
-            Select the checklists that match your journey. We'll create a personalized roadmap just for you.
+          <p className="text-slate-700 dark:text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-6">
+            Select the checklists that match your journey. We will create a personalized roadmap just for you.
           </p>
 
           {/* Current Selection Stats */}
@@ -148,7 +148,7 @@ export default function ChecklistSelectorPage() {
             <CardHeader>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                  <Sparkles className="h-6 w-6 text-white" />
+                  <Sparkles className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
                   <CardTitle className="text-xl">Not sure where to start?</CardTitle>
@@ -193,7 +193,7 @@ export default function ChecklistSelectorPage() {
                   key={checklist.id}
                   className={`cursor-pointer transition-all duration-300 hover:shadow-xl ${
                     isSelected 
-                      ? 'border-4 border-purple-500 dark:border-purple-400 bg-purple-50/50 dark:bg-purple-950/20' 
+                      ? 'border-4 border-purple-500 dark:border-primary/50 bg-purple-50/50 dark:bg-purple-950/20' 
                       : 'border-2 border-slate-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
                   }`}
                   onClick={() => toggleChecklist(checklist.id)}
@@ -208,7 +208,7 @@ export default function ChecklistSelectorPage() {
                           <CardTitle className="text-lg mb-2 flex items-center gap-2">
                             {checklist.name}
                             {checklist.recommended && (
-                              <Badge className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs">
+                              <Badge className="bg-gradient-to-r from-primary to-accent text-primary-foreground text-xs">
                                 Recommended
                               </Badge>
                             )}
@@ -279,7 +279,7 @@ export default function ChecklistSelectorPage() {
                     <h3 className="text-2xl font-black mb-2">
                       Ready to Get Started? 🚀
                     </h3>
-                    <p className="text-slate-700 dark:text-slate-300 mb-4">
+                    <p className="text-slate-700 dark:text-muted-foreground mb-4">
                       You've selected <span className="font-bold text-purple-600 dark:text-purple-400">{selectedCount}</span> checklist{selectedCount !== 1 ? 's' : ''} with <span className="font-bold text-purple-600 dark:text-purple-400">{totalSteps}</span> total steps.
                     </p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -290,7 +290,7 @@ export default function ChecklistSelectorPage() {
                   <div className="flex flex-col gap-3">
                     <Button
                       size="lg"
-                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold rounded-xl px-8 text-lg"
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl px-8 text-lg"
                       asChild
                     >
                       <Link href="/admissions/checklist/view">
