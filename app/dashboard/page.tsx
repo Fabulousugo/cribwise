@@ -1,5 +1,6 @@
+// ==========================================
 // FILE: app/dashboard/page.tsx
-// Enhanced Dashboard Router with Gamification
+// Enhanced Dashboard Router with Onboarding Check
 // ==========================================
 import { redirect } from "next/navigation"
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs"
@@ -17,15 +18,22 @@ export default async function DashboardPage() {
   // Get user profile
   const { data: profile } = await supabase
     .from('user_profiles')
-    .select('user_type, status, school_email_verified_at')
+    .select('user_type, status, school_email_verified_at, onboarding_completed')
     .eq('id', session.user.id)
     .single()
 
+  // NEW: Check if profile exists
   if (!profile) {
     redirect('/onboarding')
   }
 
-  // Route based on user type
+  // NEW: Check if onboarding is completed
+  // If user hasn't completed onboarding, redirect them there
+  if (!profile.onboarding_completed) {
+    redirect('/onboarding')
+  }
+
+  // Route based on user type (existing logic)
   switch (profile.user_type) {
     case 'prospective':
       redirect('/dashboard/prospective')

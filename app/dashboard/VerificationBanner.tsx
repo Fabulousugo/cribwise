@@ -43,8 +43,8 @@ export function VerificationBanner({ isVerified }: { isVerified: boolean }) {
                   </div>
                 </div>
                 <Link href="/verify">
-                  <Button className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
-                    Verify Now - It's Free
+                  <Button className="bg-gradient-to-r from-amber-500 to-orange-500 text-primary-foreground">
+                    Verify Now - It is Free
                     <Sparkles className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>

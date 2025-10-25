@@ -46,7 +46,7 @@ export default function ProspectiveDashboard() {
             Welcome, Future Student! 🎓
           </h1>
           <p className="text-lg text-muted-foreground">
-            Let's get you ready for your university journey
+            Let&apos;s get you ready for your university journey
           </p>
         </div>
       </section>
@@ -85,7 +85,7 @@ export default function ProspectiveDashboard() {
           <h2 className="text-3xl font-bold text-foreground mb-8">Get Started</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Link href="/admissions/checklist">
-              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-purple-400">
+              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
                 <CardHeader>
                   <FileText className="h-10 w-10 text-purple-600 mb-2" />
                   <CardTitle className="text-lg">Admission Checklist</CardTitle>
@@ -95,7 +95,7 @@ export default function ProspectiveDashboard() {
             </Link>
 
             <Link href="/admissions">
-              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-blue-400">
+              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
                 <CardHeader>
                   <GraduationCap className="h-10 w-10 text-blue-600 mb-2" />
                   <CardTitle className="text-lg">Browse Schools</CardTitle>
@@ -105,7 +105,7 @@ export default function ProspectiveDashboard() {
             </Link>
 
             <Link href="/materials">
-              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-green-400">
+              <Card className="hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer border-2 hover:border-primary/50">
                 <CardHeader>
                   <BookOpen className="h-10 w-10 text-green-600 mb-2" />
                   <CardTitle className="text-lg">Study Materials</CardTitle>

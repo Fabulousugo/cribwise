@@ -60,7 +60,7 @@ export function ProfileCompletionCard({ profile }: ProfileCompletionCardProps) {
             >
               <div className="flex items-center gap-3">
                 {task.completed ? (
-                  <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <CheckCircle2 className="h-5 w-5 text-green-600 dark:text-success" />
                 ) : (
                   <div className="w-5 h-5 rounded-full border-2 border-muted-foreground"></div>
                 )}
@@ -68,7 +68,7 @@ export function ProfileCompletionCard({ profile }: ProfileCompletionCardProps) {
                   {task.label}
                 </span>
               </div>
-              <Badge variant="secondary" className={task.completed ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" : ""}>
+              <Badge variant="secondary" className={task.completed ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-success" : ""}>
                 +{task.xp} XP
               </Badge>
             </div>
@@ -85,8 +85,8 @@ export function ProfileCompletionCard({ profile }: ProfileCompletionCardProps) {
 
         {completion === 100 && (
           <div className="text-center p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg">
-            <Trophy className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
-            <p className="font-bold text-green-600 dark:text-green-400">Profile Complete!</p>
+            <Trophy className="h-8 w-8 text-green-600 dark:text-success mx-auto mb-2" />
+            <p className="font-bold text-green-600 dark:text-success">Profile Complete!</p>
             <p className="text-sm text-muted-foreground">You earned {totalXp} XP 🎉</p>
           </div>
         )}
@@ -130,11 +130,11 @@ export function LevelProgressCard({ xp = 0 }: LevelProgressCardProps) {
           </div>
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center shadow-lg">
             {currentLevel < 10 ? (
-              <Trophy className="h-10 w-10 text-white" />
+              <Trophy className="h-10 w-10 text-primary-foreground" />
             ) : currentLevel < 20 ? (
-              <Star className="h-10 w-10 text-white" />
+              <Star className="h-10 w-10 text-primary-foreground" />
             ) : (
-              <Crown className="h-10 w-10 text-white" />
+              <Crown className="h-10 w-10 text-primary-foreground" />
             )}
           </div>
         </div>
@@ -182,7 +182,7 @@ export function AchievementBadges({ profile, stats = {} }: AchievementBadgesProp
       description: "Completed verification",
       unlocked: profile?.school_email_verified_at !== null || profile?.landlord_verified,
       color: "from-green-500 to-emerald-500",
-      textColor: "text-green-600 dark:text-green-400"
+      textColor: "text-green-600 dark:text-success"
     },
     {
       id: "early_adopter",
@@ -208,7 +208,7 @@ export function AchievementBadges({ profile, stats = {} }: AchievementBadgesProp
       name: "Networker",
       description: "10+ connections",
       unlocked: (stats?.connections || 0) >= 10,
-      color: "from-blue-500 to-purple-500",
+      color: "from-primary to-accent",
       textColor: "text-blue-600 dark:text-blue-400"
     },
     {
@@ -257,7 +257,7 @@ export function AchievementBadges({ profile, stats = {} }: AchievementBadgesProp
             >
               {badge.unlocked ? (
                 <div className={`w-12 h-12 mx-auto mb-3 rounded-full bg-gradient-to-br ${badge.color} flex items-center justify-center shadow-lg`}>
-                  <badge.icon className="h-6 w-6 text-white" />
+                  <badge.icon className="h-6 w-6 text-primary-foreground" />
                 </div>
               ) : (
                 <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-muted flex items-center justify-center">
@@ -401,7 +401,7 @@ export function DailyChallenges({ challenges }: DailyChallengesProps) {
             >
               <div className="flex items-start gap-3 mb-3">
                 <div className={`p-2 rounded-lg ${challenge.completed ? "bg-green-100 dark:bg-green-900/30" : "bg-primary/10"}`}>
-                  <challenge.icon className={`h-5 w-5 ${challenge.completed ? "text-green-600 dark:text-green-400" : "text-primary"}`} />
+                  <challenge.icon className={`h-5 w-5 ${challenge.completed ? "text-green-600 dark:text-success" : "text-primary"}`} />
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-1">
@@ -410,7 +410,7 @@ export function DailyChallenges({ challenges }: DailyChallengesProps) {
                     </p>
                     <Badge 
                       variant="secondary" 
-                      className={challenge.completed ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400" : ""}
+                      className={challenge.completed ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-success" : ""}
                     >
                       +{challenge.xp} XP
                     </Badge>
@@ -474,7 +474,7 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-xs text-muted-foreground">{activity.time}</p>
                     {activity.xp && (
-                      <Badge variant="secondary" className="text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400">
+                      <Badge variant="secondary" className="text-xs bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-success">
                         +{activity.xp} XP
                       </Badge>
                     )}
@@ -541,7 +541,7 @@ export function ReferralCard({ referralCode = "CRIB123", referralCount = 0 }: Re
 
         {referralCount > 0 && (
           <div className="p-3 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg">
-            <p className="text-sm font-bold text-green-600 dark:text-green-400 text-center">
+            <p className="text-sm font-bold text-green-600 dark:text-success text-center">
               🎉 {referralCount} friends joined • {xpEarned} XP earned!
             </p>
           </div>
