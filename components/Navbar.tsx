@@ -27,7 +27,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeSwitcher, ThemeSwitcherCompact } from "@/components/theme-switcher";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -231,7 +231,8 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle />
+          
+            <ThemeSwitcher />
 
             {loading ? (
               <AuthSkeleton />
@@ -413,7 +414,8 @@ export function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <div className="flex md:hidden items-center gap-2">
-            <ThemeToggle />
+            
+            <ThemeSwitcherCompact />
             <button
               onClick={() => setMobileMenuOpen((s) => !s)}
               className="p-2"

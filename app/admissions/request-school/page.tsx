@@ -101,11 +101,11 @@ export default function RequestSchoolPage() {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-black tracking-tight mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
-              Can't Find Your School? 🎓
+              Can&apos;t Find Your School? 🎓
             </h1>
             
             <p className="text-slate-700 dark:text-muted-foreground text-lg max-w-2xl mx-auto">
-              Help us grow! Request your university and we'll add it to our platform with full admission details.
+              Help us grow! Request your university and we will add it to our platform with full admission details.
             </p>
           </div>
         </div>
@@ -156,7 +156,7 @@ export default function RequestSchoolPage() {
               <CardHeader>
                 <CardTitle className="text-2xl">School Information</CardTitle>
                 <CardDescription className="dark:text-slate-400">
-                  Provide details about the university you'd like us to add
+                  Provide details about the university you would like us to add
                 </CardDescription>
               </CardHeader>
 
@@ -298,7 +298,7 @@ export default function RequestSchoolPage() {
                     className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl"
                   />
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    We'll notify you when the school is added (optional)
+                    We will notify you when the school is added (optional)
                   </p>
                 </div>
 
@@ -315,7 +315,7 @@ export default function RequestSchoolPage() {
                           <li>✓ We review your request within 24-48 hours</li>
                           <li>✓ Our team gathers official admission information</li>
                           <li>✓ School gets added with full details and requirements</li>
-                          <li>✓ You'll be notified when it's live (if you provided email)</li>
+                          <li>✓ You will be notified when it&apos;s live (if you provided email)</li>
                         </ul>
                       </div>
                     </div>

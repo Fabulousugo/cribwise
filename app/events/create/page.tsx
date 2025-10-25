@@ -209,7 +209,7 @@ export default function CreateEventPage() {
                     <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                     <div>
                       <span className="font-semibold text-slate-700 dark:text-muted-foreground">Track RSVPs</span>
-                      <p className="text-slate-600 dark:text-slate-400">See who's interested in your event</p>
+                      <p className="text-slate-600 dark:text-slate-400">See who&apos;s interested in your event</p>
                     </div>
                   </div>
                 </div>

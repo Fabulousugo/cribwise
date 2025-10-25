@@ -255,21 +255,21 @@ export default function OnboardingPage() {
             {currentStep === 1 && (
               <UniversityStep 
                 value={formData.university}
-                onChange={(val) => updateField('university', val)}
+                onChange={(val: any) => updateField('university', val)}
               />
             )}
             {currentStep === 2 && (
               <LevelStep 
                 value={formData.level}
-                onChange={(val) => updateField('level', val)}
+                onChange={(val: any) => updateField('level', val)}
               />
             )}
             {currentStep === 3 && (
               <DepartmentStep 
                 university={formData.university}
                 value={formData.department}
-                onFacultyChange={(val) => updateField('faculty', val)}
-                onDepartmentChange={(val) => updateField('department', val)}
+                onFacultyChange={(val: any) => updateField('faculty', val)}
+                onDepartmentChange={(val: any) => updateField('department', val)}
               />
             )}
             {currentStep === 4 && (
@@ -277,7 +277,7 @@ export default function OnboardingPage() {
                 department={formData.department}
                 level={formData.level}
                 selectedCourses={formData.courses}
-                onChange={(val) => updateField('courses', val)}
+                onChange={(val: any) => updateField('courses', val)}
               />
             )}
             {currentStep === 5 && (

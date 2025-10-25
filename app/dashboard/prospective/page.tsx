@@ -46,7 +46,7 @@ export default function ProspectiveDashboard() {
             Welcome, Future Student! 🎓
           </h1>
           <p className="text-lg text-muted-foreground">
-            Let's get you ready for your university journey
+            Let&apos;s get you ready for your university journey
           </p>
         </div>
       </section>

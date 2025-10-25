@@ -64,7 +64,7 @@ export default async function AdmissionsHome() {
             >
               <Clock className="h-8 w-8 mb-2" />
               <div className="font-bold text-lg">Deadlines</div>
-              <div className="text-sm text-pink-100 dark:text-pink-200">Don't ghost these</div>
+              <div className="text-sm text-pink-100 dark:text-pink-200">Don&apos;t ghost these</div>
             </Link>
 
             <Link
@@ -158,8 +158,8 @@ export default async function AdmissionsHome() {
       <section className="py-20 px-4 bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-900 dark:to-slate-800">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-black mb-3">Why We're Different 💅</h2>
-            <p className="text-slate-600 dark:text-slate-400 text-lg">Not your parents' admission guide — we get it</p>
+            <h2 className="text-4xl md:text-5xl font-black mb-3">Why We are Different 💅</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-lg">Not your parents&apos; admission guide — we get it</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -168,7 +168,7 @@ export default async function AdmissionsHome() {
                 <Zap className="h-7 w-7 text-primary-foreground" />
               </div>
               <h3 className="text-xl font-bold mb-3">Real-Time Updates</h3>
-              <p className="text-slate-600 dark:text-slate-400">We stay up so you don't miss deadlines. Updated daily, no cap.</p>
+              <p className="text-slate-600 dark:text-slate-400">We stay up so you don&apos;t miss deadlines. Updated daily, no cap.</p>
             </div>
 
             <div className="bg-white dark:bg-card rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-shadow border-2 border-blue-100 dark:border-blue-900">
@@ -176,7 +176,7 @@ export default async function AdmissionsHome() {
                 <Target className="h-7 w-7 text-primary-foreground" />
               </div>
               <h3 className="text-xl font-bold mb-3">Personalized Checklists</h3>
-              <p className="text-slate-600 dark:text-slate-400">Custom roadmap for YOUR school + programme. It's giving main character.</p>
+              <p className="text-slate-600 dark:text-slate-400">Custom roadmap for YOUR school + programme. It&apos;s giving main character.</p>
             </div>
 
             <div className="bg-white dark:bg-card rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-shadow border-2 border-pink-100 dark:border-pink-900">
@@ -201,7 +201,7 @@ export default async function AdmissionsHome() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-primary-foreground px-4 py-2 rounded-full mb-6">
-            <Sparkles className="h-4 w-4" /> Plot Twist: You're Getting In
+            <Sparkles className="h-4 w-4" /> Plot Twist: You are Getting In
           </div>
 
           <h2 className="text-4xl md:text-6xl font-black text-primary-foreground mb-6">

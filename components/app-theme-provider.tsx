@@ -3,22 +3,22 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // Available themes
-export type ThemeName = 'light' | 'dark' | 'ocean' | 'sunset' | 'forest' | 'purple';
-export type ThemeMode = 'light' | 'dark';
+export type ColorTheme = 'light' | 'dark' | 'ocean' | 'sunset' | 'forest' | 'purple';
+export type ColorMode = 'light' | 'dark';
 
-interface ThemeContextType {
-  theme: ThemeName;
-  setTheme: (theme: ThemeName) => void;
-  mode: ThemeMode;
-  availableThemes: ThemeName[];
+interface ColorThemeContextType {
+  theme: ColorTheme;
+  setTheme: (theme: ColorTheme) => void;
+  mode: ColorMode;
+  availableThemes: ColorTheme[];
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ColorThemeContext = createContext<ColorThemeContextType | undefined>(undefined);
 
 // Theme definitions with HSL values
-const themes = {
+const colorThemes = {
   light: {
-    mode: 'light' as ThemeMode,
+    mode: 'light' as ColorMode,
     colors: {
       background: '0 0% 100%',
       foreground: '222.2 84% 4.9%',
@@ -51,7 +51,7 @@ const themes = {
     }
   },
   dark: {
-    mode: 'dark' as ThemeMode,
+    mode: 'dark' as ColorMode,
     colors: {
       background: '222.2 47% 11%',
       foreground: '210 40% 98%',
@@ -84,7 +84,7 @@ const themes = {
     }
   },
   ocean: {
-    mode: 'dark' as ThemeMode,
+    mode: 'dark' as ColorMode,
     colors: {
       background: '200 30% 12%',
       foreground: '180 20% 96%',
@@ -117,7 +117,7 @@ const themes = {
     }
   },
   sunset: {
-    mode: 'dark' as ThemeMode,
+    mode: 'dark' as ColorMode,
     colors: {
       background: '20 30% 12%',
       foreground: '30 20% 96%',
@@ -150,7 +150,7 @@ const themes = {
     }
   },
   forest: {
-    mode: 'dark' as ThemeMode,
+    mode: 'dark' as ColorMode,
     colors: {
       background: '140 25% 12%',
       foreground: '120 15% 96%',
@@ -183,7 +183,7 @@ const themes = {
     }
   },
   purple: {
-    mode: 'dark' as ThemeMode,
+    mode: 'dark' as ColorMode,
     colors: {
       background: '270 30% 12%',
       foreground: '280 15% 96%',
@@ -217,29 +217,34 @@ const themes = {
   },
 };
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeName>('light');
+export function AppThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setThemeState] = useState<ColorTheme>('light');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    console.log('🎨 AppThemeProvider mounted!');
     setMounted(true);
+    
     // Load saved theme from localStorage
-    const savedTheme = localStorage.getItem('theme') as ThemeName;
-    if (savedTheme && themes[savedTheme]) {
+    const savedTheme = localStorage.getItem('app-theme') as ColorTheme;
+    if (savedTheme && colorThemes[savedTheme]) {
+      console.log('📦 Loading saved theme:', savedTheme);
       setThemeState(savedTheme);
       applyTheme(savedTheme);
     } else {
       // Check system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       const initialTheme = prefersDark ? 'dark' : 'light';
+      console.log('🌓 Using system preference:', initialTheme);
       setThemeState(initialTheme);
       applyTheme(initialTheme);
     }
   }, []);
 
-  const applyTheme = (themeName: ThemeName) => {
+  const applyTheme = (themeName: ColorTheme) => {
+    console.log('🎨 Applying theme:', themeName);
     const root = document.documentElement;
-    const themeConfig = themes[themeName];
+    const themeConfig = colorThemes[themeName];
     
     // Remove all theme classes first
     root.classList.remove('light', 'dark', 'ocean', 'sunset', 'forest', 'purple');
@@ -257,14 +262,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
-  const setTheme = (newTheme: ThemeName) => {
+  const setTheme = (newTheme: ColorTheme) => {
+    console.log('🔄 Changing theme to:', newTheme);
     setThemeState(newTheme);
     applyTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
+    localStorage.setItem('app-theme', newTheme);
   };
 
-  const mode = themes[theme].mode;
-  const availableThemes: ThemeName[] = ['light', 'dark', 'ocean', 'sunset', 'forest', 'purple'];
+  const mode = colorThemes[theme].mode;
+  const availableThemes: ColorTheme[] = ['light', 'dark', 'ocean', 'sunset', 'forest', 'purple'];
+
+  console.log('🎨 Current theme:', theme, 'Mounted:', mounted);
 
   // Prevent flash of wrong theme
   if (!mounted) {
@@ -272,16 +280,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, mode, availableThemes }}>
+    <ColorThemeContext.Provider value={{ theme, setTheme, mode, availableThemes }}>
       {children}
-    </ThemeContext.Provider>
+    </ColorThemeContext.Provider>
   );
 }
 
-export function useTheme() {
-  const context = useContext(ThemeContext);
+export function useAppTheme() {
+  const context = useContext(ColorThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error('useAppTheme must be used within an AppThemeProvider');
   }
   return context;
 }

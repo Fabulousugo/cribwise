@@ -62,7 +62,7 @@ export default async function SellPage() {
         <div>
           <label className="block text-sm font-medium">Photos (up to 4)</label>
           <input title="photos" type="file" name="images" multiple accept="image/*" className="mt-1 w-full" />
-          <p className="text-xs text-slate-500 mt-1">Images are optional for now. We'll wire storage later.</p>
+          <p className="text-xs text-slate-500 mt-1">Images are optional for now. We&apos;ll wire storage later.</p>
         </div>
         <div className="flex items-center gap-2">
           <button type="submit" className="px-4 py-2 bg-blue-600 text-primary-foreground rounded-md">Create listing</button>

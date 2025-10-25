@@ -153,7 +153,7 @@ export default function ChecklistSelectorPage() {
                 <div>
                   <CardTitle className="text-xl">Not sure where to start?</CardTitle>
                   <CardDescription className="dark:text-slate-400">
-                    We've pre-selected the essential checklists for most students
+                    We have pre-selected the essential checklists for most students
                   </CardDescription>
                 </div>
               </div>
@@ -280,7 +280,7 @@ export default function ChecklistSelectorPage() {
                       Ready to Get Started? 🚀
                     </h3>
                     <p className="text-slate-700 dark:text-muted-foreground mb-4">
-                      You've selected <span className="font-bold text-purple-600 dark:text-purple-400">{selectedCount}</span> checklist{selectedCount !== 1 ? 's' : ''} with <span className="font-bold text-purple-600 dark:text-purple-400">{totalSteps}</span> total steps.
+                      You have selected <span className="font-bold text-purple-600 dark:text-purple-400">{selectedCount}</span> checklist{selectedCount !== 1 ? 's' : ''} with <span className="font-bold text-purple-600 dark:text-purple-400">{totalSteps}</span> total steps.
                     </p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
                       Your progress will be saved automatically as you work through each task.
@@ -326,7 +326,7 @@ export default function ChecklistSelectorPage() {
                   Select at least one checklist to get started with your admission journey.
                 </p>
                 <p className="text-sm text-slate-500 dark:text-slate-500">
-                  We recommend starting with "Document Preparation" if you're unsure.
+                  We recommend starting with &quot;Document Preparation&quot; if you are unsure.
                 </p>
               </CardContent>
             </Card>

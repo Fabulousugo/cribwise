@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -63,46 +64,85 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
   const hasActiveFilters = q || school || category || condition || minPrice || maxPrice;
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-violet-50 via-background to-blue-50 dark:from-slate-900 dark:via-background dark:to-slate-900">
-      {/* Hero Section */}
+    <main className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
+      {/* Hero Section - VIBRANT gradients restored */}
       <section className="relative py-16 px-4 overflow-hidden">
-        <div className="absolute top-10 right-10 w-64 h-64 bg-purple-300 dark:bg-purple-900 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-10 left-10 w-64 h-64 bg-pink-300 dark:bg-pink-900 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-xl opacity-20 animate-pulse delay-75"></div>
+        {/* Enhanced animated background blobs with multiple colors */}
+        <div className="absolute top-10 right-10 w-80 h-80 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-30 animate-pulse"
+             style={{ background: 'radial-gradient(circle, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.3) 70%, transparent 100%)' }}></div>
+        <div className="absolute bottom-10 left-10 w-80 h-80 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-25 animate-pulse"
+             style={{ background: 'radial-gradient(circle, hsl(var(--accent)) 0%, hsl(var(--accent) / 0.3) 70%, transparent 100%)', animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full mix-blend-multiply dark:mix-blend-screen filter blur-3xl opacity-20 animate-pulse"
+             style={{ background: 'radial-gradient(circle, hsl(var(--success)) 0%, hsl(var(--success) / 0.2) 70%, transparent 100%)', animationDelay: '2s' }}></div>
 
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 text-primary-foreground px-5 py-2 rounded-full mb-6">
+          {/* Badge with vibrant gradient */}
+          <div className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2 rounded-full mb-6 shadow-lg backdrop-blur-sm border border-primary/20"
+               style={{ 
+                 background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 50%, hsl(var(--accent)) 100%)`,
+                 color: 'hsl(var(--primary-foreground))'
+               }}>
             <ShoppingBag className="h-4 w-4" /> Student Marketplace
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
-            Buy, Sell, Thrift 🛍️
+          {/* Title with VIBRANT multi-color gradient */}
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4">
+            <span className="bg-clip-text text-transparent"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, 
+                      hsl(var(--primary)) 0%, 
+                      hsl(var(--accent)) 30%, 
+                      hsl(var(--success)) 60%, 
+                      hsl(var(--primary)) 100%)`
+                  }}>
+              Buy, Sell, Thrift 🛍️
+            </span>
           </h1>
           
-          <p className="text-slate-700 dark:text-muted-foreground text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg md:text-xl mb-8 max-w-2xl mx-auto">
             Your campus marketplace for textbooks, electronics, furniture, and more. Student deals that hit different.
           </p>
 
-          {/* Quick Stats */}
+          {/* Quick Stats with colorful gradients */}
           <div className="flex flex-wrap justify-center gap-4 mb-8">
-            <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-4 py-2 text-sm font-bold border-2 border-purple-200 dark:border-purple-800">
+            <Badge className="px-4 py-2 text-sm font-bold border-2 shadow-lg backdrop-blur-sm"
+                   style={{ 
+                     background: `linear-gradient(135deg, hsl(var(--primary) / 0.15) 0%, hsl(var(--primary) / 0.05) 100%)`,
+                     borderColor: 'hsl(var(--primary) / 0.3)',
+                     color: 'hsl(var(--primary))'
+                   }}>
               <Package className="h-4 w-4 mr-2" />
               {listings.length}+ Items
             </Badge>
-            <Badge className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-4 py-2 text-sm font-bold border-2 border-blue-200 dark:border-blue-800">
+            <Badge className="px-4 py-2 text-sm font-bold border-2 shadow-lg backdrop-blur-sm"
+                   style={{ 
+                     background: `linear-gradient(135deg, hsl(var(--accent) / 0.15) 0%, hsl(var(--accent) / 0.05) 100%)`,
+                     borderColor: 'hsl(var(--accent) / 0.3)',
+                     color: 'hsl(var(--accent-foreground))'
+                   }}>
               <Tag className="h-4 w-4 mr-2" />
               Best Prices
             </Badge>
-            <Badge className="bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 px-4 py-2 text-sm font-bold border-2 border-pink-200 dark:border-pink-800">
+            <Badge className="px-4 py-2 text-sm font-bold border-2 shadow-lg backdrop-blur-sm"
+                   style={{ 
+                     background: `linear-gradient(135deg, hsl(var(--success) / 0.15) 0%, hsl(var(--success) / 0.05) 100%)`,
+                     borderColor: 'hsl(var(--success) / 0.3)',
+                     color: 'hsl(var(--success))'
+                   }}>
               <TrendingUp className="h-4 w-4 mr-2" />
               Safe Trades
             </Badge>
           </div>
 
-          {/* Sell CTA */}
+          {/* Sell CTA with gradient */}
           <Link href="/marketplace/sell">
             <Button 
               size="lg"
-              className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-primary-foreground font-bold rounded-2xl px-8 shadow-lg hover:shadow-xl transition-all"
+              className="font-bold rounded-2xl px-8 shadow-lg hover:shadow-xl transition-all hover:scale-105 border-0"
+              style={{
+                background: `linear-gradient(135deg, hsl(var(--success)) 0%, hsl(var(--success) / 0.8) 100%)`,
+                color: 'hsl(var(--success-foreground))'
+              }}
             >
               <Plus className="h-5 w-5 mr-2" />
               Sell an Item
@@ -111,34 +151,43 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
         </div>
       </section>
 
-      {/* Filters Section */}
+      {/* Filters Section with gradient accents */}
       <section className="py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          <Card className="border-2 border-purple-100 dark:border-purple-900/30 shadow-xl">
-            <CardHeader className="pb-4">
+          <Card className="border-2 shadow-xl overflow-hidden relative">
+            {/* Subtle gradient overlay */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none"
+                 style={{
+                   background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)`
+                 }}></div>
+            
+            <CardHeader className="pb-4 relative z-10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+                     style={{
+                       background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)`
+                     }}>
                   <Filter className="h-5 w-5 text-primary-foreground" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Find Your Perfect Deal</CardTitle>
-                  <CardDescription className="dark:text-slate-400">
+                  <CardDescription>
                     Filter by school, category, condition, and price
                   </CardDescription>
                 </div>
               </div>
             </CardHeader>
 
-            <CardContent>
+            <CardContent className="relative z-10">
               <form className="space-y-4" action="/marketplace" method="get">
                 {/* Search Bar */}
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input 
                     name="q" 
                     defaultValue={q} 
                     placeholder="Search items... (e.g., iPhone, Textbooks, Desk)…"
-                    className="pl-12 h-12 text-base border-2 border-slate-200 dark:border-slate-700 rounded-xl"
+                    className="pl-12 h-12 text-base border-2 rounded-xl focus:ring-2 focus:ring-primary/50"
                   />
                 </div>
 
@@ -146,15 +195,17 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
                 <div className="grid md:grid-cols-3 gap-3">
                   {/* School */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">School</label>
+                    <label className="text-sm font-semibold text-foreground">School</label>
                     <Select name="school" defaultValue={school || "all"}>
-                      <SelectTrigger className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl">
+                      <SelectTrigger className="h-11 border-2 rounded-xl">
                         <SelectValue placeholder="All schools" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All schools</SelectItem>
                         {schools.map((s) => (
-                          <SelectItem key={s.slug} value={s.slug}>{s.name}</SelectItem>
+                          <SelectItem key={s.slug} value={s.slug}>
+                            {s.name}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -162,15 +213,17 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
 
                   {/* Category */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">Category</label>
+                    <label className="text-sm font-semibold text-foreground">Category</label>
                     <Select name="category" defaultValue={category || "all"}>
-                      <SelectTrigger className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl">
+                      <SelectTrigger className="h-11 border-2 rounded-xl">
                         <SelectValue placeholder="All categories" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="all">All categories</SelectItem>
-                        {filters.categories.map((c) => (
-                          <SelectItem key={c} value={c}>{c}</SelectItem>
+                        {filters.categories.map((cat) => (
+                          <SelectItem key={cat} value={cat}>
+                            {cat}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -178,15 +231,17 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
 
                   {/* Condition */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">Condition</label>
+                    <label className="text-sm font-semibold text-foreground">Condition</label>
                     <Select name="condition" defaultValue={condition || "any"}>
-                      <SelectTrigger className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl">
+                      <SelectTrigger className="h-11 border-2 rounded-xl">
                         <SelectValue placeholder="Any condition" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="any">Any condition</SelectItem>
-                        {filters.conditions.map((c) => (
-                          <SelectItem key={c} value={c}>{c}</SelectItem>
+                        {filters.conditions.map((cond) => (
+                          <SelectItem key={cond} value={cond}>
+                            {cond}
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -194,51 +249,51 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
                 </div>
 
                 {/* Price Range */}
-                <div className="space-y-2">
-                  <label className="text-sm font-semibold text-slate-700 dark:text-muted-foreground">Price Range (₦)</label>
-                  <div className="grid grid-cols-2 gap-3">
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-foreground">Min Price (₦)</label>
                     <Input 
+                      type="number" 
                       name="minPrice" 
-                      inputMode="numeric" 
-                      pattern="\\d*" 
-                      placeholder="Min ₦" 
-                      defaultValue={minPriceParam}
-                      className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl"
+                      defaultValue={minPrice} 
+                      placeholder="0" 
+                      className="h-11 border-2 rounded-xl"
                     />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-foreground">Max Price (₦)</label>
                     <Input 
+                      type="number" 
                       name="maxPrice" 
-                      inputMode="numeric" 
-                      pattern="\\d*" 
-                      placeholder="Max ₦" 
-                      defaultValue={maxPriceParam}
-                      className="h-11 border-2 border-slate-200 dark:border-slate-700 rounded-xl"
+                      defaultValue={maxPrice} 
+                      placeholder="1000000" 
+                      className="h-11 border-2 rounded-xl"
                     />
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-wrap gap-3">
+                {/* Action Buttons with gradients */}
+                <div className="flex gap-3 pt-2">
                   <Button 
-                    type="submit"
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl px-6"
+                    type="submit" 
+                    className="flex-1 font-bold h-11 rounded-xl border-0 shadow-md hover:shadow-lg transition-all"
+                    style={{
+                      background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.85) 100%)`,
+                      color: 'hsl(var(--primary-foreground))'
+                    }}
                   >
                     <Search className="h-4 w-4 mr-2" />
                     Apply Filters
                   </Button>
-                  <Link href="/marketplace">
+                  {hasActiveFilters && (
                     <Button 
                       type="button" 
-                      variant="outline"
-                      className="border-2 border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 font-bold rounded-xl"
+                      variant="outline" 
+                      className="border-2 font-bold h-11 rounded-xl"
+                      asChild
                     >
-                      Reset All
+                      <Link href="/marketplace">Clear</Link>
                     </Button>
-                  </Link>
-                  {hasActiveFilters && (
-                    <Badge variant="outline" className="px-3 py-2">
-                      <Sparkles className="h-3 w-3 mr-1" />
-                      Filters Active
-                    </Badge>
                   )}
                 </div>
               </form>
@@ -247,44 +302,61 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
         </div>
       </section>
 
-      {/* Results Section */}
-      <section className="py-8 px-4 pb-20">
+      {/* Listings Section */}
+      <section className="py-8 px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Results Header */}
-          <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-black mb-1">
-                {listings.length === 0 ? "No Items Found" : `${listings.length} Items Available`}
-              </h2>
-              <p className="text-slate-600 dark:text-slate-400">
-                {listings.length === 0 ? "Try adjusting your filters" : "Click any item to view details"}
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold">
+              <span className="bg-clip-text text-transparent"
+                    style={{
+                      backgroundImage: `linear-gradient(135deg, hsl(var(--foreground)) 0%, hsl(var(--primary)) 100%)`
+                    }}>
+                {hasActiveFilters ? "Search Results" : "All Listings"}
+              </span>
+            </h2>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Package className="h-5 w-5" />
+              <p className="text-sm font-medium">
+                {listings.length} {listings.length === 1 ? "item" : "items"} found
               </p>
             </div>
           </div>
 
           {listings.length === 0 ? (
-            <Card className="border-2 border-slate-200 dark:border-slate-700 bg-gradient-to-br from-slate-50 to-purple-50 dark:from-slate-800 dark:to-purple-950/20">
-              <CardContent className="p-12 text-center">
-                <div className="w-16 h-16 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ShoppingBag className="h-8 w-8 text-slate-400" />
+            <Card className="border-2 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-5"
+                   style={{
+                     background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)`
+                   }}></div>
+              <CardContent className="p-12 text-center relative z-10">
+                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
+                  <ShoppingBag className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">No listings match your search 🤔</h3>
-                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-md mx-auto">
-                  Can't find what you're looking for? Try widening your search or be the first to list it!
+                <h3 className="text-xl font-bold mb-3 text-foreground">No listings match your search 🤔</h3>
+                <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                  Can&apos;t find what you&apos;re looking for? Try widening your search or be the first to list it!
                 </p>
-                <div className="space-y-2 text-sm text-slate-600 dark:text-slate-400 mb-6">
+                <div className="space-y-2 text-sm text-muted-foreground mb-6">
                   <p>💡 <span className="font-semibold">Try:</span> Wider price range or fewer filters</p>
                   <p>🏷️ <span className="font-semibold">Browse:</span> Search by category only</p>
                   <p>📱 <span className="font-semibold">New listing?</span> Be the first to sell this item</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Link href="/marketplace">
-                    <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl">
+                    <Button className="font-bold rounded-xl shadow-md border-0"
+                            style={{
+                              background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)`,
+                              color: 'hsl(var(--primary-foreground))'
+                            }}>
                       Clear All Filters
                     </Button>
                   </Link>
                   <Link href="/marketplace/sell">
-                    <Button variant="outline" className="border-2 border-green-500 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950/20 font-bold rounded-xl">
+                    <Button variant="outline" className="border-2 font-bold rounded-xl"
+                            style={{
+                              borderColor: 'hsl(var(--success))',
+                              color: 'hsl(var(--success))'
+                            }}>
                       <Plus className="h-4 w-4 mr-2" />
                       List Your Item
                     </Button>
@@ -296,9 +368,18 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {listings.map((l: ListingItem) => (
                 <Link key={l.id} href={`/marketplace/${l.id}`}>
-                  <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-purple-500 group overflow-hidden">
+                  <Card className="h-full hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 group overflow-hidden relative"
+                        style={{
+                          borderColor: 'hsl(var(--border))'
+                        }}>
+                    {/* Gradient overlay on hover */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"
+                         style={{
+                           background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)`
+                         }}></div>
+                    
                     {/* Image */}
-                    <div className="relative h-48 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <div className="relative h-48 bg-muted overflow-hidden">
                       {l.images?.[0] ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img 
@@ -307,43 +388,60 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm">
+                        <div className="w-full h-full flex items-center justify-center text-muted-foreground text-sm">
                           <Package className="h-12 w-12" />
                         </div>
                       )}
                       
                       {/* Favorite button overlay */}
-                      <button title = "favorite" className="absolute top-3 right-3 w-10 h-10 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white dark:hover:bg-slate-800 transition-all shadow-lg opacity-0 group-hover:opacity-100">
-                        <Heart className="h-5 w-5 text-slate-600 dark:text-muted-foreground" />
+                      <button 
+                        title="favorite" 
+                        className="absolute top-3 right-3 w-10 h-10 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-card transition-all shadow-lg opacity-0 group-hover:opacity-100"
+                      >
+                        <Heart className="h-5 w-5 text-muted-foreground hover:text-destructive transition-colors" />
                       </button>
 
-                      {/* Condition Badge */}
+                      {/* Condition Badge with gradient */}
                       <div className="absolute bottom-3 left-3">
-                        <Badge className={`${
-                          l.condition === "New" ? "bg-success text-success-foreground" :
-                          l.condition === "Like New" ? "bg-primary text-primary-foreground" :
-                          l.condition === "Good" ? "bg-yellow-500 text-primary-foreground" :
-                          "bg-orange-500 text-primary-foreground"
-                        } font-bold shadow-lg`}>
+                        <Badge className="font-bold shadow-lg border-0"
+                               style={{
+                                 background: l.condition === "New" 
+                                   ? `linear-gradient(135deg, hsl(var(--success)) 0%, hsl(var(--success) / 0.8) 100%)`
+                                   : l.condition === "Like New"
+                                   ? `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 100%)`
+                                   : l.condition === "Good"
+                                   ? `linear-gradient(135deg, hsl(var(--warning)) 0%, hsl(var(--warning) / 0.8) 100%)`
+                                   : `linear-gradient(135deg, hsl(var(--info)) 0%, hsl(var(--info) / 0.8) 100%)`,
+                                 color: l.condition === "New" 
+                                   ? 'hsl(var(--success-foreground))'
+                                   : l.condition === "Like New"
+                                   ? 'hsl(var(--primary-foreground))'
+                                   : l.condition === "Good"
+                                   ? 'hsl(var(--warning-foreground))'
+                                   : 'hsl(var(--info-foreground))'
+                               }}>
                           {l.condition}
                         </Badge>
                       </div>
                     </div>
 
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg line-clamp-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+                    <CardHeader className="pb-3 relative z-10">
+                      <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
                         {l.title}
                       </CardTitle>
                       
                       <div className="flex items-center justify-between mt-2">
-                        <div className="text-2xl font-black bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent">
+                        <div className="text-2xl font-black bg-clip-text text-transparent"
+                             style={{
+                               backgroundImage: `linear-gradient(135deg, hsl(var(--success)) 0%, hsl(var(--success) / 0.7) 100%)`
+                             }}>
                           {formatNGN(l.price)}
                         </div>
                       </div>
                     </CardHeader>
 
-                    <CardContent>
-                      <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
+                    <CardContent className="relative z-10">
+                      <div className="text-xs text-muted-foreground space-y-1">
                         <p className="flex items-center gap-1">
                           <span>📍</span>
                           <span className="font-medium">{l.schoolName || l.schoolSlug}</span>
@@ -351,8 +449,12 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
                       </div>
 
                       <Button 
-                        className="w-full mt-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-primary-foreground font-bold rounded-xl group-hover:scale-105 transition-transform"
+                        className="w-full mt-4 font-bold rounded-xl group-hover:scale-105 transition-transform border-0 shadow-md"
                         size="sm"
+                        style={{
+                          background: `linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%)`,
+                          color: 'hsl(var(--primary-foreground))'
+                        }}
                       >
                         <Zap className="h-4 w-4 mr-2" />
                         View Details
@@ -366,20 +468,31 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative py-16 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 opacity-95"></div>
+      {/* CTA Section with VIBRANT gradient */}
+      <section 
+        className="relative py-16 px-4 overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, 
+            hsl(var(--hero-from)) 0%, 
+            hsl(var(--primary)) 25%,
+            hsl(var(--accent)) 50%,
+            hsl(var(--hero-via)) 75%,
+            hsl(var(--hero-to)) 100%)`
+        }}
+      >
+        {/* Additional overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-black/10 to-black/20"></div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-primary-foreground px-4 py-2 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 text-sm font-bold bg-white/20 backdrop-blur-sm text-white px-4 py-2 rounded-full mb-6 border border-white/30">
             <Sparkles className="h-4 w-4" /> Start Selling Today
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-black text-primary-foreground mb-4">
+          <h2 className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-lg">
             Got Stuff to Sell? 💰
           </h2>
           
-          <p className="text-primary-foreground/90 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto drop-shadow">
             List your items in minutes and reach thousands of students on campus. No fees, no hassle, just vibes.
           </p>
 
@@ -387,7 +500,8 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
             <Link href="/marketplace/sell">
               <Button 
                 size="lg"
-                className="bg-white text-purple-700 hover:bg-slate-100 font-bold rounded-2xl px-8"
+                className="bg-white hover:bg-slate-100 font-bold rounded-2xl px-8 shadow-xl hover:scale-105 transition-all"
+                style={{ color: 'hsl(var(--primary))' }}
               >
                 <Plus className="h-5 w-5 mr-2" />
                 List Your Item
@@ -395,8 +509,7 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
             </Link>
             <Button 
               size="lg"
-              variant="outline"
-              className="border-2 border-white text-primary-foreground hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
+              className="border-2 border-white text-white hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm shadow-lg"
               asChild
             >
               <Link href="/">
@@ -405,7 +518,7 @@ export default async function MarketplacePage({ searchParams }: { searchParams?:
             </Button>
           </div>
 
-          <p className="text-primary-foreground/70 text-sm mt-8">
+          <p className="text-white/70 text-sm mt-8 drop-shadow">
             Trusted by 10,000+ students across Nigeria 🇳🇬
           </p>
         </div>

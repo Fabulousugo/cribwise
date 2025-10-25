@@ -4,7 +4,7 @@
 // ==========================================
 "use client"
 
-import { useState } from "react"
+import { SetStateAction, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
@@ -153,7 +153,7 @@ export function CourseSelectionStep({
           type="text"
           placeholder="Search courses..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string> } }) => setSearchTerm(e.target.value)}
           className="pl-10 h-12 text-base"
         />
       </div>
