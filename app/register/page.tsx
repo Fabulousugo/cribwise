@@ -1,296 +1,486 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { useState } from "react"
-import { supabase } from "@/lib/supabaseClient"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
+import { Checkbox } from "@/components/ui/checkbox"
+import { nigerianUniversities, searchUniversities, type University } from "@/lib/universities"
+import { GraduationCap, Mail, Lock, User, Phone, MapPin, Search, CheckCircle2, ArrowRight } from "lucide-react"
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const [step, setStep] = useState<'status' | 'details'>('status')
-  const [selectedStatus, setSelectedStatus] = useState<string>('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string>('')
-  
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    password: '',
-    university: '',
-    gender: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    university: "",
+    studentId: "",
+    agreeToTerms: false,
   })
 
-  const statuses = [
-    {
-      value: 'prospective',
-      title: '🎓 Prospective Student',
-      description: 'Preparing or applying for admission',
-      icon: '🎯'
-    },
-    {
-      value: 'admitted',
-      title: '✅ Admitted Student',
-      description: 'Officially admitted but not yet on campus',
-      icon: '🎉'
-    },
-    {
-      value: 'current',
-      title: '📚 Current Student',
-      description: 'Active student with a school email',
-      icon: '👨‍🎓'
-    },
-    {
-      value: 'alumni',
-      title: '🎖️ Alumni',
-      description: 'Graduate or outgoing student',
-      icon: '🎓'
-    },
-    {
-      value: 'agent',
-      title: '🏢 Agent/Landlord',
-      description: 'Property owner or agent',
-      icon: '🏠'
-    }
-  ]
+  const [universitySearch, setUniversitySearch] = useState("")
+  const [showUniversityDropdown, setShowUniversityDropdown] = useState(false)
+  const [filteredUniversities, setFilteredUniversities] = useState<University[]>(nigerianUniversities)
+  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleStatusSelect = (status: string) => {
-    setSelectedStatus(status)
-    setStep('details')
-  }
-
-  const handleRegister = async (e: React.FormEvent) => {
-  e.preventDefault()
-  setLoading(true)
-  setError('')
-
-  try {
-    // 1. Create auth user
-    const { data: authData, error: authError } = await supabase.auth.signUp({
-      email: formData.email,
-      password: formData.password,
-      options: {
-        data: {
-          full_name: formData.fullName,
-        }
-      }
-    })
-
-    if (authError) throw authError
-    if (!authData.user) throw new Error('User creation failed')
-
-    // 2. Create user profile WITH GENDER
-    const { error: profileError } = await supabase
-      .from('user_profiles')
-      .insert([
-        {
-          id: authData.user.id,
-          status: selectedStatus,
-          full_name: formData.fullName,
-          university: formData.university || null,
-          gender: selectedStatus !== 'agent' ? formData.gender : null,  // ADD THIS
-        }
-      ])
-
-    if (profileError) throw profileError
-
-    // 3. Redirect
-    if (selectedStatus === 'agent') {
-      router.push('/dashboard/agent')
+  // Handle university search
+  const handleUniversitySearch = (query: string) => {
+    setUniversitySearch(query)
+    if (query.length > 0) {
+      const results = searchUniversities(query)
+      setFilteredUniversities(results)
+      setShowUniversityDropdown(true)
     } else {
-      router.push('/dashboard/student')
+      setFilteredUniversities(nigerianUniversities)
+      setShowUniversityDropdown(false)
+    }
+  }
+
+  // Select university
+  const handleSelectUniversity = (university: University) => {
+    setSelectedUniversity(university)
+    setUniversitySearch(university.name)
+    setFormData({ ...formData, university: university.id })
+    setShowUniversityDropdown(false)
+    // Clear university error if exists
+    if (errors.university) {
+      setErrors({ ...errors, university: "" })
+    }
+  }
+
+  // Form validation
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+
+    if (!formData.firstName.trim()) newErrors.firstName = "First name is required"
+    if (!formData.lastName.trim()) newErrors.lastName = "Last name is required"
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Invalid email format"
+    }
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required"
+    } else if (!/^[\d+\-\s()]+$/.test(formData.phone)) {
+      newErrors.phone = "Invalid phone number"
+    }
+    if (!formData.university) newErrors.university = "Please select your university"
+    if (!formData.password) {
+      newErrors.password = "Password is required"
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password must be at least 8 characters"
+    }
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match"
+    }
+    if (!formData.agreeToTerms) {
+      newErrors.agreeToTerms = "You must agree to the terms and conditions"
     }
 
-  } catch (err: any) {
-    console.error('Registration error:', err)
-    setError(err.message || 'Registration failed. Please try again.')
-  } finally {
-    setLoading(false)
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
-}
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!validateForm()) {
+      return
+    }
+
+    setIsLoading(true)
+
+    try {
+      // TODO: Replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API call
+      
+      console.log("Form submitted:", formData)
+      // Redirect to dashboard or email verification page
+      window.location.href = "/dashboard"
+    } catch (error) {
+      console.error("Registration error:", error)
+      setErrors({ submit: "Registration failed. Please try again." })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleInputChange = (field: string, value: string | boolean) => {
+    setFormData({ ...formData, [field]: value })
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: "" })
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-background  py-12 px-4">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4">Welcome to Cribwise</h1>
-          <p className="text-xl text-slate-600">Let&apos;s get you started in just 2 steps</p>
-        </div>
+    <main className="min-h-screen bg-section-light relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="decorative-orb-purple top-0 right-0"></div>
+      <div className="decorative-orb-pink bottom-0 left-0"></div>
 
-        {/* Progress Indicator */}
-        <div className="flex justify-center mb-8">
-          <div className="flex items-center gap-4">
-            <div className={`flex items-center gap-2 ${step === 'status' ? 'text-blue-600 font-semibold' : 'text-slate-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'status' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`}>
-                1
-              </div>
-              <span>Choose Status</span>
+      <div className="relative section-spacing px-4">
+        <div className="max-w-2xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <Link href="/" className="inline-flex items-center gap-2 text-foreground hover:text-primary mb-6">
+              <ArrowRight className="h-5 w-5 rotate-180" />
+              <span className="text-lg font-medium">Back to home</span>
+            </Link>
+            
+            <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 mb-6">
+              <GraduationCap className="h-10 w-10 text-white" />
             </div>
-            <div className="w-12 h-0.5 bg-slate-300"></div>
-            <div className={`flex items-center gap-2 ${step === 'details' ? 'text-blue-600 font-semibold' : 'text-slate-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step === 'details' ? 'bg-blue-600 text-white' : 'bg-slate-200'}`}>
-                2
-              </div>
-              <span>Your Details</span>
-            </div>
+            
+            <h1 className="heading-section mb-4">
+              Join <span className="text-gradient-brand">CribWise</span>
+            </h1>
+            <p className="text-section-subtitle">
+              Create your account and unlock access to housing, materials, marketplace, and more
+            </p>
           </div>
-        </div>
 
-        {/* Step 1: Select Status */}
-        {step === 'status' && (
-          <div>
-            <h2 className="text-2xl font-bold text-center mb-6">What best describes you?</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {statuses.map((status) => (
-                <Card 
-                  key={status.value}
-                  className={`cursor-pointer hover:shadow-lg hover:scale-105 transition-all ${
-                    selectedStatus === status.value ? 'ring-2 ring-blue-600 shadow-lg' : ''
-                  }`}
-                  onClick={() => handleStatusSelect(status.value)}
-                >
-                  <CardHeader className="text-center">
-                    <div className="text-4xl mb-2">{status.icon}</div>
-                    <CardTitle className="text-lg">{status.title}</CardTitle>
-                    <CardDescription>{status.description}</CardDescription>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Step 2: Enter Details */}
-        {step === 'details' && (
-          <Card className="max-w-md mx-auto">
+          {/* Registration Card */}
+          <Card className="border-2 shadow-2xl">
             <CardHeader>
-              <CardTitle>Create Your Account</CardTitle>
+              <CardTitle className="text-2xl">Create Your Account</CardTitle>
               <CardDescription>
-                Registering as: <strong className="text-blue-600">
-                  {statuses.find(s => s.value === selectedStatus)?.title}
-                </strong>
+                Already have an account?{" "}
+                <Link href="/signin" className="text-primary hover:underline font-medium">
+                  Sign in here
+                </Link>
               </CardDescription>
             </CardHeader>
+
             <CardContent>
-              <form onSubmit={handleRegister} className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Full Name *</label>
-                  <Input
-                    required
-                    type="text"
-                    placeholder="John Doe"
-                    value={formData.fullName}
-                    onChange={(e) => setFormData({...formData, fullName: e.target.value})}
-                  />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Name Fields */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">
+                      First Name <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                      <Input
+                        id="firstName"
+                        type="text"
+                        placeholder="John"
+                        className="pl-10"
+                        value={formData.firstName}
+                        onChange={(e) => handleInputChange("firstName", e.target.value)}
+                      />
+                    </div>
+                    {errors.firstName && (
+                      <p className="text-sm text-red-500">{errors.firstName}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">
+                      Last Name <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                      <Input
+                        id="lastName"
+                        type="text"
+                        placeholder="Doe"
+                        className="pl-10"
+                        value={formData.lastName}
+                        onChange={(e) => handleInputChange("lastName", e.target.value)}
+                      />
+                    </div>
+                    {errors.lastName && (
+                      <p className="text-sm text-red-500">{errors.lastName}</p>
+                    )}
+                  </div>
                 </div>
 
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Email *</label>
-                  <Input
-                    required
-                    type="email"
-                    placeholder="you@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  />
-                  {selectedStatus !== 'agent' && (
-                    <p className="text-xs text-slate-500 mt-1">
-                      You will be able to add your school email (.edu.ng) later
-                    </p>
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email">
+                    Email Address <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="john.doe@university.edu.ng"
+                      className="pl-10"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                    />
+                  </div>
+                  {errors.email && (
+                    <p className="text-sm text-red-500">{errors.email}</p>
                   )}
                 </div>
 
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Password *</label>
-                  <Input
-                    required
-                    type="password"
-                    placeholder="Minimum 6 characters"
-                    minLength={6}
-                    value={formData.password}
-                    onChange={(e) => setFormData({...formData, password: e.target.value})}
-                  />
-                </div>
-
-                {selectedStatus !== 'agent' && (
-                  <>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">
-                      University {selectedStatus === 'prospective' ? '(Target)' : ''}
-                    </label>
+                {/* Phone */}
+                <div className="space-y-2">
+                  <Label htmlFor="phone">
+                    Phone Number <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
                     <Input
-                      type="text"
-                      placeholder="e.g., University of Lagos"
-                      value={formData.university}
-                      onChange={(e) => setFormData({...formData, university: e.target.value})}
+                      id="phone"
+                      type="tel"
+                      placeholder="+234 801 234 5678"
+                      className="pl-10"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
                     />
                   </div>
-                  <div>
-                    <label className="text-sm font-medium mb-2 block">Gender *</label>
-                    <Select
-                      required
-                      value={formData.gender}
-                      onValueChange={(value) => setFormData({...formData, gender: value})}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your gender" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Required for roommate matching and housing safety
-                    </p>
-                  </div>
-
-                  </>
-                )}
-
-                {error && (
-                  <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded-lg text-sm">
-                    {error}
-                  </div>
-                )}
-
-                <div className="flex gap-3">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    onClick={() => {
-                      setStep('status')
-                      setError('')
-                    }}
-                    className="flex-1"
-                  >
-                    ← Back
-                  </Button>
-                  <Button 
-                    type="submit" 
-                    disabled={loading}
-                    className="flex-1"
-                  >
-                    {loading ? 'Creating Account...' : 'Sign Up'}
-                  </Button>
+                  {errors.phone && (
+                    <p className="text-sm text-red-500">{errors.phone}</p>
+                  )}
                 </div>
 
-                <p className="text-center text-sm text-slate-600 mt-4">
-                  Already have an account?{' '}
-                  <Link href="/signin" className="text-blue-600 hover:underline font-medium">
-                    Sign in
-                  </Link>
-                </p>
+                {/* University - Searchable Dropdown */}
+                <div className="space-y-2">
+                  <Label htmlFor="university">
+                    University <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground z-10" />
+                    <Input
+                      id="university"
+                      type="text"
+                      placeholder="Search for your university..."
+                      className="pl-10"
+                      value={universitySearch}
+                      onChange={(e) => handleUniversitySearch(e.target.value)}
+                      onFocus={() => setShowUniversityDropdown(true)}
+                    />
+                    
+                    {/* Selected University Badge */}
+                    {selectedUniversity && !showUniversityDropdown && (
+                      <div className="absolute right-3 top-3 flex items-center gap-2">
+                        <span className="text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-medium">
+                          {selectedUniversity.type.toUpperCase()}
+                        </span>
+                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      </div>
+                    )}
+
+                    {/* Dropdown */}
+                    {showUniversityDropdown && (
+                      <div className="absolute z-20 w-full mt-1 bg-background border-2 border-muted rounded-xl shadow-2xl max-h-72 overflow-y-auto">
+                        {filteredUniversities.length > 0 ? (
+                          <div className="p-2">
+                            {filteredUniversities.map((uni) => (
+                              <button
+                                key={uni.id}
+                                type="button"
+                                onClick={() => handleSelectUniversity(uni)}
+                                className="w-full text-left px-4 py-3 rounded-lg hover:bg-muted transition-colors"
+                              >
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="flex-1">
+                                    <p className="font-semibold text-foreground">
+                                      {uni.name}
+                                      {uni.abbreviation && (
+                                        <span className="text-muted-foreground ml-2">
+                                          ({uni.abbreviation})
+                                        </span>
+                                      )}
+                                    </p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                      <MapPin className="h-3 w-3 text-muted-foreground" />
+                                      <span className="text-sm text-muted-foreground">
+                                        {uni.state} State
+                                      </span>
+                                    </div>
+                                  </div>
+                                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
+                                    uni.type === 'federal' 
+                                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                                      : uni.type === 'state'
+                                      ? 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300'
+                                      : 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300'
+                                  }`}>
+                                    {uni.type.toUpperCase()}
+                                  </span>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="p-8 text-center">
+                            <p className="text-muted-foreground">No universities found</p>
+                            <p className="text-sm text-muted-foreground mt-2">
+                              Try adjusting your search
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {errors.university && (
+                    <p className="text-sm text-red-500">{errors.university}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Can&apos;t find your university? <Link href="/contact" className="text-primary hover:underline">Let us know</Link>
+                  </p>
+                </div>
+
+                {/* Student ID (Optional) */}
+                <div className="space-y-2">
+                  <Label htmlFor="studentId">
+                    Student ID <span className="text-muted-foreground">(Optional)</span>
+                  </Label>
+                  <Input
+                    id="studentId"
+                    type="text"
+                    placeholder="e.g., 2021/1/12345"
+                    value={formData.studentId}
+                    onChange={(e) => handleInputChange("studentId", e.target.value)}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    Helps us verify your student status for exclusive benefits
+                  </p>
+                </div>
+
+                {/* Password Fields */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="password">
+                      Password <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                      <Input
+                        id="password"
+                        type="password"
+                        placeholder="Min. 8 characters"
+                        className="pl-10"
+                        value={formData.password}
+                        onChange={(e) => handleInputChange("password", e.target.value)}
+                      />
+                    </div>
+                    {errors.password && (
+                      <p className="text-sm text-red-500">{errors.password}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">
+                      Confirm Password <span className="text-red-500">*</span>
+                    </Label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
+                      <Input
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="Re-enter password"
+                        className="pl-10"
+                        value={formData.confirmPassword}
+                        onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
+                      />
+                    </div>
+                    {errors.confirmPassword && (
+                      <p className="text-sm text-red-500">{errors.confirmPassword}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Terms and Conditions */}
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <Checkbox
+                      id="terms"
+                      checked={formData.agreeToTerms}
+                      onCheckedChange={(checked) => 
+                        handleInputChange("agreeToTerms", checked as boolean)
+                      }
+                    />
+                    <label
+                      htmlFor="terms"
+                      className="text-sm leading-relaxed cursor-pointer"
+                    >
+                      I agree to the{" "}
+                      <Link href="/terms" className="text-primary hover:underline font-medium">
+                        Terms of Service
+                      </Link>{" "}
+                      and{" "}
+                      <Link href="/privacy" className="text-primary hover:underline font-medium">
+                        Privacy Policy
+                      </Link>
+                    </label>
+                  </div>
+                  {errors.agreeToTerms && (
+                    <p className="text-sm text-red-500">{errors.agreeToTerms}</p>
+                  )}
+                </div>
+
+                {/* Submit Error */}
+                {errors.submit && (
+                  <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                    <p className="text-sm text-red-700 dark:text-red-400">{errors.submit}</p>
+                  </div>
+                )}
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full text-lg py-6 rounded-xl"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                      Creating Account...
+                    </>
+                  ) : (
+                    <>
+                      Create Account
+                      <ArrowRight className="ml-2 h-5 w-5" />
+                    </>
+                  )}
+                </Button>
+
+                {/* Benefits Reminder */}
+                <div className="pt-6 border-t">
+                  <p className="text-sm text-center text-muted-foreground mb-4">
+                    What you&apos;ll get:
+                  </p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      "Access to verified housing",
+                      "Free course materials",
+                      "Student marketplace",
+                      "Roommate matching",
+                    ].map((benefit, i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm">
+                        <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                        <span className="text-foreground">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </form>
             </CardContent>
           </Card>
-        )}
+
+          {/* Security Note */}
+          <p className="text-center text-sm text-muted-foreground mt-8">
+            🔒 Your information is secure and encrypted. We&apos;ll never share your data.
+          </p>
+        </div>
       </div>
-    </div>
+    </main>
   )
 }
