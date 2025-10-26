@@ -179,10 +179,10 @@ export default async function SchoolsListingPage() {
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4">
-            Can't Find Your School? 🤔
+            Can&apos;t Find Your School? 🤔
           </h2>
           <p className="text-white/90 text-lg mb-8">
-            Let us know and we'll add it ASAP. We're constantly updating our database!
+            Let us know and we will add it ASAP. We are constantly updating our database!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 

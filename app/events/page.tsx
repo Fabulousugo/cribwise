@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import Link from "next/link";
 import { CalendarDays, MapPin, LayoutGrid, Rows, Search, Sparkles, Users, Zap, TrendingUp, Clock } from "lucide-react";
@@ -103,7 +104,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
           </div>
           
           <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 dark:from-purple-400 dark:via-pink-400 dark:to-blue-400 bg-clip-text text-transparent">
-            What's Happening This Week 🎉
+            What&apos;s Happening This Week 🎉
           </h1>
           
           <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl mb-8 max-w-2xl mx-auto">
@@ -134,7 +135,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
           <div className="max-w-7xl mx-auto">
             <div className="mb-6">
               <h2 className="text-2xl md:text-3xl font-black mb-2">Featured Events 🔥</h2>
-              <p className="text-slate-600 dark:text-slate-400">Don't miss these happening soon</p>
+              <p className="text-slate-600 dark:text-slate-400">Don&apos;t miss these happening soon</p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
@@ -361,7 +362,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
           </h2>
           
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-            List your campus event and reach thousands of students. Whether it's a workshop, meetup, or party — let's make it epic!
+            List your campus event and reach thousands of students. Whether it&apos;s a workshop, meetup, or party — let&apos;s make it epic!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -378,7 +379,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
             <Button 
               size="lg"
               variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
+              className="border-2 border-white text-blue-800 hover:bg-white/10 font-bold rounded-2xl backdrop-blur-sm"
               asChild
             >
               <Link href="/">

@@ -167,7 +167,7 @@ export default function ChecklistViewPage() {
             </div>
             <h2 className="text-2xl font-bold mb-2">No Checklists Selected</h2>
             <p className="text-slate-600 dark:text-slate-400 mb-6">
-              You haven't selected any checklists yet. Let's get you started!
+              You haven&apos;t selected any checklists yet. Let&apos;s get you started!
             </p>
             <Button 
               size="lg"
@@ -239,7 +239,7 @@ export default function ChecklistViewPage() {
                   </div>
                   <div>
                     <h3 className="font-bold text-green-900 dark:text-green-100">🎉 All Done!</h3>
-                    <p className="text-sm text-green-700 dark:text-green-300">You've completed all your checklist steps. Great job!</p>
+                    <p className="text-sm text-green-700 dark:text-green-300">You have completed all your checklist steps. Great job!</p>
                   </div>
                 </div>
               </div>

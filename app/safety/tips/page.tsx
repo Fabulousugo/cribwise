@@ -51,7 +51,7 @@ export default function SafetyTipsPage() {
             </h1>
 
             <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
-              House hunting doesn't have to be scary. Follow these tips to stay safe, avoid scams, and find your perfect place with confidence. 🏠✨
+              House hunting doesn&apos;t have to be scary. Follow these tips to stay safe, avoid scams, and find your perfect place with confidence. 🏠✨
             </p>
 
             {/* Quick action buttons */}
@@ -144,7 +144,7 @@ export default function SafetyTipsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-sm text-slate-700 dark:text-slate-300">
-                  <strong>Always schedule tours between 10am-5pm.</strong> You'll see the property clearly, the neighborhood feels safer, and you can spot issues like poor lighting or security concerns.
+                  <strong>Always schedule tours between 10am-5pm.</strong> You will see the property clearly, the neighborhood feels safer, and you can spot issues like poor lighting or security concerns.
                 </p>
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-emerald-200 dark:border-emerald-800">
                   <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
@@ -166,7 +166,7 @@ export default function SafetyTipsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-sm text-slate-700 dark:text-slate-300">
-                  <strong>Never go alone.</strong> Bring a roommate, friend, or family member. Two sets of eyes catch more details, and you'll feel safer throughout the visit.
+                  <strong>Never go alone.</strong> Bring a roommate, friend, or family member. Two sets of eyes catch more details, and you will feel safer throughout the visit.
                 </p>
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-emerald-200 dark:border-emerald-800">
                   <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
@@ -188,7 +188,7 @@ export default function SafetyTipsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-sm text-slate-700 dark:text-slate-300">
-                  <strong>Meet at the exact address in the app.</strong> If they suggest meeting elsewhere first, that's a red flag. The property should match the GPS pin perfectly.
+                  <strong>Meet at the exact address in the app.</strong> If they suggest meeting elsewhere first, that&apos;s a red flag. The property should match the GPS pin perfectly.
                 </p>
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-emerald-200 dark:border-emerald-800">
                   <p className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 flex items-center gap-2">
@@ -247,7 +247,7 @@ export default function SafetyTipsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-sm text-slate-700 dark:text-slate-300">
-                  <strong>Always use our booking/deposit flow.</strong> It's protected, tracked, and refundable if things go wrong. Avoid cash payments to random individuals.
+                  <strong>Always use our booking/deposit flow.</strong> It&apos;s protected, tracked, and refundable if things go wrong. Avoid cash payments to random individuals.
                 </p>
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
                   <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 flex items-center gap-2">
@@ -269,7 +269,7 @@ export default function SafetyTipsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-sm text-slate-700 dark:text-slate-300">
-                  <strong>Only pay the verified landlord/agent.</strong> If someone asks you to pay a "friend," "assistant," or different account, that's a scam. Walk away immediately.
+                  <strong>Only pay the verified landlord/agent.</strong> If someone asks you to pay a &quot;friend,&quot; a &quot;assistant,&quot; or different account, that&apos;s a scam. Walk away immediately.
                 </p>
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
                   <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 flex items-center gap-2">
@@ -313,7 +313,7 @@ export default function SafetyTipsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <p className="text-sm text-slate-700 dark:text-slate-300">
-                  <strong>Take your time to decide.</strong> Legitimate landlords don't pressure you with "pay now or lose it" tactics. If you feel rushed, it's probably a scam.
+                  <strong>Take your time to decide.</strong> Legitimate landlords don&apos;t pressure you with &quot;pay now or lose it&quot; tactics. If you feel rushed, it&apos;s probably a scam.
                 </p>
                 <div className="bg-white dark:bg-slate-800 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
                   <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 flex items-center gap-2">
@@ -366,7 +366,7 @@ export default function SafetyTipsPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-slate-700 dark:text-slate-300">
-                  Be cautious of "pay today or lose it" messages. Real landlords understand you need time to decide.
+                  Be cautious of scammers who pressure you with &quot;pay today or lose it&quot; messages. Real landlords understand you need time to decide.
                 </p>
               </CardContent>
             </Card>
@@ -419,7 +419,7 @@ export default function SafetyTipsPage() {
                     <XCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
                   </div>
                   <div>
-                    <h3 className="font-bold mb-1 text-slate-900 dark:text-white">Won't Meet at Location</h3>
+                    <h3 className="font-bold mb-1 text-slate-900 dark:text-white">Won&apos;t Meet at Location</h3>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Unwilling to meet at the exact pinned address or keeps changing locations</p>
                   </div>
                 </div>
@@ -481,7 +481,7 @@ export default function SafetyTipsPage() {
                   If you spot ANY of these red flags:
                 </p>
                 <p className="text-sm text-red-700 dark:text-red-300">
-                  Stop all communication immediately, don't send money, and report the listing to us. Trust your gut — if something feels wrong, it probably is.
+                  Stop all communication immediately, don&apos;t send money, and report the listing to us. Trust your gut — if something feels wrong, it probably is.
                 </p>
               </div>
             </CardContent>
@@ -503,7 +503,7 @@ export default function SafetyTipsPage() {
                 </div>
                 <div>
                   <h2 className="text-3xl font-black">Encountered a Scam?</h2>
-                  <p className="text-white/90">We're here to help 24/7</p>
+                  <p className="text-white/90">We are here to help 24/7</p>
                 </div>
               </div>
 
@@ -564,7 +564,7 @@ export default function SafetyTipsPage() {
                     <div className="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center flex-shrink-0">
                       <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <span className="text-slate-700 dark:text-slate-300">Check landlord's verification badge</span>
+                    <span className="text-slate-700 dark:text-slate-300">Check landlord&apos;s verification badge</span>
                   </li>
                   <li className="flex items-start gap-3 text-sm">
                     <div className="w-6 h-6 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center flex-shrink-0">
@@ -654,7 +654,7 @@ export default function SafetyTipsPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white/10 font-bold px-8 py-6 text-lg backdrop-blur-sm"
+                className="border-2 border-white text-purple-600 hover:bg-white/10 font-bold px-8 py-6 text-lg backdrop-blur-sm"
               >
                 <AlertTriangle className="mr-2 h-5 w-5" />
                 Report a Scam

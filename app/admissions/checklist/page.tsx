@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -82,7 +82,7 @@ const checklistOptions: ChecklistOption[] = [
     description: "Additional requirements for foreign applicants",
     icon: "🌍",
     color: "from-teal-500 to-cyan-500",
-    steps: 7,
+    steps: 10,
     estimatedTime: "8-12 weeks",
     recommended: false,
     tags: ["International", "Visa Required"]
@@ -90,9 +90,29 @@ const checklistOptions: ChecklistOption[] = [
 ];
 
 export default function ChecklistSelectorPage() {
-  const [selectedChecklists, setSelectedChecklists] = useState<string[]>(
-    checklistOptions.filter(c => c.recommended).map(c => c.id)
-  );
+  const [selectedChecklists, setSelectedChecklists] = useState<string[]>(() => {
+    // Load from localStorage on initial render (client-side only)
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('selectedChecklists');
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error('Error parsing saved checklists:', e);
+        }
+      }
+    }
+    // Default to recommended checklists
+    return checklistOptions.filter(c => c.recommended).map(c => c.id);
+  });
+
+  // Save to localStorage whenever selections change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selectedChecklists', JSON.stringify(selectedChecklists));
+      console.log('Saved to localStorage:', selectedChecklists); // Debug log
+    }
+  }, [selectedChecklists]);
 
   const toggleChecklist = (id: string) => {
     setSelectedChecklists(prev => 
@@ -124,7 +144,7 @@ export default function ChecklistSelectorPage() {
           </h1>
           
           <p className="text-slate-700 dark:text-slate-300 text-lg md:text-xl max-w-2xl mx-auto mb-6">
-            Select the checklists that match your journey. We'll create a personalized roadmap just for you.
+            Select the checklists that match your journey. We will create a personalized roadmap just for you.
           </p>
 
           {/* Current Selection Stats */}
@@ -153,7 +173,7 @@ export default function ChecklistSelectorPage() {
                 <div>
                   <CardTitle className="text-xl">Not sure where to start?</CardTitle>
                   <CardDescription className="dark:text-slate-400">
-                    We've pre-selected the essential checklists for most students
+                    We have pre-selected the essential checklists for most students
                   </CardDescription>
                 </div>
               </div>
@@ -191,17 +211,17 @@ export default function ChecklistSelectorPage() {
               return (
                 <Card
                   key={checklist.id}
-                  className={`cursor-pointer transition-all duration-300 hover:shadow-xl ${
-                    isSelected 
-                      ? 'border-4 border-purple-500 dark:border-purple-400 bg-purple-50/50 dark:bg-purple-950/20' 
-                      : 'border-2 border-slate-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
+                  className={`border-2 cursor-pointer transition-all hover:shadow-xl ${
+                    isSelected
+                      ? 'border-purple-500 dark:border-purple-400 bg-purple-50 dark:bg-purple-950/20 shadow-lg'
+                      : 'border-slate-200 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
                   }`}
                   onClick={() => toggleChecklist(checklist.id)}
                 >
                   <CardHeader>
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3 flex-1">
-                        <div className={`w-14 h-14 bg-gradient-to-br ${checklist.color} rounded-2xl flex items-center justify-center text-2xl flex-shrink-0 shadow-lg`}>
+                        <div className={`w-12 h-12 bg-gradient-to-br ${checklist.color} rounded-xl flex items-center justify-center text-2xl flex-shrink-0 shadow-md`}>
                           {checklist.icon}
                         </div>
                         <div className="flex-1">
@@ -280,7 +300,7 @@ export default function ChecklistSelectorPage() {
                       Ready to Get Started? 🚀
                     </h3>
                     <p className="text-slate-700 dark:text-slate-300 mb-4">
-                      You've selected <span className="font-bold text-purple-600 dark:text-purple-400">{selectedCount}</span> checklist{selectedCount !== 1 ? 's' : ''} with <span className="font-bold text-purple-600 dark:text-purple-400">{totalSteps}</span> total steps.
+                      You have selected <span className="font-bold text-purple-600 dark:text-purple-400">{selectedCount}</span> checklist{selectedCount !== 1 ? 's' : ''} with <span className="font-bold text-purple-600 dark:text-purple-400">{totalSteps}</span> total steps.
                     </p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
                       Your progress will be saved automatically as you work through each task.
@@ -326,7 +346,7 @@ export default function ChecklistSelectorPage() {
                   Select at least one checklist to get started with your admission journey.
                 </p>
                 <p className="text-sm text-slate-500 dark:text-slate-500">
-                  We recommend starting with "Document Preparation" if you're unsure.
+                  We recommend starting with &quot;Document Preparation&quot; if you are unsure.
                 </p>
               </CardContent>
             </Card>
