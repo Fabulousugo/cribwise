@@ -119,7 +119,7 @@ export default function StudentVerificationPage() {
       
       // Redirect to dashboard after 2 seconds
       setTimeout(() => {
-        router.push("/dashboard/student")
+        router.push("/dashboard/admitted")
       }, 2000)
 
     } catch (err: any) {
@@ -137,12 +137,12 @@ export default function StudentVerificationPage() {
             <CheckCircle2 className="h-12 w-12 text-green-600 dark:text-green-400" />
           </div>
           <h1 className="text-4xl font-bold text-foreground mb-4">
-            You're Already Verified! ✅
+            You&apos;re Already Verified! ✅
           </h1>
           <p className="text-xl text-muted-foreground mb-8">
             Your student account is verified and ready to go.
           </p>
-          <Button size="lg" onClick={() => router.push("/dashboard/student")}>
+          <Button size="lg" onClick={() => router.push("/dashboard/admitted")}>
             Go to Dashboard
           </Button>
         </div>
