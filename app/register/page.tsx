@@ -2,58 +2,97 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
-import { nigerianUniversities, searchUniversities, type University } from "@/lib/universities"
-import { GraduationCap, Mail, Lock, User, Phone, MapPin, Search, CheckCircle2, ArrowRight } from "lucide-react"
+import { 
+  GraduationCap, 
+  Mail, 
+  Lock, 
+  User, 
+  ArrowRight, 
+  Building2, 
+  UserCheck,
+  Users,
+  Briefcase,
+  CheckCircle2
+} from "lucide-react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+
+type UserType = "prospective" | "admitted" | "current" | "alumni" | "agent"
+
+interface ProfileOption {
+  type: UserType
+  icon: React.ElementType
+  title: string
+  description: string
+  color: string
+}
+
+const profileOptions: ProfileOption[] = [
+  {
+    type: "prospective",
+    icon: GraduationCap,
+    title: "Prospective Student",
+    description: "I'm considering studying in Nigeria",
+    color: "from-blue-500 to-cyan-500"
+  },
+  {
+    type: "admitted",
+    icon: UserCheck,
+    title: "Admitted Student",
+    description: "I've been offered admission",
+    color: "from-purple-500 to-pink-500"
+  },
+  {
+    type: "current",
+    icon: Users,
+    title: "Current Student",
+    description: "I'm currently enrolled",
+    color: "from-green-500 to-emerald-500"
+  },
+  {
+    type: "alumni",
+    icon: Briefcase,
+    title: "Alumni",
+    description: "I'm a graduate",
+    color: "from-orange-500 to-red-500"
+  },
+  {
+    type: "agent",
+    icon: Building2,
+    title: "Landlord/Agent",
+    description: "I want to list properties",
+    color: "from-indigo-500 to-purple-500"
+  }
+]
 
 export default function RegisterPage() {
+  const router = useRouter()
+  const supabase = createClientComponentClient()
+  
+  const [step, setStep] = useState<"profile" | "details">("profile")
+  const [selectedProfile, setSelectedProfile] = useState<UserType | null>(null)
+  
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
     password: "",
     confirmPassword: "",
-    university: "",
-    studentId: "",
     agreeToTerms: false,
   })
 
-  const [universitySearch, setUniversitySearch] = useState("")
-  const [showUniversityDropdown, setShowUniversityDropdown] = useState(false)
-  const [filteredUniversities, setFilteredUniversities] = useState<University[]>(nigerianUniversities)
-  const [selectedUniversity, setSelectedUniversity] = useState<University | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
 
-  // Handle university search
-  const handleUniversitySearch = (query: string) => {
-    setUniversitySearch(query)
-    if (query.length > 0) {
-      const results = searchUniversities(query)
-      setFilteredUniversities(results)
-      setShowUniversityDropdown(true)
-    } else {
-      setFilteredUniversities(nigerianUniversities)
-      setShowUniversityDropdown(false)
-    }
-  }
-
-  // Select university
-  const handleSelectUniversity = (university: University) => {
-    setSelectedUniversity(university)
-    setUniversitySearch(university.name)
-    setFormData({ ...formData, university: university.id })
-    setShowUniversityDropdown(false)
-    // Clear university error if exists
-    if (errors.university) {
-      setErrors({ ...errors, university: "" })
-    }
+  // Handle profile selection
+  const handleProfileSelect = (type: UserType) => {
+    setSelectedProfile(type)
+    setStep("details")
   }
 
   // Form validation
@@ -67,12 +106,6 @@ export default function RegisterPage() {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Invalid email format"
     }
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required"
-    } else if (!/^[\d+\-\s()]+$/.test(formData.phone)) {
-      newErrors.phone = "Invalid phone number"
-    }
-    if (!formData.university) newErrors.university = "Please select your university"
     if (!formData.password) {
       newErrors.password = "Password is required"
     } else if (formData.password.length < 8) {
@@ -93,22 +126,51 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!validateForm()) {
+    if (!validateForm() || !selectedProfile) {
       return
     }
 
     setIsLoading(true)
 
     try {
-      // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 2000)) // Simulate API call
-      
-      console.log("Form submitted:", formData)
-      // Redirect to dashboard or email verification page
-      window.location.href = "/dashboard"
-    } catch (error) {
+      // Sign up the user
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            full_name: `${formData.firstName} ${formData.lastName}`,
+          },
+        },
+      })
+
+      if (authError) throw authError
+
+      if (authData.user) {
+        // Create user profile with selected type
+        const { error: profileError } = await supabase
+          .from('user_profiles')
+          .insert({
+            id: authData.user.id,
+            email: formData.email,
+            full_name: `${formData.firstName} ${formData.lastName}`,
+            user_type: selectedProfile,
+            status: selectedProfile === "agent" ? "AGENT" : selectedProfile.toUpperCase(),
+            onboarding_completed: false,
+          })
+
+        if (profileError) throw profileError
+
+        // Redirect to onboarding
+        router.push('/onboarding')
+      }
+    } catch (error: any) {
       console.error("Registration error:", error)
-      setErrors({ submit: "Registration failed. Please try again." })
+      setErrors({ 
+        submit: error.message || "Registration failed. Please try again." 
+      })
     } finally {
       setIsLoading(false)
     }
@@ -122,6 +184,70 @@ export default function RegisterPage() {
     }
   }
 
+  // Profile Selection Step
+  if (step === "profile") {
+    return (
+      <main className="min-h-screen bg-section-light relative overflow-hidden">
+        {/* Decorative Elements */}
+        <div className="decorative-orb-purple top-0 right-0"></div>
+        <div className="decorative-orb-pink bottom-0 left-0"></div>
+
+        <div className="relative section-spacing px-4">
+          <div className="max-w-4xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+              <Link href="/" className="inline-flex items-center gap-2 text-foreground hover:text-primary mb-6">
+                <ArrowRight className="h-5 w-5 rotate-180" />
+                <span className="text-lg font-medium">Back to home</span>
+              </Link>
+              
+              <h1 className="heading-section mb-4">
+                Join <span className="text-gradient-brand">CribWise</span>
+              </h1>
+              <p className="text-section-subtitle max-w-2xl mx-auto">
+                First, tell us about yourself so we can customize your experience
+              </p>
+            </div>
+
+            {/* Profile Options */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {profileOptions.map((option) => {
+                const Icon = option.icon
+                return (
+                  <Card
+                    key={option.type}
+                    className="border-2 hover:border-primary/50 transition-all cursor-pointer hover:shadow-xl hover:scale-105"
+                    onClick={() => handleProfileSelect(option.type)}
+                  >
+                    <CardContent className="p-6 text-center">
+                      <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${option.color} mb-4`}>
+                        <Icon className="h-8 w-8 text-white" />
+                      </div>
+                      <h3 className="font-semibold text-lg mb-2">{option.title}</h3>
+                      <p className="text-sm text-muted-foreground">{option.description}</p>
+                    </CardContent>
+                  </Card>
+                )
+              })}
+            </div>
+
+            {/* Sign In Link */}
+            <p className="text-center text-sm text-muted-foreground mt-12">
+              Already have an account?{" "}
+              <Link href="/signin" className="text-primary hover:underline font-medium">
+                Sign in here
+              </Link>
+            </p>
+          </div>
+        </div>
+      </main>
+    )
+  }
+
+  // Details Form Step
+  const selectedOption = profileOptions.find(opt => opt.type === selectedProfile)
+  const Icon = selectedOption?.icon || User
+
   return (
     <main className="min-h-screen bg-section-light relative overflow-hidden">
       {/* Decorative Elements */}
@@ -132,27 +258,30 @@ export default function RegisterPage() {
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <Link href="/" className="inline-flex items-center gap-2 text-foreground hover:text-primary mb-6">
+            <button 
+              onClick={() => setStep("profile")}
+              className="inline-flex items-center gap-2 text-foreground hover:text-primary mb-6"
+            >
               <ArrowRight className="h-5 w-5 rotate-180" />
-              <span className="text-lg font-medium">Back to home</span>
-            </Link>
+              <span className="text-lg font-medium">Change profile type</span>
+            </button>
             
-            <div className="inline-flex p-4 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 mb-6">
-              <GraduationCap className="h-10 w-10 text-white" />
+            <div className={`inline-flex p-4 rounded-2xl bg-gradient-to-br ${selectedOption?.color} mb-6`}>
+              <Icon className="h-10 w-10 text-white" />
             </div>
             
             <h1 className="heading-section mb-4">
-              Join <span className="text-gradient-brand">CribWise</span>
+              Create Your <span className="text-gradient-brand">{selectedOption?.title}</span> Account
             </h1>
             <p className="text-section-subtitle">
-              Create your account and unlock access to housing, materials, marketplace, and more
+              {selectedOption?.description}
             </p>
           </div>
 
           {/* Registration Card */}
           <Card className="border-2 shadow-2xl">
             <CardHeader>
-              <CardTitle className="text-2xl">Create Your Account</CardTitle>
+              <CardTitle className="text-2xl">Account Details</CardTitle>
               <CardDescription>
                 Already have an account?{" "}
                 <Link href="/signin" className="text-primary hover:underline font-medium">
@@ -216,7 +345,7 @@ export default function RegisterPage() {
                     <Input
                       id="email"
                       type="email"
-                      placeholder="john.doe@university.edu.ng"
+                      placeholder={selectedProfile === "agent" ? "your.email@example.com" : "your.email@university.edu.ng"}
                       className="pl-10"
                       value={formData.email}
                       onChange={(e) => handleInputChange("email", e.target.value)}
@@ -225,132 +354,11 @@ export default function RegisterPage() {
                   {errors.email && (
                     <p className="text-sm text-red-500">{errors.email}</p>
                   )}
-                </div>
-
-                {/* Phone */}
-                <div className="space-y-2">
-                  <Label htmlFor="phone">
-                    Phone Number <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="+234 801 234 5678"
-                      className="pl-10"
-                      value={formData.phone}
-                      onChange={(e) => handleInputChange("phone", e.target.value)}
-                    />
-                  </div>
-                  {errors.phone && (
-                    <p className="text-sm text-red-500">{errors.phone}</p>
+                  {selectedProfile !== "agent" && (
+                    <p className="text-xs text-muted-foreground">
+                      You&apos;ll verify your school email after registration
+                    </p>
                   )}
-                </div>
-
-                {/* University - Searchable Dropdown */}
-                <div className="space-y-2">
-                  <Label htmlFor="university">
-                    University <span className="text-red-500">*</span>
-                  </Label>
-                  <div className="relative">
-                    <Search className="absolute left-3 top-3 h-5 w-5 text-muted-foreground z-10" />
-                    <Input
-                      id="university"
-                      type="text"
-                      placeholder="Search for your university..."
-                      className="pl-10"
-                      value={universitySearch}
-                      onChange={(e) => handleUniversitySearch(e.target.value)}
-                      onFocus={() => setShowUniversityDropdown(true)}
-                    />
-                    
-                    {/* Selected University Badge */}
-                    {selectedUniversity && !showUniversityDropdown && (
-                      <div className="absolute right-3 top-3 flex items-center gap-2">
-                        <span className="text-xs px-2 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-medium">
-                          {selectedUniversity.type.toUpperCase()}
-                        </span>
-                        <CheckCircle2 className="h-5 w-5 text-green-500" />
-                      </div>
-                    )}
-
-                    {/* Dropdown */}
-                    {showUniversityDropdown && (
-                      <div className="absolute z-20 w-full mt-1 bg-background border-2 border-muted rounded-xl shadow-2xl max-h-72 overflow-y-auto">
-                        {filteredUniversities.length > 0 ? (
-                          <div className="p-2">
-                            {filteredUniversities.map((uni) => (
-                              <button
-                                key={uni.id}
-                                type="button"
-                                onClick={() => handleSelectUniversity(uni)}
-                                className="w-full text-left px-4 py-3 rounded-lg hover:bg-muted transition-colors"
-                              >
-                                <div className="flex items-center justify-between gap-2">
-                                  <div className="flex-1">
-                                    <p className="font-semibold text-foreground">
-                                      {uni.name}
-                                      {uni.abbreviation && (
-                                        <span className="text-muted-foreground ml-2">
-                                          ({uni.abbreviation})
-                                        </span>
-                                      )}
-                                    </p>
-                                    <div className="flex items-center gap-2 mt-1">
-                                      <MapPin className="h-3 w-3 text-muted-foreground" />
-                                      <span className="text-sm text-muted-foreground">
-                                        {uni.state} State
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                                    uni.type === 'federal' 
-                                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
-                                      : uni.type === 'state'
-                                      ? 'bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300'
-                                      : 'bg-orange-100 dark:bg-orange-900 text-orange-700 dark:text-orange-300'
-                                  }`}>
-                                    {uni.type.toUpperCase()}
-                                  </span>
-                                </div>
-                              </button>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="p-8 text-center">
-                            <p className="text-muted-foreground">No universities found</p>
-                            <p className="text-sm text-muted-foreground mt-2">
-                              Try adjusting your search
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  {errors.university && (
-                    <p className="text-sm text-red-500">{errors.university}</p>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    Can&apos;t find your university? <Link href="/contact" className="text-primary hover:underline">Let us know</Link>
-                  </p>
-                </div>
-
-                {/* Student ID (Optional) */}
-                <div className="space-y-2">
-                  <Label htmlFor="studentId">
-                    Student ID <span className="text-muted-foreground">(Optional)</span>
-                  </Label>
-                  <Input
-                    id="studentId"
-                    type="text"
-                    placeholder="e.g., 2021/1/12345"
-                    value={formData.studentId}
-                    onChange={(e) => handleInputChange("studentId", e.target.value)}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Helps us verify your student status for exclusive benefits
-                  </p>
                 </div>
 
                 {/* Password Fields */}
@@ -458,17 +466,45 @@ export default function RegisterPage() {
                     What you&apos;ll get:
                   </p>
                   <div className="grid grid-cols-2 gap-3">
-                    {[
-                      "Access to verified housing",
-                      "Free course materials",
-                      "Student marketplace",
-                      "Roommate matching",
-                    ].map((benefit, i) => (
-                      <div key={i} className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
-                        <span className="text-foreground">{benefit}</span>
-                      </div>
-                    ))}
+                    {selectedProfile === "agent" ? (
+                      <>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">List properties</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">Manage inquiries</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">Verification badge</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">Analytics dashboard</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">Verified housing</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">Free materials</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">Marketplace access</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm">
+                          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+                          <span className="text-foreground">Roommate matching</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </form>

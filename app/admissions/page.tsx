@@ -226,7 +226,7 @@ export default async function AdmissionsHome() {
               <Button 
                 size="lg" 
                 variant="outline"
-                className="border-2 border-white text-purple-600 hover:bg-white/10 font-bold text-lg px-8 py-6 rounded-2xl backdrop-blur-sm"
+                className="border-2 border-white text-white hover:bg-white/10 font-bold text-lg px-8 py-6 rounded-2xl backdrop-blur-sm"
               >
                 <Sparkles className="h-5 w-5 mr-2" /> Read the Guides
               </Button>
