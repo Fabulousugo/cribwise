@@ -152,11 +152,11 @@ export default function AccountSettingsPage() {
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">2.</span>
-                        <span>Select <strong>"Account Settings"</strong> from the dropdown menu</span>
+                        <span>Select <strong>&quot;Account Settings&quot;</strong> from the dropdown menu</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">3.</span>
-                        <span>Navigate to the <strong>"Profile"</strong> tab</span>
+                        <span>Navigate to the <strong>&quot;Profile&quot;</strong> tab</span>
                       </li>
                     </ol>
                   </CardContent>
@@ -178,10 +178,10 @@ export default function AccountSettingsPage() {
                               <p><strong>How to Change:</strong></p>
                               <ol className="list-decimal list-inside space-y-1 text-sm ml-4">
                                 <li>Click on your current profile photo</li>
-                                <li>Select "Upload New Photo"</li>
+                                <li>Select &quot;Upload New Photo&quot;</li>
                                 <li>Choose image from your device</li>
                                 <li>Crop and adjust as needed</li>
-                                <li>Click "Save"</li>
+                                <li>Click &quot;Save&quot;</li>
                               </ol>
                               <p className="mt-3"><strong>Requirements:</strong></p>
                               <ul className="list-disc list-inside space-y-1 text-sm ml-4">
@@ -322,7 +322,7 @@ export default function AccountSettingsPage() {
                           <li>✓ Complete all required fields for better matches</li>
                           <li>✓ Write a friendly bio to introduce yourself</li>
                           <li>✓ Keep contact information up to date</li>
-                          <li>✓ Verify your school email for "Verified Student" badge</li>
+                          <li>✓ Verify your school email for &quot;Verified Student&quot; badge</li>
                         </ul>
                       </div>
                     </div>
@@ -362,7 +362,7 @@ export default function AccountSettingsPage() {
                           </li>
                           <li className="flex items-start gap-3">
                             <span className="font-bold text-red-600 dark:text-red-400 flex-shrink-0">2.</span>
-                            <span>Click "Change Password"</span>
+                            <span>Click &quot;Change Password&quot;</span>
                           </li>
                           <li className="flex items-start gap-3">
                             <span className="font-bold text-red-600 dark:text-red-400 flex-shrink-0">3.</span>
@@ -378,7 +378,7 @@ export default function AccountSettingsPage() {
                           </li>
                           <li className="flex items-start gap-3">
                             <span className="font-bold text-red-600 dark:text-red-400 flex-shrink-0">6.</span>
-                            <span>Click "Update Password"</span>
+                            <span>Click &quot;Update Password&quot;</span>
                           </li>
                         </ol>
                       </div>
@@ -417,7 +417,7 @@ export default function AccountSettingsPage() {
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="font-bold flex-shrink-0">2.</span>
-                              <span>Click "Forgot Password?"</span>
+                              <span>Click &quot;Forgot Password?&quot;</span>
                             </li>
                             <li className="flex items-start gap-3">
                               <span className="font-bold flex-shrink-0">3.</span>
@@ -450,7 +450,7 @@ export default function AccountSettingsPage() {
                       <div className="flex-1">
                         <CardTitle className="text-lg">Two-Factor Authentication (Coming Soon)</CardTitle>
                         <CardDescription className="mt-2 text-sm">
-                          We're working on adding 2FA for extra security. This will require a code from your phone each time you log in from a new device.
+                          We are working on adding 2FA for extra security. This will require a code from your phone each time you log in from a new device.
                         </CardDescription>
                       </div>
                     </div>
@@ -466,7 +466,7 @@ export default function AccountSettingsPage() {
                         <p className="font-bold mb-2 text-red-700 dark:text-red-300">Security Best Practices</p>
                         <ul className="space-y-1 text-sm text-slate-700 dark:text-slate-300">
                           <li>⚠ Never share your password with anyone</li>
-                          <li>⚠ Don't use the same password on multiple websites</li>
+                          <li>⚠ Don&apos;t use the same password on multiple websites</li>
                           <li>⚠ Log out from public or shared computers</li>
                           <li>⚠ Be wary of phishing emails asking for your password</li>
                           <li>⚠ Change your password if you suspect unauthorized access</li>
@@ -671,7 +671,7 @@ export default function AccountSettingsPage() {
                               </div>
                               <div className="border-l-2 border-purple-300 dark:border-purple-700 pl-4">
                                 <p className="font-semibold text-sm">Private</p>
-                                <p className="text-xs text-slate-600 dark:text-slate-400">Only you and people you've messaged can see your profile</p>
+                                <p className="text-xs text-slate-600 dark:text-slate-400">Only you and people you have messaged can see your profile</p>
                               </div>
                             </div>
                           </CardDescription>
@@ -755,11 +755,11 @@ export default function AccountSettingsPage() {
                               </li>
                               <li className="flex items-start gap-3">
                                 <span className="font-bold flex-shrink-0">2.</span>
-                                <span>Click "Download My Data"</span>
+                                <span>Click &quot;Download My Data&quot;</span>
                               </li>
                               <li className="flex items-start gap-3">
                                 <span className="font-bold flex-shrink-0">3.</span>
-                                <span>We'll email you a link within 24 hours</span>
+                                <span>We will email you a link within 24 hours</span>
                               </li>
                               <li className="flex items-start gap-3">
                                 <span className="font-bold flex-shrink-0">4.</span>
@@ -784,7 +784,7 @@ export default function AccountSettingsPage() {
 
               <div className="space-y-6">
                 <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
-                  Verify your school email to unlock student-only features and get the "Verified Student" badge.
+                  Verify your school email to unlock student-only features and get the &quot;Verified Student&quot; badge.
                 </p>
 
                 {/* Why Verify */}
@@ -845,7 +845,7 @@ export default function AccountSettingsPage() {
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">3.</span>
-                        <span>Click "Send Verification Code"</span>
+                        <span>Click &quot;Send Verification Code&quot;</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">4.</span>
@@ -857,11 +857,11 @@ export default function AccountSettingsPage() {
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">6.</span>
-                        <span>Paste the code and click "Verify"</span>
+                        <span>Paste the code and click &quot;Verify&quot;</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold text-blue-600 dark:text-blue-400 flex-shrink-0">7.</span>
-                        <span>✓ You're now verified! Badge appears immediately</span>
+                        <span>✓ You are now verified! Badge appears immediately</span>
                       </li>
                     </ol>
                   </CardContent>
@@ -875,18 +875,18 @@ export default function AccountSettingsPage() {
                       <div className="flex-1">
                         <CardTitle className="text-lg">Verification Issues?</CardTitle>
                         <CardDescription className="mt-2 text-sm">
-                          <p className="mb-3"><strong>Didn't receive the email?</strong></p>
+                          <p className="mb-3"><strong>Didn&apos;t receive the email?</strong></p>
                           <ul className="space-y-2 mb-4">
                             <li>• Check your spam/junk folder</li>
                             <li>• Wait 5-10 minutes and try resending</li>
                             <li>• Make sure your email ends in .edu.ng</li>
-                            <li>• Verify your inbox isn't full</li>
+                            <li>• Verify your inbox isn&apos;t full</li>
                           </ul>
 
                           <p className="mb-3"><strong>School email not working?</strong></p>
                           <ul className="space-y-2 mb-4">
-                            <li>• Contact your university's ICT center</li>
-                            <li>• Activate your school email if it's new</li>
+                            <li>• Contact your university&apos;s ICT center</li>
+                            <li>• Activate your school email if it&apos;s new</li>
                             <li>• Ensure you can log into your school email</li>
                           </ul>
 
@@ -951,7 +951,7 @@ export default function AccountSettingsPage() {
                           <li>• All saved properties and searches</li>
                           <li>• Message history with landlords</li>
                           <li>• Booking history (completed bookings)</li>
-                          <li>• Reviews and ratings you've left</li>
+                          <li>• Reviews and ratings you have left</li>
                           <li>• Community memberships</li>
                           <li>• Verified student status</li>
                         </ul>
@@ -1022,7 +1022,7 @@ export default function AccountSettingsPage() {
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold flex-shrink-0">2.</span>
-                        <span>Scroll to the bottom and click "Delete Account"</span>
+                        <span>Scroll to the bottom and click &quot;Delete Account&quot;</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold flex-shrink-0">3.</span>
@@ -1038,7 +1038,7 @@ export default function AccountSettingsPage() {
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold flex-shrink-0">6.</span>
-                        <span>Click "Delete My Account"</span>
+                        <span>Click &quot;Delete My Account&quot;</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="font-bold flex-shrink-0">7.</span>
@@ -1124,7 +1124,7 @@ export default function AccountSettingsPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      You have 30 days to cancel deletion by logging in. After 30 days, the account is permanently deleted and cannot be recovered. You'll need to create a new account.
+                      You have 30 days to cancel deletion by logging in. After 30 days, the account is permanently deleted and cannot be recovered. You will need to create a new account.
                     </p>
                   </CardContent>
                 </Card>
@@ -1147,7 +1147,7 @@ export default function AccountSettingsPage() {
                   <CardHeader>
                     <CardTitle className="text-lg flex items-start gap-2">
                       <HelpCircle className="h-5 w-5 text-cyan-600 dark:text-cyan-400 flex-shrink-0 mt-0.5" />
-                      Why can't I change my date of birth?
+                      Why can&apos;t I change my date of birth?
                     </CardTitle>
                   </CardHeader>
                   <CardContent>

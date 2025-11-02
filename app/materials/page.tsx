@@ -308,7 +308,7 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
           </h2>
           
           <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-            Missing a past question or lecture note? Let us know and we'll source it for you. We're here to help you succeed!
+            Missing a past question or lecture note? Let us know and we will source it for you. We are here to help you succeed!
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -316,8 +316,10 @@ export default async function MaterialsHome({ searchParams }: { searchParams?: R
               size="lg"
               className="bg-white text-purple-700 hover:bg-slate-100 font-bold rounded-2xl px-8"
             >
-              <FileText className="h-5 w-5 mr-2" />
+              <Link href="/materials/request-material">
+              {/* <FileText className="h-5 w-5 mr-2" /> */}
               Request Material
+              </Link>
             </Button>
             <Button 
               size="lg"

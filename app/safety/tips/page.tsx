@@ -653,9 +653,7 @@ export default function SafetyTipsPage() {
             <Link href="/report">
               <Button
                 size="lg"
-                variant="outline"
-                className="border-2 border-white text-purple-600 hover:bg-white/10 font-bold px-8 py-6 text-lg backdrop-blur-sm"
-              >
+                className="bg-white text-purple-600 hover:bg-slate-100 font-bold px-8 py-6 text-lg">
                 <AlertTriangle className="mr-2 h-5 w-5" />
                 Report a Scam
               </Button>

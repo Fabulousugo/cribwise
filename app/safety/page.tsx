@@ -478,7 +478,7 @@ export default function SafetyPage() {
                 </Button>
               </Link>
               <Link href="/properties">
-                <Button size="lg" variant="outline" className="border-2 border-white text-purple-600 hover:bg-white/10 font-bold px-10 py-7 text-lg backdrop-blur-sm">
+                <Button size="lg" className="bg-white text-purple-600 hover:bg-slate-100 font-bold px-10 py-7 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105">
                   Browse Safe Listings
                 </Button>
               </Link>

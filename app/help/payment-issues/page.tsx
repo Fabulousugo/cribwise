@@ -430,7 +430,7 @@ export default function PaymentIssuesPage() {
                           <ul className="list-disc list-inside space-y-1 text-sm">
                             <li>Wait 10-15 minutes and refresh the page</li>
                             <li>Check your email for payment confirmation</li>
-                            <li>Don't make duplicate payments</li>
+                            <li>Don&apos;t make duplicate payments</li>
                             <li>If still pending after 24 hours, contact support</li>
                             <li>Keep your transaction reference number</li>
                           </ul>
