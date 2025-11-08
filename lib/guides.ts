@@ -4,6 +4,9 @@ export type Guide = {
   summary?: string;
   tags?: string[];
   body: string; // can be plain text/HTML/MD for now; MDX later
+  readTime?: string;
+  difficulty?: string;
+  lastUpdated?: string;
 };
 
 // ---------------- MOCK DATA (replace later) ----------------
@@ -14,6 +17,9 @@ const GUIDES: Guide[] = [
     title: "Nigerian University Admissions: Complete Guide",
     summary: "Everything you need to know about getting admitted to a Nigerian university - JAMB UTME, Post-UTME, requirements, costs, and timelines.",
     tags: ["JAMB", "UTME", "Post-UTME", "Admissions", "Requirements", "Universities"],
+    readTime: "45 min read",
+    difficulty: "Comprehensive",
+    lastUpdated: "January 2025",
     body: `
 # Nigerian University Admissions: Complete Guide
 
@@ -563,6 +569,9 @@ Ready to start your admission journey? Here's what to do:
     title: "How to Track Admissions Deadlines",
     summary: "Never miss a window: portals to check, timelines, and reminder setup with proven strategies from successful students.",
     tags: ["Deadlines", "Portals", "Reminders", "Organization", "Calendar"],
+    readTime: "12 min read",
+    difficulty: "Beginner",
+    lastUpdated: "January 2025",
     body: `
 # How to Track Admissions Deadlines
 
@@ -842,6 +851,9 @@ Create a simple Excel/Google Sheets:
     title: "Documents You Need for Applications",
     summary: "Complete document checklist with where to get each one, processing times, costs, and organization tips.",
     tags: ["Documents", "Checklist", "Requirements", "Organization"],
+    readTime: "18 min read",
+    difficulty: "Intermediate",
+    lastUpdated: "January 2025",
     body: `
 # Documents You Need for Applications
 
@@ -1226,6 +1238,9 @@ Start saving early!
     title: "Link Your School Email (CribWise Policy)",
     summary: "Why we require school email verification, how to link it, accepted domains, and benefits of verification.",
     tags: ["School Email", "Verification", "Policy", "CribWise"],
+    readTime: "10 min read",
+    difficulty: "Easy",
+    lastUpdated: "January 2025",
     body: `
 # Link Your School Email (CribWise Policy)
 

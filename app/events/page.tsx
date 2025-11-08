@@ -248,7 +248,7 @@ export default async function EventsPage({ searchParams }: { searchParams?: Reco
                     <SelectItem value="all">All Schools</SelectItem>
                     {schools.map((s) => (
                       <SelectItem key={s.slug} value={s.slug}>
-                        {s.shortName || s.name}
+                        {s.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
