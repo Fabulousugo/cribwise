@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState, useDeferredValue } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Heart, MapPin, Bed, Bath, CheckCircle2, X, SlidersHorizontal, ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,71 +29,165 @@ function cn(...classes: Array<string | false | null | undefined>) {
 
 // --- card ---------------------------------------------------------------
 function PropertyCard({ property }: { property: any }) {
+  const [isLiked, setIsLiked] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   return (
-    <Card className="hover:shadow-xl transition overflow-hidden">
-      <div className="relative h-52 bg-muted">
+    <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-0 bg-white dark:bg-slate-900">
+      <div className="relative h-64 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+        {/* Image with loading state */}
         <Image
           src={property.images[0]}
           alt={property.title}
           fill
-          className="object-cover"
+          className={cn(
+            "object-cover transition-all duration-500 group-hover:scale-110",
+            imageLoaded ? "opacity-100" : "opacity-0"
+          )}
           sizes="(min-width: 768px) 33vw, 100vw"
+          onLoad={() => setImageLoaded(true)}
         />
-        {property.verified && (
-          <Badge className="absolute top-2 right-2 bg-green-600 text-white shadow" variant="default">
-            ✓ Verified
-          </Badge>
+        
+        {/* Loading skeleton */}
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800 animate-pulse" />
         )}
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        {/* Top bar with badges and like button - Always visible */}
+        <div className="absolute top-0 left-0 right-0 p-3 flex items-start justify-between z-10">
+          {/* Verified Badge */}
+          {property.verified && (
+            <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg border-0 gap-1">
+              <CheckCircle2 className="w-3 h-3" />
+              Verified
+            </Badge>
+          )}
+          
+          {/* Spacer if no badge */}
+          {!property.verified && <div />}
+
+          {/* Like Button */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              setIsLiked(!isLiked);
+            }}
+            className="w-10 h-10 rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm flex items-center justify-center hover:bg-white dark:hover:bg-slate-900 transition-all duration-200 shadow-lg hover:scale-110 active:scale-95"
+            aria-label="Add to favorites"
+          >
+            <Heart
+              className={cn(
+                "w-5 h-5 transition-all duration-200",
+                isLiked
+                  ? "fill-red-500 stroke-red-500 scale-110"
+                  : "stroke-slate-700 dark:stroke-slate-300 hover:stroke-red-500"
+              )}
+            />
+          </button>
+        </div>
+
+        {/* Not Available Overlay */}
         {!property.available && (
-          <div className="absolute inset-0 bg-black/50 grid place-items-center">
-            <span className="bg-red-500 text-white px-3 py-1 rounded-md font-medium">Not Available</span>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm grid place-items-center animate-in fade-in duration-200 z-20">
+            <div className="text-center space-y-2">
+              <span className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold shadow-lg inline-block">
+                Not Available
+              </span>
+              <p className="text-white/80 text-sm">Check back soon</p>
+            </div>
           </div>
         )}
       </div>
 
-      <CardHeader>
-        <CardTitle className="text-lg line-clamp-1">{property.title}</CardTitle>
-        <CardDescription className="flex items-center gap-2">
-          <span>📍 {property.location}</span>
-        </CardDescription>
-        <p className="text-sm text-slate-500 line-clamp-1">{property.university}</p>
+      <CardHeader className="space-y-2 pb-3">
+        <CardTitle className="text-lg font-bold line-clamp-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+          {property.title}
+        </CardTitle>
+        
+        <div className="flex items-center gap-1.5 text-sm text-slate-600 dark:text-slate-400">
+          <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+          <span className="font-medium truncate">{property.location}</span>
+        </div>
+        
+        <p className="text-xs text-slate-500 dark:text-slate-500 truncate">
+          {property.university}
+        </p>
       </CardHeader>
 
-      <CardContent>
-        <div className="space-y-3">
-          <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
-              {NGN.format(property.price)}<span className="text-sm text-slate-500">/year</span>
+      <CardContent className="space-y-3 pt-0">
+        {/* Price */}
+        <div className="pb-3 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-baseline gap-1">
+            <span className="text-2xl font-black bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+              {NGN.format(property.price)}
             </span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">/year</span>
           </div>
-
-          <div className="flex gap-4 text-sm text-slate-600">
-            <span>🛏️ {property.bedrooms} bed{property.bedrooms > 1 ? "s" : ""}</span>
-            <span>🚿 {property.bathrooms} bath</span>
-            <span>{property.type}</span>
-          </div>
-
-          <div className="flex flex-wrap gap-1">
-            {property.amenities.slice(0, 3).map((amenity: string, idx: number) => (
-              <Badge key={idx} variant="secondary" className="text-[11px] font-normal">
-                {amenity}
-              </Badge>
-            ))}
-            {property.amenities.length > 3 && (
-              <span className="text-xs text-muted-foreground">
-                +{property.amenities.length - 3} more
-              </span>
-            )}
-          </div>
-
-          <Link href={`/properties/${property.id}`}>
-            <Button className="w-full" disabled={!property.available}>
-              {property.available ? "View Details" : "Not Available"}
-            </Button>
-          </Link>
         </div>
+
+        {/* Property Details */}
+        <div className="flex items-center gap-3 text-sm pb-3 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+            <Bed className="w-4 h-4 text-slate-500" />
+            <span className="font-semibold">{property.bedrooms}</span>
+          </div>
+          <div className="w-px h-4 bg-slate-300 dark:bg-slate-700" />
+          <div className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+            <Bath className="w-4 h-4 text-slate-500" />
+            <span className="font-semibold">{property.bathrooms}</span>
+          </div>
+          <div className="w-px h-4 bg-slate-300 dark:bg-slate-700" />
+          <span className="text-xs font-medium text-slate-600 dark:text-slate-400 px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded">
+            {property.type}
+          </span>
+        </div>
+
+        {/* Amenities */}
+        <div className="flex flex-wrap gap-2">
+          {property.amenities.slice(0, 3).map((amenity: string, idx: number) => (
+            <span
+              key={idx}
+              className="text-xs font-medium text-slate-600 dark:text-slate-400 px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800/50 rounded-md border border-slate-200 dark:border-slate-700"
+            >
+              {amenity}
+            </span>
+          ))}
+          {property.amenities.length > 3 && (
+            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 px-2.5 py-1.5 flex items-center">
+              +{property.amenities.length - 3}
+            </span>
+          )}
+        </div>
+
+        {/* CTA Button */}
+        <Link href={`/properties/${property.id}`} className="block">
+          <Button
+            className={cn(
+              "w-full font-semibold transition-all duration-200 h-11",
+              property.available
+                ? "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                : "bg-slate-200 dark:bg-slate-800 text-slate-500 cursor-not-allowed"
+            )}
+            disabled={!property.available}
+          >
+            {property.available ? "View Details" : "Not Available"}
+          </Button>
+        </Link>
       </CardContent>
     </Card>
+  );
+}
+
+// --- Filter Section Component ---
+function FilterSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-3">
+      <Label className="text-sm font-bold text-slate-900 dark:text-slate-100">{title}</Label>
+      {children}
+    </div>
   );
 }
 
@@ -143,7 +238,7 @@ export default function PropertiesPageClient() {
     if (hasSecurity) params.set("security", "yes");
     if (hasGenerator) params.set("generator", "yes");
 
-    router.replace(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`);
+    router.replace(`${pathname}${params.toString() ? `?${params.toString()}` : ""}`, { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     deferredSearch,
@@ -247,6 +342,22 @@ export default function PropertiesPageClient() {
 
   const count = filtered.length;
 
+  // Count active filters
+  const activeFiltersCount = [
+    searchTerm,
+    minPrice,
+    maxPrice,
+    propertyType !== "all",
+    bedrooms !== "all",
+    bathrooms !== "all",
+    onlyVerified === "yes",
+    onlyAvailable,
+    hasWifi,
+    hasParking,
+    hasSecurity,
+    hasGenerator,
+  ].filter(Boolean).length;
+
   const clearAllFilters = () => {
     setSearchTerm("");
     setMinPrice("");
@@ -263,351 +374,295 @@ export default function PropertiesPageClient() {
     setHasGenerator(false);
   };
 
+  // Filters UI (reusable for desktop and mobile)
+  const FiltersUI = () => (
+    <div className="space-y-6">
+      {/* Search */}
+      <FilterSection title="Search">
+        <div className="relative">
+          <Input
+            placeholder="Location, university, keywords..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10"
+          />
+          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+        </div>
+      </FilterSection>
+
+      <div className="h-px bg-slate-200 dark:bg-slate-800" />
+
+      {/* Price Range */}
+      <FilterSection title="Price Range">
+        <div className="grid grid-cols-2 gap-3">
+          <Input
+            placeholder="Min (₦)"
+            type="number"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            min={0}
+          />
+          <Input
+            placeholder="Max (₦)"
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            min={0}
+          />
+        </div>
+      </FilterSection>
+
+      <div className="h-px bg-slate-200 dark:bg-slate-800" />
+
+      {/* Property Type */}
+      <FilterSection title="Property Type">
+        <Select value={propertyType} onValueChange={setPropertyType}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Types</SelectItem>
+            <SelectItem value="Apartment">Apartment</SelectItem>
+            <SelectItem value="Self-Contain">Self-Contain</SelectItem>
+            <SelectItem value="Flat">Flat</SelectItem>
+            <SelectItem value="Shared">Shared</SelectItem>
+            <SelectItem value="Studio">Studio</SelectItem>
+          </SelectContent>
+        </Select>
+      </FilterSection>
+
+      {/* Bedrooms & Bathrooms */}
+      <div className="grid grid-cols-2 gap-4">
+        <FilterSection title="Bedrooms">
+          <Select value={bedrooms} onValueChange={setBedrooms}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Any</SelectItem>
+              <SelectItem value="1">1 Bed</SelectItem>
+              <SelectItem value="2">2 Beds</SelectItem>
+              <SelectItem value="3">3 Beds</SelectItem>
+              <SelectItem value="4+">4+ Beds</SelectItem>
+            </SelectContent>
+          </Select>
+        </FilterSection>
+
+        <FilterSection title="Bathrooms">
+          <Select value={bathrooms} onValueChange={setBathrooms}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Any</SelectItem>
+              <SelectItem value="1">1 Bath</SelectItem>
+              <SelectItem value="2">2 Baths</SelectItem>
+              <SelectItem value="3+">3+ Baths</SelectItem>
+            </SelectContent>
+          </Select>
+        </FilterSection>
+      </div>
+
+      <div className="h-px bg-slate-200 dark:bg-slate-800" />
+
+      {/* Amenities */}
+      <FilterSection title="Amenities">
+        <div className="grid grid-cols-2 gap-3">
+          <label className="flex items-center space-x-2 cursor-pointer group">
+            <Checkbox
+              id="wifi-filter"
+              checked={hasWifi}
+              onCheckedChange={(checked) => setHasWifi(checked === true)}
+              className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+            />
+            <span className="text-sm group-hover:text-emerald-600 transition-colors">📶 WiFi</span>
+          </label>
+
+          <label className="flex items-center space-x-2 cursor-pointer group">
+            <Checkbox
+              id="parking-filter"
+              checked={hasParking}
+              onCheckedChange={(checked) => setHasParking(checked === true)}
+              className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+            />
+            <span className="text-sm group-hover:text-emerald-600 transition-colors">🚗 Parking</span>
+          </label>
+
+          <label className="flex items-center space-x-2 cursor-pointer group">
+            <Checkbox
+              id="security-filter"
+              checked={hasSecurity}
+              onCheckedChange={(checked) => setHasSecurity(checked === true)}
+              className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+            />
+            <span className="text-sm group-hover:text-emerald-600 transition-colors">🔒 Security</span>
+          </label>
+
+          <label className="flex items-center space-x-2 cursor-pointer group">
+            <Checkbox
+              id="generator-filter"
+              checked={hasGenerator}
+              onCheckedChange={(checked) => setHasGenerator(checked === true)}
+              className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+            />
+            <span className="text-sm group-hover:text-emerald-600 transition-colors">⚡ Generator</span>
+          </label>
+        </div>
+      </FilterSection>
+
+      <div className="h-px bg-slate-200 dark:bg-slate-800" />
+
+      {/* Additional Options */}
+      <FilterSection title="Additional Options">
+        <div className="space-y-3">
+          <label className="flex items-center space-x-2 cursor-pointer group">
+            <Checkbox
+              id="verified-filter"
+              checked={onlyVerified === "yes"}
+              onCheckedChange={(checked) => setOnlyVerified(checked ? "yes" : "all")}
+              className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+            />
+            <span className="text-sm group-hover:text-emerald-600 transition-colors">
+              ✓ Verified properties only
+            </span>
+          </label>
+
+          <label className="flex items-center space-x-2 cursor-pointer group">
+            <Checkbox
+              id="available-filter"
+              checked={onlyAvailable}
+              onCheckedChange={(checked) => setOnlyAvailable(checked === true)}
+              className="data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+            />
+            <span className="text-sm group-hover:text-emerald-600 transition-colors">
+              ✓ Available properties only
+            </span>
+          </label>
+        </div>
+      </FilterSection>
+
+      {/* Clear Button */}
+      {activeFiltersCount > 0 && (
+        <Button
+          variant="outline"
+          onClick={clearAllFilters}
+          className="w-full border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800"
+        >
+          <X className="w-4 h-4 mr-2" />
+          Clear All Filters ({activeFiltersCount})
+        </Button>
+      )}
+    </div>
+  );
+
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="max-w-7xl mx-auto py-8 px-4">
         <div className="flex gap-8">
           {/* Sidebar Filters - Desktop */}
           <aside className="hidden lg:block w-80 flex-shrink-0">
-            <div className="bg-card p-6 rounded-lg shadow sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
-              <h2 className="text-xl font-bold mb-6">Filters</h2>
-
-              <div className="space-y-6">
-                {/* Search */}
-                <div className="space-y-2">
-                  <Label htmlFor="q" className="text-sm font-semibold">Search</Label>
-                  <Input
-                    id="q"
-                    placeholder="Location, university..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-
-                <hr />
-
-                {/* Price Range */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-semibold">Price Range</Label>
-                  <div className="space-y-2">
-                    <Input
-                      placeholder="Min (₦)"
-                      type="number"
-                      value={minPrice}
-                      onChange={(e) => setMinPrice(e.target.value)}
-                      min={0}
-                    />
-                    <Input
-                      placeholder="Max (₦)"
-                      type="number"
-                      value={maxPrice}
-                      onChange={(e) => setMaxPrice(e.target.value)}
-                      min={0}
-                    />
-                  </div>
-                </div>
-
-                <hr />
-
-                {/* Property Type */}
-                <div className="space-y-2">
-                  <Label className="text-sm font-semibold">Property Type</Label>
-                  <Select value={propertyType} onValueChange={setPropertyType}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Types</SelectItem>
-                      <SelectItem value="Apartment">Apartment</SelectItem>
-                      <SelectItem value="Self-Contain">Self-Contain</SelectItem>
-                      <SelectItem value="Flat">Flat</SelectItem>
-                      <SelectItem value="Shared">Shared</SelectItem>
-                      <SelectItem value="Studio">Studio</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Bedrooms */}
-                <div className="space-y-2">
-                  <Label className="text-sm font-semibold">Bedrooms</Label>
-                  <Select value={bedrooms} onValueChange={setBedrooms}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Any</SelectItem>
-                      <SelectItem value="1">1 Bed</SelectItem>
-                      <SelectItem value="2">2 Beds</SelectItem>
-                      <SelectItem value="3">3 Beds</SelectItem>
-                      <SelectItem value="4+">4+ Beds</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Bathrooms */}
-                <div className="space-y-2">
-                  <Label className="text-sm font-semibold">Bathrooms</Label>
-                  <Select value={bathrooms} onValueChange={setBathrooms}>
-                    <SelectTrigger><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Any</SelectItem>
-                      <SelectItem value="1">1 Bath</SelectItem>
-                      <SelectItem value="2">2 Baths</SelectItem>
-                      <SelectItem value="3+">3+ Baths</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <hr />
-
-                {/* Amenities */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-semibold">Amenities</Label>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="wifi"
-                        checked={hasWifi}
-                        onCheckedChange={(checked) => setHasWifi(checked === true)}
-                      />
-                      <label htmlFor="wifi" className="text-sm cursor-pointer">
-                        📶 WiFi
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="parking"
-                        checked={hasParking}
-                        onCheckedChange={(checked) => setHasParking(checked === true)}
-                      />
-                      <label htmlFor="parking" className="text-sm cursor-pointer">
-                        🚗 Parking
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="security"
-                        checked={hasSecurity}
-                        onCheckedChange={(checked) => setHasSecurity(checked === true)}
-                      />
-                      <label htmlFor="security" className="text-sm cursor-pointer">
-                        🔒 Security
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="generator"
-                        checked={hasGenerator}
-                        onCheckedChange={(checked) => setHasGenerator(checked === true)}
-                      />
-                      <label htmlFor="generator" className="text-sm cursor-pointer">
-                        ⚡ Generator
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                <hr />
-
-                {/* Additional Options */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-semibold">Other Options</Label>
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="verified"
-                        checked={onlyVerified === "yes"}
-                        onCheckedChange={(checked) => setOnlyVerified(checked ? "yes" : "all")}
-                      />
-                      <label htmlFor="verified" className="text-sm cursor-pointer">
-                        Verified only
-                      </label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="available"
-                        checked={onlyAvailable}
-                        onCheckedChange={(checked) => setOnlyAvailable(checked === true)}
-                      />
-                      <label htmlFor="available" className="text-sm cursor-pointer">
-                        Available only
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Clear Button */}
-                <Button variant="outline" onClick={clearAllFilters} className="w-full">
-                  Clear All Filters
-                </Button>
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 sticky top-8 max-h-[calc(100vh-4rem)] overflow-y-auto">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <SlidersHorizontal className="w-5 h-5 text-emerald-600" />
+                  Filters
+                </h2>
+                {activeFiltersCount > 0 && (
+                  <Badge variant="default" className="bg-emerald-600">
+                    {activeFiltersCount}
+                  </Badge>
+                )}
               </div>
+              <FiltersUI />
             </div>
           </aside>
 
           {/* Main Content */}
           <div className="flex-1 min-w-0">
             {/* Mobile Filter Toggle */}
-            <div className="lg:hidden mb-4">
+            <div className="lg:hidden mb-6">
               <Button
                 variant="outline"
                 onClick={() => setShowFilters(!showFilters)}
-                className="w-full"
+                className="w-full justify-between font-semibold border-2"
               >
-                {showFilters ? "Hide Filters" : "Show Filters"}
+                <span className="flex items-center gap-2">
+                  <SlidersHorizontal className="w-4 h-4" />
+                  Filters
+                  {activeFiltersCount > 0 && (
+                    <Badge variant="default" className="bg-emerald-600 ml-1">
+                      {activeFiltersCount}
+                    </Badge>
+                  )}
+                </span>
+                <ChevronDown
+                  className={cn(
+                    "w-4 h-4 transition-transform duration-200",
+                    showFilters && "rotate-180"
+                  )}
+                />
               </Button>
             </div>
 
             {/* Mobile Filters */}
             {showFilters && (
-              <div className="lg:hidden bg-card p-6 rounded-lg shadow mb-6">
-                <h2 className="text-xl font-bold mb-6">Filters</h2>
-                <div className="space-y-6">
-                  {/* Search */}
-                  <div className="space-y-2">
-                    <Label htmlFor="q-mobile" className="text-sm font-semibold">Search</Label>
-                    <Input
-                      id="q-mobile"
-                      placeholder="Location, university..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                  </div>
-
-                  {/* Price Range */}
-                  <div className="space-y-3">
-                    <Label className="text-sm font-semibold">Price Range</Label>
-                    <div className="space-y-2">
-                      <Input
-                        placeholder="Min (₦)"
-                        type="number"
-                        value={minPrice}
-                        onChange={(e) => setMinPrice(e.target.value)}
-                        min={0}
-                      />
-                      <Input
-                        placeholder="Max (₦)"
-                        type="number"
-                        value={maxPrice}
-                        onChange={(e) => setMaxPrice(e.target.value)}
-                        min={0}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Property Details */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-sm font-semibold">Type</Label>
-                      <Select value={propertyType} onValueChange={setPropertyType}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">All</SelectItem>
-                          <SelectItem value="Apartment">Apartment</SelectItem>
-                          <SelectItem value="Self-Contain">Self-Contain</SelectItem>
-                          <SelectItem value="Flat">Flat</SelectItem>
-                          <SelectItem value="Shared">Shared</SelectItem>
-                          <SelectItem value="Studio">Studio</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-sm font-semibold">Beds</Label>
-                      <Select value={bedrooms} onValueChange={setBedrooms}>
-                        <SelectTrigger><SelectValue /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="all">Any</SelectItem>
-                          <SelectItem value="1">1</SelectItem>
-                          <SelectItem value="2">2</SelectItem>
-                          <SelectItem value="3">3</SelectItem>
-                          <SelectItem value="4+">4+</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  {/* Amenities */}
-                  <div className="space-y-3">
-                    <Label className="text-sm font-semibold">Amenities</Label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="wifi-mobile"
-                          checked={hasWifi}
-                          onCheckedChange={(checked) => setHasWifi(checked === true)}
-                        />
-                        <label htmlFor="wifi-mobile" className="text-sm cursor-pointer">
-                          📶 WiFi
-                        </label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="parking-mobile"
-                          checked={hasParking}
-                          onCheckedChange={(checked) => setHasParking(checked === true)}
-                        />
-                        <label htmlFor="parking-mobile" className="text-sm cursor-pointer">
-                          🚗 Parking
-                        </label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="security-mobile"
-                          checked={hasSecurity}
-                          onCheckedChange={(checked) => setHasSecurity(checked === true)}
-                        />
-                        <label htmlFor="security-mobile" className="text-sm cursor-pointer">
-                          🔒 Security
-                        </label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="generator-mobile"
-                          checked={hasGenerator}
-                          onCheckedChange={(checked) => setHasGenerator(checked === true)}
-                        />
-                        <label htmlFor="generator-mobile" className="text-sm cursor-pointer">
-                          ⚡ Generator
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Button variant="outline" onClick={clearAllFilters} className="w-full">
-                    Clear All Filters
-                  </Button>
-                </div>
+              <div className="lg:hidden bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 mb-6 animate-in slide-in-from-top-4 duration-300">
+                <FiltersUI />
               </div>
             )}
 
             {/* Header */}
-            <div className="mb-6">
-              <h1 className="text-3xl font-bold mb-2">Find Your Perfect Crib</h1>
-              <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                <p className="text-muted-foreground">
-                  {count} {count === 1 ? "property" : "properties"} found
+            <div className="mb-8">
+              <h1 className="text-4xl font-black mb-3 bg-gradient-to-r from-slate-900 to-slate-600 dark:from-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
+                Find Your Perfect Crib 🏠
+              </h1>
+              <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+                <p className="text-slate-600 dark:text-slate-400 font-medium">
+                  <span className="text-2xl font-bold text-emerald-600">{count}</span>{" "}
+                  {count === 1 ? "property" : "properties"} available
                 </p>
-                <div className="flex items-center gap-3">
-                  <Select value={sort} onValueChange={setSort}>
-                    <SelectTrigger className="w-full sm:w-56"><SelectValue /></SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="recommended">Recommended</SelectItem>
-                      <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                      <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                      <SelectItem value="beds-desc">Most Bedrooms</SelectItem>
-                      <SelectItem value="newest">Newest First</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <Select value={sort} onValueChange={setSort}>
+                  <SelectTrigger className="w-full sm:w-64 border-2">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="recommended">⭐ Recommended</SelectItem>
+                    <SelectItem value="price-asc">💰 Price: Low to High</SelectItem>
+                    <SelectItem value="price-desc">💎 Price: High to Low</SelectItem>
+                    <SelectItem value="beds-desc">🛏️ Most Bedrooms</SelectItem>
+                    <SelectItem value="newest">🆕 Newest First</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
             {/* Grid */}
             {count > 0 ? (
-              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filtered.map((p) => (
-                  <PropertyCard key={p.id} property={p} />
+              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6 animate-in fade-in duration-500">
+                {filtered.map((p, index) => (
+                  <div
+                    key={p.id}
+                    className="animate-in slide-in-from-bottom-4 duration-500"
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <PropertyCard property={p} />
+                  </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-16 bg-card rounded-lg">
-                <p className="text-xl text-muted-foreground mb-4">No properties found matching your criteria</p>
-                <Button onClick={clearAllFilters}>
+              <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 animate-in fade-in duration-300">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-2xl font-bold mb-2 text-slate-900 dark:text-slate-100">
+                  No properties found
+                </h3>
+                <p className="text-slate-500 dark:text-slate-400 mb-6">
+                  Try adjusting your filters to see more results
+                </p>
+                <Button
+                  onClick={clearAllFilters}
+                  className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+                >
+                  <X className="w-4 h-4 mr-2" />
                   Clear All Filters
                 </Button>
               </div>

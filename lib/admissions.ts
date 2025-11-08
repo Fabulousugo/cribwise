@@ -118,6 +118,83 @@ const PROGRAMMES: Programme[] = [
       "UTME: Eng, Math, Physics, Chemistry",
     ],
   },
+  {
+    id: "p4",
+    schoolId: "s3",
+    name: "Civil Engineering (BSc)",
+    slug: "civil-engineering-bsc",
+    level: "BSc",
+    summary: "Design, construction, and infrastructure.",
+    open: false,
+    nextDeadline: null,
+    requirements: [
+      "JAMB cutoff ~ 230+",
+      "O'Level: 5 credits incl. Math & English",
+      "UTME: Eng, Math, Physics, Chemistry",
+    ],
+  },
+  {
+    id: "p5",
+    schoolId: "s4",
+    name: "Electrical and Electronics Engineering (BSc)",
+    slug: "electrical-and-electronics-engineering-bsc",
+    level: "BSc",
+    summary: "Design, construction, and infrastructure.",
+    open: false,
+    nextDeadline: null,
+    requirements: [
+      "JAMB cutoff ~ 220+",
+      "O'Level: 5 credits incl. Math & English",
+      "UTME: Eng, Math, Physics, Chemistry",
+    ],
+  },
+  {
+    id: "p6",
+    schoolId: "s5",
+    name: "Chemical Engineering (BSc)",
+    slug: "chemical-engineering-bsc",
+    level: "BSc",
+    summary: "Design, construction, and infrastructure.",
+    open: false,
+    nextDeadline: null,
+    requirements: [
+      "JAMB cutoff ~ 220+",
+      "O'Level: 5 credits incl. Math & English",
+      "UTME: Eng, Math, Physics, Chemistry",
+    ],
+  },
+  {
+    id: "p7",
+    schoolId: "s6",
+    name: "Chemical Engineering (BSc)",
+    slug: "chemical-engineering-bsc",
+    level: "BSc",
+    summary: "Design, construction, and infrastructure.",
+    open: false,
+    nextDeadline: null,
+    requirements: [
+      "JAMB cutoff ~ 220+",
+      "O'Level: 5 credits incl. Math & English",
+      "UTME: Eng, Math, Physics, Chemistry",
+    ],
+  },
+  {
+    id: "p8",
+    schoolId: "s7",
+    name: "Chemical Engineering (BSc)",
+    slug: "chemical-engineering-bsc",
+    level: "BSc",
+    summary: "Design, construction, and infrastructure.",
+    open: false,
+    nextDeadline: null,
+    requirements: [
+      "JAMB cutoff ~ 220+",
+      "O'Level: 5 credits incl. Math & English",
+      "UTME: Eng, Math, Physics, Chemistry",
+    ],
+  },
+
+
 ];
 
 const GUIDE_STEPS: GuideStep[] = [
