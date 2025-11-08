@@ -21,7 +21,7 @@ import {
   Building2,
   Zap
 } from "lucide-react"
-import { CourseSelectionStep } from "../../onboarding/CourseSelectionStep"
+import { CourseSelectionStep } from "../../onboarding/CourseSelection"
 import { toast } from "sonner"
 
 export default function ManageAcademicsPage() {
