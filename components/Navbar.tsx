@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import React, { useEffect, useMemo, useState, useTransition } from "react";
+import React, { useEffect, useMemo, useState, useTransition, memo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Menu,
@@ -103,9 +103,8 @@ function statusChipText(profile?: Profile | null): string | undefined {
   return s.toLowerCase();
 }
 
-
 /** Small skeleton to avoid layout shifts while auth loads */
-function AuthSkeleton() {
+const AuthSkeleton = memo(function AuthSkeleton() {
   return (
     <div className="hidden md:flex items-center gap-3">
       <div className="h-9 w-9 rounded-md bg-muted animate-pulse" />
@@ -113,7 +112,10 @@ function AuthSkeleton() {
       <div className="h-9 w-28 rounded-md bg-muted animate-pulse" />
     </div>
   );
-}
+});
+
+// Memoized ThemeToggle wrapper to prevent unnecessary re-renders
+const MemoizedThemeToggle = memo(ThemeToggle);
 
 /** -----------------------------
  * Component
@@ -122,6 +124,7 @@ export function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { user, profile, loading, signOut } = useAuth() as {
     user: React.ReactNode | object | null;
     profile: Profile | null;
@@ -131,6 +134,11 @@ export function Navbar() {
 
   const [isPending, startTransition] = useTransition();
   const [signingOut, setSigningOut] = useState(false);
+
+  // Ensure client-side only rendering after mount
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const isOnDashboard = pathname?.startsWith("/dashboard") ?? false;
   const isAgent = profile?.status === "AGENT";
@@ -150,7 +158,7 @@ export function Navbar() {
   }, [pathname]);
 
   /** More robust sign-out with guards + refresh */
-  const handleSignOut = () => {
+  const handleSignOut = React.useCallback(() => {
     if (signingOut) return;
     setSigningOut(true);
 
@@ -161,11 +169,11 @@ export function Navbar() {
       .finally(() => {
         startTransition(() => {
           router.replace("/");
-          router.refresh(); // force revalidation of auth-aware UI
+          router.refresh();
           setSigningOut(false);
         });
       });
-  };
+  }, [signingOut, signOut, router]);
 
   /** Role-aware nav links (Events included for everyone) */
   const navLinks = useMemo(() => {
@@ -175,7 +183,7 @@ export function Navbar() {
         { href: "/agent/properties", label: "My Properties", icon: Building2 },
         { href: "/agent/properties/add", label: "Add Property", icon: Plus },
         { href: "/messages", label: "Inquiries", icon: MessageSquare },
-        { href: "/events", label: "Events", icon: Calendar }, // universal
+        { href: "/events", label: "Events", icon: Calendar },
       ];
     }
     if (isStudent) {
@@ -184,7 +192,7 @@ export function Navbar() {
         { href: "/properties", label: "Housing", icon: Building2 },
         { href: "/roommate/browse", label: "Roommates", icon: Users },
         { href: "/materials", label: "Materials", icon: BookOpen },
-        { href: "/events", label: "Events", icon: Calendar }, // universal
+        { href: "/events", label: "Events", icon: Calendar },
       ];
     }
     // Guest
@@ -193,12 +201,33 @@ export function Navbar() {
       { href: "/admissions", label: "Admissions", icon: GraduationCap },
       { href: "/materials", label: "Materials", icon: BookOpen },
       { href: "/marketplace", label: "Marketplace", icon: Store },
-      { href: "/events", label: "Events", icon: Calendar }, // universal
+      { href: "/events", label: "Events", icon: Calendar },
       { href: "/safety", label: "Safety", icon: ShieldCheck },
     ];
   }, [isAgent, isStudent]);
 
   const chipText = statusChipText(profile);
+
+  // Don't render until mounted to prevent hydration issues
+  if (!mounted) {
+    return (
+      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              CribWise
+            </div>
+            <div className="hidden md:flex items-center gap-6">
+              {navLinks.slice(0, 3).map((link) => (
+                <div key={link.href} className="h-5 w-16 bg-muted animate-pulse rounded" />
+              ))}
+            </div>
+            <div className="h-10 w-32 bg-muted animate-pulse rounded-md" />
+          </div>
+        </div>
+      </nav>
+    );
+  }
 
   return (
     <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 shadow-sm">
@@ -231,14 +260,14 @@ export function Navbar() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center gap-3">
-            <ThemeToggle />
+            <MemoizedThemeToggle />
 
             {loading ? (
               <AuthSkeleton />
             ) : user ? (
               <>
                 {/* User Dropdown */}
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" className="gap-2" disabled={isPending}>
                       <div className="flex items-center gap-2">
@@ -252,7 +281,7 @@ export function Navbar() {
                     </Button>
                   </DropdownMenuTrigger>
 
-                  <DropdownMenuContent align="end" className="w-72">
+                  <DropdownMenuContent align="end" className="w-72 z-[100]">
                     <DropdownMenuLabel>
                       <div className="flex flex-col space-y-1">
                         <p className="text-sm font-medium leading-none">
@@ -397,7 +426,7 @@ export function Navbar() {
                 )}
               </>
             ) : (
-              // Guest Actions (only after loading is false)
+              // Guest Actions
               <>
                 <Link href="/signin">
                   <Button variant="ghost">Sign In</Button>
@@ -413,8 +442,11 @@ export function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <div className="flex md:hidden items-center gap-2">
-            <ThemeToggle />
+            <MemoizedThemeToggle />
             <button
+              type="button"
+              name="Toggle mobile menu"
+              id="toggle-mobile-menu"
               onClick={() => setMobileMenuOpen((s) => !s)}
               className="p-2"
               aria-label="Toggle menu"
@@ -428,7 +460,6 @@ export function Navbar() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-3 border-t pt-4">
-            {/* Always show role-aware links */}
             {navLinks.map(({ href, label, icon: Icon }) => (
               <Link
                 key={href}
@@ -556,7 +587,6 @@ export function Navbar() {
         )}
       </div>
 
-      
       {user && isStudent && showSchoolBanner && (
         <div className="border-t bg-amber-50 dark:bg-amber-900/20">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-start gap-3 text-amber-800 dark:text-amber-200">

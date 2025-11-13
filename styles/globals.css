@@ -8,13 +8,20 @@
    ========================= */
 @layer base {
   /* Root type scale: mobile → desktop */
-  html { font-size: 15px; }
-  @media (min-width: 768px) { html { font-size: 16px; } }
+  html { 
+    font-size: 15px; 
+  }
+  
+  @media (min-width: 768px) { 
+    html { 
+      font-size: 16px; 
+    } 
+  }
 
   /* Prevent horizontal scrolling globally */
   html, body {
     width: 100%;
-    overflow-x: clip; /* safer than hidden */
+    overflow-x: clip;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -35,82 +42,70 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
-
     --radius: 0.5rem;
   }
 
   .dark {
-  /* Lighter dark theme - less harsh on eyes */
-  --background: 222.2 47% 11%;           /* Was 4.5% - now lighter */
-  --foreground: 210 40% 98%;
-
-  --card: 222.2 47% 14%;                 /* Was 11% - now lighter */
-  --card-foreground: 210 40% 98%;
-
-  --popover: 222.2 47% 14%;              /* Was 11% - now lighter */
-  --popover-foreground: 210 40% 98%;
-
-  --primary: 217.2 91.2% 65%;            /* Slightly lighter blue */
-  --primary-foreground: 222.2 47.4% 11.2%;
-
-  --secondary: 220 14% 25%;              /* Was 20% - now lighter */
-  --secondary-foreground: 210 40% 98%;
-
-  --muted: 220 14% 25%;                  /* Was 20% - now lighter */
-  --muted-foreground: 217 12% 70%;       /* Was 65% - now lighter text */
-
-  --accent: 220 14% 28%;                 /* Was 22% - now lighter */
-  --accent-foreground: 210 40% 98%;
-
-  --destructive: 0 62.8% 50%;            /* Was 45% - now lighter */
-  --destructive-foreground: 210 40% 98%;
-
-  --border: 220 14% 30%;                 /* Was 25% - now lighter */
-  --input: 220 14% 30%;                  /* Was 25% - now lighter */
-  --ring: 224.3 76.3% 55%;               /* Was 48% - now lighter */
-}
+    /* Lighter dark theme - less harsh on eyes */
+    --background: 222.2 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 47% 14%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 47% 14%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 65%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 14% 25%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 220 14% 25%;
+    --muted-foreground: 217 12% 70%;
+    --accent: 220 14% 28%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 14% 30%;
+    --input: 220 14% 30%;
+    --ring: 224.3 76.3% 55%;
+  }
 
   /* Apply tokenized borders everywhere */
-  * { @apply border-border; }
+  * { 
+    @apply border-border; 
+  }
 
   /* Typography defaults */
   body {
     @apply antialiased;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    /* Use your Next.js font vars if set in layout.tsx */
     font-family: var(--font-sans), system-ui, -apple-system, Segoe UI, Roboto,
       "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol";
+    /* Prevent flash during theme changes */
+    transition: background-color 0s, color 0s;
   }
 
   /* Headings auto-use heading font var */
-  h1, h2, h3, h4 { font-family: var(--font-heading), var(--font-sans), system-ui, sans-serif; }
+  h1, h2, h3, h4 { 
+    font-family: var(--font-heading), var(--font-sans), system-ui, sans-serif; 
+  }
 
   /* Selection */
   ::selection {
@@ -118,9 +113,15 @@
     color: hsl(var(--foreground));
   }
 
-  /* Leaflet */
-  .leaflet-container { background: transparent; width: 100% !important; }
-  .leaflet-control-container .leaflet-control-attribution { white-space: normal; }
+  /* Leaflet map styling */
+  .leaflet-container { 
+    background: transparent; 
+    width: 100% !important; 
+  }
+  
+  .leaflet-control-container .leaflet-control-attribution { 
+    white-space: normal; 
+  }
 }
 
 /* =========================
@@ -159,36 +160,96 @@
    ========================= */
 @layer utilities {
   /* Smooth scroll (ignored if reduced motion) */
-  .smooth-scroll { scroll-behavior: smooth; }
+  .smooth-scroll { 
+    scroll-behavior: smooth; 
+  }
 
-  /* Fluid type scale utilities (no Tailwind config required) */
-  .text-display { font-size: clamp(2.00rem, 4vw + 1rem, 3.75rem); line-height: 1.1; letter-spacing: -0.02em; }
-  .text-h1     { font-size: clamp(1.75rem, 2.2vw + 1rem, 2.5rem);  line-height: 1.15; }
-  .text-h2     { font-size: clamp(1.375rem, 1.2vw + 1rem, 1.875rem); line-height: 1.2; }
-  .text-h3     { font-size: clamp(1.125rem, 0.8vw + 1rem, 1.5rem);   line-height: 1.25; }
+  /* Fluid type scale utilities */
+  .text-display { 
+    font-size: clamp(2.00rem, 4vw + 1rem, 3.75rem); 
+    line-height: 1.1; 
+    letter-spacing: -0.02em; 
+  }
+  
+  .text-h1 { 
+    font-size: clamp(1.75rem, 2.2vw + 1rem, 2.5rem);  
+    line-height: 1.15; 
+  }
+  
+  .text-h2 { 
+    font-size: clamp(1.375rem, 1.2vw + 1rem, 1.875rem); 
+    line-height: 1.2; 
+  }
+  
+  .text-h3 { 
+    font-size: clamp(1.125rem, 0.8vw + 1rem, 1.5rem);   
+    line-height: 1.25; 
+  }
 
-  /* Heading helpers (compose with the sizes above) */
-  .heading-display { @apply font-heading font-extrabold tracking-tight; }
-  .heading-1      { @apply font-heading font-bold tracking-tight; }
-  .heading-2      { @apply font-heading font-semibold; }
-  .heading-3      { @apply font-heading font-semibold; }
+  /* Heading helpers */
+  .heading-display { 
+    @apply font-heading font-extrabold tracking-tight; 
+  }
+  
+  .heading-1 { 
+    @apply font-heading font-bold tracking-tight; 
+  }
+  
+  .heading-2 { 
+    @apply font-heading font-semibold; 
+  }
+  
+  .heading-3 { 
+    @apply font-heading font-semibold; 
+  }
 }
 
-/* Respect reduced motion */
+/* =========================
+   THEME TOGGLE FIX
+   ========================= */
+
+/* Ensure Radix UI dropdowns render above navbar (z-50) */
+[data-radix-popper-content-wrapper],
+[data-radix-dropdown-menu-content] {
+  z-index: 100 !important;
+}
+
+/* =========================
+   ACCESSIBILITY
+   ========================= */
+
+/* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
 }
 
-/* Optional: scrollbar polish (WebKit) */
-*::-webkit-scrollbar { width: 10px; height: 10px; }
-*::-webkit-scrollbar-track { background: hsl(var(--muted)); }
+/* =========================
+   SCROLLBAR STYLING
+   ========================= */
+
+/* Custom scrollbar (WebKit browsers) */
+*::-webkit-scrollbar { 
+  width: 10px; 
+  height: 10px; 
+}
+
+*::-webkit-scrollbar-track { 
+  background: hsl(var(--muted)); 
+}
+
 *::-webkit-scrollbar-thumb {
   background: hsl(var(--border));
   border-radius: 999px;
   border: 2px solid hsl(var(--muted));
 }
-*::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground)); }
+
+*::-webkit-scrollbar-thumb:hover { 
+  background: hsl(var(--muted-foreground)); 
+}

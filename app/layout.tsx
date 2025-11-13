@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer"
 import { AuthProvider } from "@/lib/auth-context"
 import { ThemeProvider } from "@/components/theme-provider"
 import "../styles/globals.css"
+import { Toaster } from "sonner"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -25,12 +26,13 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
+          disableTransitionOnChange = {false}
           storageKey="cribwise-theme"
         >
           <AuthProvider>
             <Navbar />
-            {children}
+            <main className="min-h-screen">{children}</main>
+            <Toaster />
             <Footer />
           </AuthProvider>
         </ThemeProvider>

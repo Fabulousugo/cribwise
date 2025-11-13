@@ -21,9 +21,9 @@ export function Footer() {
         <div>
           <h4 className="font-semibold mb-4">For Landlords</h4>
           <ul className="space-y-2 text-slate-400">
-            <li><Link href="/landlords">List Property</Link></li>
-            <li>Verification</li>
-            <li>Pricing</li>
+            <li><Link href="/agent/properties/add">List Property</Link></li>
+            <li><Link href="/verify/verify-landlord"></Link>Verification</li>
+            {/* <li>Pricing</li> */}
           </ul>
         </div>
         

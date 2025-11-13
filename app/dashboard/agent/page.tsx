@@ -145,7 +145,7 @@ export default function AgentDashboard() {
                         <span>Analytics Dashboard</span>
                       </div>
                     </div>
-                    <Link href="/verify-landlord">
+                    <Link href="/verify/verify-landlord">
                       <Button className="bg-gradient-to-r from-amber-500 to-orange-500 text-white">
                         Start Verification
                         <Sparkles className="ml-2 h-4 w-4" />
@@ -379,7 +379,7 @@ export default function AgentDashboard() {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-3xl font-bold text-foreground">Property Management</h2>
-            <Link href="/properties/new">
+            <Link href="/agent/properties/add">
               <Button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
                 <Plus className="mr-2 h-4 w-4" />
                 Add New Property
