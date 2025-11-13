@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProgrammeBySlugs, getGuideStepsForProgramme } from "@/lib/admissions"; // implement separately
-import { DeadlineBadge } from "@/components/admissions/DeadlineBadge"; // separate component file
+import { DeadlineBadge } from "@/app/admissions/DeadlineBadge"; // separate component file
 import { Checklist } from "@/components/admissions/Checklist"; // separate client component
 
 export default async function ProgrammePage(
